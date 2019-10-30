@@ -2,14 +2,14 @@
 #### Smart Control of Distributed Energy Resources
 -------------------------------------------------------------------------
 
-This [Modelica](https://www.modelica.org/) model library is developed to facilitate the simulaiton and optimization of Distributed Energy Resources such as Photovoltaics, Battery Storage, Smart Inverters, Electric Vehicles, and electrical Power Systems.
+This [Modelica](https://www.modelica.org/) model library is developed to facilitate the simulation and optimization of Distributed Energy Resources such as Photovoltaics, Battery Storage, Smart Inverters, Electric Vehicles, and electric Power Systems.
 
 ## General
-This package is developed to model various components of the electrical power system in the contect of future scenarios with high penetrations of Distributed Energy Resources (DER). The library is structured in four main categories:
+This package is developed to model various components of the electric power system in the context of future scenarios with high penetrations of Distributed Energy Resources (DER). The library is structured in four main categories:
 
 * Solar: This library contains solar irradiaiton models.
-* Components: This library contains the components models for various power system devices. It includes: Sensor, Inverter, Transformer, Photovoltacis, Battery, Controller, and Grid. Each component library ceontains of a Model and Examples folder.
-* Systems: This library contains ensembles of components to form whole systems. An example is the Flexgrid model which consists of three single-phase inverters, three batteries, and a number of sensors.
+* Components: This library contains the component models for various power system devices. It includes: Sensor, Inverter, Transformer, Photovoltacis, Battery, Controller, and Grid. Each component library ceontains of a Model and Examples folder.
+* Systems: This library contains ensembles of components to form whole systems. An example (see below in Examples section) is the Flexgrid model which consists of three single-phase inverters, three batteries, and a number of sensors.
 * uPMU: This library is specific to [micro-synchrophasor measurement units](https://www.powerstandards.com/product/micropmu) and covers the simulaiton of sensors and the integration of sensor measurements into simulations.
 
 *Please note that the SCooDER package and especially the examples are still under development. Please open an issue for specific questions*
@@ -21,9 +21,11 @@ The package depends on the [Modelica Standard Library](https://github.com/modeli
 
 ## Example
 The following model shows the Flexgrid model which can be found in the Systems library. It consists of a variety of Component models.
+
 ![Flexgrid System](documentation/flexgrid_system.jpg)
 
 Most models are validated with equipment installed at [Lawrence Berkeley National Laboratory](https://lbl.gov). The example below shows the validation of an inverter response to a setpoint change in active power.
+
 ![Model Validation](documentation/model_validation.jpg)
 
 ## License

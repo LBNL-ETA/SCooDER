@@ -22,9 +22,11 @@ The package depends on the [Modelica Standard Library](https://github.com/modeli
 ## Example
 The following model shows the Flexgrid model which can be found in the Systems library. It consists of a variety of Component models.
 
+
 ![Flexgrid System](documentation/flexgrid_system.jpg)
 
 Most models are validated with equipment installed at [Lawrence Berkeley National Laboratory](https://lbl.gov). The example below shows the validation of an inverter response to a setpoint change in active power.
+
 
 ![Model Validation](documentation/model_validation.jpg)
 

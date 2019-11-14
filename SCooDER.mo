@@ -4107,6 +4107,8 @@ at the terminal differs from the nominal voltage.
         model Battery
           parameter Real EMax(min=0) = 6400
             "Battery Capacity [Wh]";
+          parameter Real Pmax(min=0) = 3300
+            "Battery Power [W]";
           parameter Real SOC_start(min=0, max=1, unit="1") = 0.1
             "Initial SOC value";
           parameter Real SOC_min(min=0, max=1, unit="1") = 0.1
@@ -4145,12 +4147,16 @@ at the terminal differs from the nominal voltage.
             annotation (Placement(transformation(extent={{-20,70},{0,90}})));
         equation
           if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
-            P_batt = P_ctrl;
+            if (P_batt<0) then
+              P_batt = max(Pmax*(-1), P_ctrl);
+            else
+              P_batt = min(Pmax, P_ctrl);
+            end if;
           else
             if (P_ctrl<0) and (soc_model.SOC>SOC_min) then
-              P_batt = P_ctrl;
+              P_batt = max(Pmax*(-1), P_ctrl);
             elseif (P_ctrl>0) and (soc_model.SOC<SOC_max) then
-              P_batt = P_ctrl;
+              P_batt = min(Pmax, P_ctrl);
             else
               P_batt = 0;
             end if;

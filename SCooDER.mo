@@ -1,4 +1,4 @@
-within ;
+﻿within ;
 package SCooDER
 
   package Solar
@@ -4119,8 +4119,8 @@ at the terminal differs from the nominal voltage.
             "Charging efficiency";
           parameter Real etaDis(min=0, max=1, unit="1") = 0.96
             "Discharging efficiency";
-          Real p_batt_eff;
-         Modelica.Blocks.Interfaces.RealInput P_ctrl(unit="W")
+          Real PEff;
+         Modelica.Blocks.Interfaces.RealInput PCtrl(unit="W")
             "Power control to charge (positive) discharge (negativ) the battery"
             annotation (Placement(transformation(
                 extent={{-20,-20},{20,20}},
@@ -4131,7 +4131,7 @@ at the terminal differs from the nominal voltage.
                 origin={-120,0})));
           Modelica.Blocks.Interfaces.RealOutput SOC "State of Charge [-]"
             annotation (Placement(transformation(extent={{100,70},{120,90}})));
-          Modelica.Blocks.Interfaces.RealOutput P_batt "Power demand Battery"
+          Modelica.Blocks.Interfaces.RealOutput P "Power demand Battery"
             annotation (Placement(transformation(extent={{100,-10},{120,10}})));
           Buildings.Electrical.DC.Storage.BaseClasses.Charge soc_model(
             etaCha=etaCha,
@@ -4143,25 +4143,25 @@ at the terminal differs from the nominal voltage.
             annotation (Placement(transformation(extent={{100,40},{120,60}})));
           Modelica.Blocks.Sources.RealExpression soe_calc(y=soc_model.SOC*EMax)
             annotation (Placement(transformation(extent={{20,40},{40,60}})));
-          Modelica.Blocks.Sources.RealExpression power_calc(y=p_batt_eff)
+          Modelica.Blocks.Sources.RealExpression power_calc(y=PEff)
             annotation (Placement(transformation(extent={{-20,70},{0,90}})));
         equation
           if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
-            if (P_batt<0) then
-              P_batt = max(Pmax*(-1), P_ctrl);
+            if (P < 0) then
+              P = max(Pmax*(-1), PCtrl);
             else
-              P_batt = min(Pmax, P_ctrl);
+              P = min(Pmax, PCtrl);
             end if;
           else
-            if (P_ctrl<0) and (soc_model.SOC>SOC_min) then
-              P_batt = max(Pmax*(-1), P_ctrl);
-            elseif (P_ctrl>0) and (soc_model.SOC<SOC_max) then
-              P_batt = min(Pmax, P_ctrl);
+            if (PCtrl < 0) and (soc_model.SOC > SOC_min) then
+              P = max(Pmax*(-1), PCtrl);
+            elseif (PCtrl > 0) and (soc_model.SOC < SOC_max) then
+              P = min(Pmax, PCtrl);
             else
-              P_batt = 0;
+              P = 0;
             end if;
           end if;
-          p_batt_eff = if (P_batt > 0) then P_batt*etaCha else P_batt*(1/etaDis);
+          PEff =if (P > 0) then P*etaCha else P*(1/etaDis);
 
           connect(soc_model.SOC, SOC) annotation (Line(
               points={{41,80},{110,80}},
@@ -4172,8 +4172,321 @@ at the terminal differs from the nominal voltage.
           connect(power_calc.y, soc_model.P)
             annotation (Line(points={{1,80},{18,80}}, color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-                coordinateSystem(preserveAspectRatio=false)));
+                coordinateSystem(preserveAspectRatio=false)),
+            experiment(StopTime=86400));
         end Battery;
+
+        model BatterySOH
+
+
+          parameter Real EMaxNom(min=0) = 6400
+            "Battery Capacity [Wh]";
+          parameter Real Pmax(min=0) = 3300
+            "Battery Power [W]";
+          parameter Real SOC_start(min=0, max=1, unit="1") = 0.1
+            "Initial SOC value";
+          parameter Real SOC_min(min=0, max=1, unit="1") = 0.1
+            "Minimum SOC value";
+          parameter Real SOC_max(min=0, max=1, unit="1") = 1
+            "Maximum SOC value";
+          parameter Real etaCha(min=0, max=1, unit="1") = 0.96
+            "Charging efficiency";
+          parameter Real etaDis(min=0, max=1, unit="1") = 0.96
+            "Discharging efficiency";
+
+          Modelica.SIunits.Energy EMax "Remaining max battery capacity considering SOH";
+         Modelica.Blocks.Interfaces.RealInput PCtrl(unit="W")
+            "Power control to charge (positive) discharge (negativ) the battery"
+            annotation (Placement(transformation(
+                extent={{-20,-20},{20,20}},
+                rotation=0,
+                origin={-120,0}), iconTransformation(
+                extent={{-20,-20},{20,20}},
+                rotation=0,
+                origin={-120,0})));
+          Modelica.Blocks.Interfaces.RealOutput SOC "State of Charge [-]"
+            annotation (Placement(transformation(extent={{100,70},{120,90}})));
+          Modelica.Blocks.Interfaces.RealOutput PInt
+            "Internal battery power getting stored in the battery (after losses) and beeing provided by the battery (before losses) [W]"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealOutput SOE "State of Energy [Wh]"
+            annotation (Placement(transformation(extent={{100,40},{120,60}})));
+          Modelica.Blocks.Sources.RealExpression soe_calc(y=soc_model.SOC*EMax)
+            annotation (Placement(transformation(extent={{20,40},{40,60}})));
+          Modelica.Blocks.Sources.RealExpression power_calc(y=PExt)
+            annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
+          Modelica.Blocks.Interfaces.RealInput SOH "State of Health [-]"
+            annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+          Charge soc_model(
+            etaCha=etaCha,
+            etaDis=etaDis,
+            SOC_start=SOC_start)
+            annotation (Placement(transformation(extent={{20,70},{40,90}})));
+          Modelica.Blocks.Sources.Constant Wh_to_Ws(k=3600*EMaxNom)
+            annotation (Placement(transformation(extent={{-100,62},{-80,82}})));
+          Modelica.Blocks.Math.Product Product
+            annotation (Placement(transformation(extent={{-68,44},{-48,64}})));
+
+          Modelica.Blocks.Interfaces.RealOutput PExt
+            "Charging power (before losses) and discharging power (after losses) measured outside (external) of battery [W]"
+            annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
+          Modelica.Blocks.Interfaces.RealOutput P "Actual power (before losses) [W]"
+            annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
+        equation
+          if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
+            if (PInt < 0) then
+              PInt =max(Pmax*(-1), PCtrl);
+            else
+              PInt =min(Pmax, PCtrl);
+            end if;
+          else
+            if (PCtrl < 0) and (soc_model.SOC > SOC_min) then
+              PInt =max(Pmax*(-1), PCtrl);
+            elseif (PCtrl > 0) and (soc_model.SOC < SOC_max) then
+              PInt =min(Pmax, PCtrl);
+            else
+              PInt = 0;
+            end if;
+          end if;
+          PExt = if (PInt > 0) then PInt*etaCha else PInt*(1/etaDis);
+          EMax = EMaxNom * 3600 * SOH "Adapt EMax by SOH";
+          P = max(abs(PExt), abs(PInt)) "Power flow inside the battery (before losses are applied) [W]";
+
+          connect(soe_calc.y, SOE)
+            annotation (Line(points={{41,50},{110,50}}, color={0,0,127}));
+          connect(power_calc.y, soc_model.P)
+            annotation (Line(points={{-1,80},{18,80}},color={0,0,127}));
+          connect(soc_model.SOC, SOC) annotation (Line(points={{41,80},{110,80}},
+                             color={0,0,127}));
+          connect(SOH, Product.u2) annotation (Line(points={{-120,40},{-94,40},{-94,48},
+                  {-70,48}}, color={0,0,127}));
+          connect(Wh_to_Ws.y, Product.u1) annotation (Line(points={{-79,72},{-76,
+                  72},{-76,60},{-70,60}}, color={0,0,127}));
+          connect(Product.y, soc_model.EMax) annotation (Line(points={{-47,54},{-30,54},
+                  {-30,90},{4,90},{4,84},{18,84}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+                coordinateSystem(preserveAspectRatio=false)),Documentation(
+                info="<html> <p>Battery model with SOH input to simulate batteries with changing battery capacities. The control signal goes into the battery and depending on SOC and maximum charging capability, the battery gets charged or discharged and outputs the updated SOC and the actual power of the battery.</p> </html>"));
+        end BatterySOH;
+
+        model BatteryRC
+          parameter Modelica.SIunits.HeatCapacity C_battery=7e6;
+          parameter Modelica.SIunits.ThermalResistance R_battery=0.004;
+          Modelica.Blocks.Interfaces.RealInput TOutC "Outside temperature [°C]"
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Interfaces.RealInput PBatt "Power going into or coming from the battery [W]"
+            annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+          Modelica.Blocks.Math.Abs abs1
+            annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+          Modelica.Blocks.Interfaces.RealOutput TBattC "Battery temperature [°C]"
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
+                C_battery)
+            annotation (Placement(transformation(extent={{6,0},{26,20}})));
+          Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
+            prescribedTemperature
+            annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+          Modelica.Thermal.HeatTransfer.Celsius.TemperatureSensor temperatureSensor
+            annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+          Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow
+            annotation (Placement(transformation(extent={{-40,-50},{-20,-30}})));
+          Modelica.Thermal.HeatTransfer.Components.ThermalResistor  thermalResistor(R=
+                R_battery)
+            annotation (Placement(transformation(extent={{-20,-10},{-40,10}})));
+        equation
+          connect(abs1.u, PBatt) annotation (Line(points={{-82,-40},{-120,-40}},
+                                    color={0,0,127}));
+          connect(prescribedTemperature.T, TOutC)
+            annotation (Line(points={{-82,0},{-120,0}}, color={0,0,127}));
+          connect(heatCapacitor.port, temperatureSensor.port)
+            annotation (Line(points={{16,0},{40,0}}, color={191,0,0}));
+          connect(temperatureSensor.T, TBattC)
+            annotation (Line(points={{60,0},{110,0}}, color={0,0,127}));
+          connect(abs1.y, prescribedHeatFlow.Q_flow)
+            annotation (Line(points={{-59,-40},{-40,-40}}, color={0,0,127}));
+          connect(prescribedHeatFlow.port, heatCapacitor.port)
+            annotation (Line(points={{-20,-40},{16,-40},{16,0}}, color={191,0,0}));
+          connect(prescribedTemperature.port, thermalResistor.port_b)
+            annotation (Line(points={{-60,0},{-40,0}}, color={191,0,0}));
+          connect(thermalResistor.port_a, heatCapacitor.port)
+            annotation (Line(points={{-20,0},{16,0}}, color={191,0,0}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+                coordinateSystem(preserveAspectRatio=false)),
+                Documentation(info="<html> <p>RC model of a battery. It can be used to simulate the temperature of a battery based on power and R&C parameters.</p> </html>"));
+        end BatteryRC;
+
+        model Charge "Model to compute the battery charge"
+          extends Modelica.Blocks.Icons.Block;
+          parameter Modelica.SIunits.Efficiency etaCha(max=1) = 0.9
+            "Efficiency during charging";
+          parameter Modelica.SIunits.Efficiency etaDis(max=1) = 0.9
+            "Efficiency during discharging";
+          parameter Real SOC_start(min=0, max=1, unit="1")=0.1
+            "Initial state of charge";
+
+          Modelica.SIunits.Power PAct "Actual power";
+          Modelica.Blocks.Interfaces.RealInput P(final quantity="Power",
+                                                 final unit="W") annotation (Placement(transformation(
+                  extent={{-140,-20},{-100,20}}),iconTransformation(extent={{-140,-20},{
+                    -100,20}})));
+          Modelica.Blocks.Interfaces.RealOutput SOC(min=0, max=1, unit=[1]) "State of charge [1]" annotation (Placement(transformation(
+                  extent={{100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,
+                    10}})));
+          Modelica.Blocks.Interfaces.RealInput EMax "Battery capacity at the timestep [Wh]"
+            annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+        protected
+          Boolean underCharged "Flag, true if battery is undercharged";
+          Boolean overCharged "Flag, true if battery is overcharged";
+        initial equation
+          pre(underCharged) = SOC_start < 0;
+          pre(overCharged)  = SOC_start > 1;
+
+          SOC = SOC_start;
+        equation
+          // Charge balance of battery
+          PAct = if P > 0 then etaCha*P else (2-etaDis)*P;
+          der(SOC)=PAct/(EMax+1e-6);
+
+          // Equations to warn if state of charge exceeds 0 and 1
+          underCharged = SOC < 0;
+          overCharged = SOC > 1;
+          when change(underCharged) or change(overCharged) then
+            assert(SOC >= 0, "Warning: Battery is below minimum charge.",
+            level=AssertionLevel.warning);
+            assert(SOC <= 1, "Warning: Battery is above maximum charge.",
+            level=AssertionLevel.warning);
+          end when;
+
+          annotation ( Documentation(info="<html>
+<p>
+This model represents the charge/discharge mechanism of a battery.
+</p>
+<p>
+This model two parameters <i>&eta;<sub>CHA</sub></i> and <i>&eta;<sub>DIS</sub></i> that represent
+the efficiency during the charge and discharge of the battery.
+</p>
+<p>
+The model given the power <i>P</i> that should be provide or taken from the battery
+and compute the actual power flowing through the battery as
+</p>
+
+<table summary=\"equations\" border = \"1\" cellspacing=\"0\" cellpadding=\"2\" style=\"border-collapse:collape;\">
+<tr><th>Equation</th><th>Condition</th></tr>
+<tr>
+<td>P<sub>actual</sub> = P &eta;<sub>CHA</sub></td>
+<td>P &ge; 0</td>
+</tr>
+<tr>
+<td>P<sub>actual</sub> = P (2 - &eta;<sub>DIS</sub>)</td>
+<td>P &lt; 0</td>
+</tr>
+</table>
+
+<p>
+Additionally the model has an EMax input, representing the maximum capacity of the battery. This value is set as a variable input, so it has the flexibility to e.g. be combined with battery degradation models.
+<p>
+
+
+<p>
+The actual power is then used to compute the variation of the state of charge <code>SOC</code>.
+The state of charge is the state variable of this model and is a real value between 0 and 1.
+</p>
+
+<p align=\"center\" style=\"font-style:italic;\">
+ d SOC / dt = P<sub>actual</sub>
+</p>
+
+<p>
+<b>Note:</b>The input power <i>P</i> has to be controlled in order
+to avoid the state of charge <code>SOC</code>
+exceeding the range between 0 and 1.
+</p>
+
+</html>",         revisions="<html>
+<ul>
+<li>
+March 5, 2020, by Joscha Mueller:<br/>
+Revised documentation.
+</li>
+</ul>
+</html>"));
+        end Charge;
+
+        model BatteryDegradation
+          //parameter Real a=8.61e-6 "default Wang fitted";
+          //parameter Real b=-5.13e-3 "default Wang fitted";
+          //parameter Real c=7.63e-1 "default Wang fitted";
+          parameter Real a=8.860644141827217e-06;
+          parameter Real b=-0.005297550909189135;
+          parameter Real c=0.7922675255918518;
+          parameter Real d=-6.7e-3;
+          parameter Real e=2.35;
+          parameter Real f=14876;
+          parameter Real R=8.314;
+          parameter Real Ea=24.5e3;
+          parameter Real V( unit="V") = 380;
+          parameter Real Pmax( unit="W") = 3300;
+          parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
+
+          parameter Real startTime = 0;
+          parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]";
+          parameter Real batAgeInit = 0 "Initial age of battery in seconds";
+          parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started";
+          parameter Real AhStart = 0 "Ah throughput of battery before simulation started";
+
+          Modelica.Blocks.Interfaces.RealInput T_C
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Interfaces.RealOutput SOH
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput P
+            annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+
+          Real CapLossCyc "Capacity lost, because of charging cycles [%]";
+          Real CapLossCal "Capacity lost, because of degradation over time [%]";
+          Real T "[K]";
+          Real TAvg "[K]";
+          Real IRate "Time for the battery to be charged or discharged with full power [h-1]";
+          Real Ah "Ah throughput in [Ah]";
+          Real IRateAvg "Average I-Rate over battery lifetime";
+          Real batAge "Battery age [s]";
+          Real TInt "Integral of temperature since simulation start [K]";
+
+        initial equation
+            IRateAvg = (P/V)/(Capacity/V);
+            Ah = 0;
+            TAvg = TAvgInit;
+
+        equation
+          batAge = batAgeInit + time + 1e-6 "Total Battery age [s]";
+          T = T_C+273.15 "Temperature [K]";
+          der(TInt) = T "Integral of temperature over simulation time";
+          TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature)";
+          IRate = (P/V)/(Capacity/V) "I-rate of battery [h-1]";
+
+          if time <= startTime then
+            der(IRateAvg) = IRateAvgInit;
+          else
+            der(IRateAvg*(time+1e-6)) = IRate;
+          end if;
+
+          der(Ah) = abs(P/V)/3600/2 "Divided by 2, because it will count charging and discharing as Ah throughput, so it would be doubled otherwise";
+          if (1 - CapLossCyc/100 - CapLossCal/100 <0) then
+                  SOH = 0;
+          elseif (1 - CapLossCyc/100 - CapLossCal/100 >1) then
+                  SOH = 1;
+          else
+                  SOH = 1 - CapLossCyc/100 - CapLossCal/100;
+          end if;
+
+
+         // SOH = 1 - CapLossCyc/100 - CapLossCal/100;
+          CapLossCal = f*sqrt(batAge/86400)*exp(-Ea/(R*TAvg)) "Capacity losses due to degradation by time [%]";
+          CapLossCyc =( a*(TAvg^2) + b*TAvg + c)*exp((d*TAvg + e)*IRateAvg)*Ah "Capacity losses due to battery cycling [%]";
+
+
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+                coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html> <p>This model represents the degradation of a battery as a combination of calendar and cycle losses.</p> </html>"));
+        end BatteryDegradation;
       end Model;
 
       package Examples
@@ -4190,13 +4503,20 @@ at the terminal differs from the nominal voltage.
             amplitude=2500)
             annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
         equation
-          connect(BatteryPower.y, battery.P_ctrl)
+          connect(BatteryPower.y, battery.PCtrl)
             annotation (Line(points={{-39,0},{-12,0}}, color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
           experiment(StopTime=86400),
               Diagram(
                 coordinateSystem(preserveAspectRatio=false)));
         end Test_Battery;
+      annotation (preferredView="info", Documentation(info="<html>
+<p>
+This package contains examples for the use of models that can be found in
+<a href=\"modelica://SCooDER.Components.Battery.Model\">
+SCooDER.Components.Battery.Model</a>.
+</p>
+</html>"));
       end Examples;
     end Battery;
 
@@ -4873,12 +5193,12 @@ changed to parameters.
                   {58,20}}, color={0,0,127}));
           connect(Q, VoltVarWatt.Qctrl) annotation (Line(points={{110,-10},{-40,-10},{-40,
                   -5},{-49,-5}}, color={0,0,127}));
-          connect(P_battery_control.y, battery.P_ctrl)
+          connect(P_battery_control.y, battery.PCtrl)
             annotation (Line(points={{4,-80},{38,-80}}, color={0,0,127}));
           connect(battery.SOE, SOE) annotation (Line(points={{61,-75},{80.5,-75},{80.5,-70},
                   {110,-70}}, color={0,0,127}));
-          connect(battery.P_batt, P_batt) annotation (Line(points={{61,-80},{80,-80},{80,
-                  -90},{110,-90}}, color={0,0,127}));
+          connect(battery.P, P_batt) annotation (Line(points={{61,-80},{80,-80},
+                  {80,-90},{110,-90}}, color={0,0,127}));
           annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
                 coordinateSystem(preserveAspectRatio=false)));
         end Pv_Inv_VoltVarWatt_simple_Slim_uStoarge;
@@ -6240,6 +6560,298 @@ Added model and documentation.
 
       end Exmaples;
     end Conversion;
+
+    package ElectricVehicle
+      model EV
+        parameter Real CapNom(min=0) = 24000 "Battery capacity at start of life [Wh]";
+        parameter Real PMax(min=0, unit="W") = 60000  "Max battery power [W]";
+        parameter Real SOC_start(min=0, max=1, unit="1") = 0.1
+          "Initial SOC value";
+        parameter Real SOC_min(min=0, max=1, unit="1") = 0.1
+          "Minimum SOC value";
+        parameter Real SOC_max(min=0, max=1, unit="1") = 1
+          "Maximum SOC value";
+        parameter Real etaCha(min=0, max=1, unit="1") = 0.96
+          "Charging efficiency";
+        parameter Real etaDis(min=0, max=1, unit="1") = 0.96
+          "Discharging efficiency";
+
+        parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery [J/K]"
+      annotation (Dialog(group="RC parameters"));
+        parameter Modelica.SIunits.ThermalResistance RPlug=0.004 "R parameter for battery while stationary [K/W]"
+      annotation (Dialog(group="RC parameters"));
+
+        parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving [K/W]"
+      annotation (Dialog(group="RC parameters"));
+
+        parameter Real a=8.860644141827217e-06
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real b=-0.005297550909189135
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real c=0.7922675255918518
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real d=-6.7e-3
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real e=2.35
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real f=14876
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real R=8.314
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real Ea=24.5e3
+        annotation (Dialog(group="Battery degradation parameters"));
+        parameter Real V( unit="V") = 380;
+        parameter Real Pmax( unit="W") = 3300;
+        parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
+
+        parameter Real startTime = 0;
+        parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]"
+        annotation (Dialog(group="Battery initialization parameters"));
+        parameter Real batAgeInit = 0 "Initial age of battery [s]"
+        annotation (Dialog(group="Battery initialization parameters"));
+        parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started"
+        annotation (Dialog(group="Battery initialization parameters"));
+        parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
+        annotation (Dialog(group="Battery initialization parameters"));
+
+        SCooDER.Components.Battery.Model.BatterySOH battery(
+          PInt(start=0),
+          EMaxNom=CapNom,
+          Pmax=PMax,
+          SOC_start=SOC_start,
+          SOC_min=SOC_min,
+          SOC_max=SOC_max,
+          etaCha=etaCha,
+          etaDis=etaDis)
+          annotation (Placement(transformation(extent={{-46,30},{-26,50}})));
+        Modelica.Blocks.Interfaces.RealInput T_C "Outside temperature [°C]"
+          annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+        Modelica.Blocks.Interfaces.RealInput PPlugCtrl
+          "Battery control signal [W]"
+          annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+        Modelica.Blocks.Interfaces.RealOutput TBatt "Battery temperature [°C]"
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealOutput SOE "Energy stored in battery [Wh]"
+          annotation (Placement(transformation(extent={{100,30},{120,50}})));
+        Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
+          annotation (Placement(transformation(extent={{100,70},{120,90}})));
+        Battery.Model.BatteryDegradation battery_degradation(
+          a=a,
+          b=b,
+          c=c,
+          d=d,
+          e=e,
+          f=f,
+          R=R,
+          Ea=Ea,
+          Pmax=PMax,
+          Capacity=CapNom,
+          TAvgInit=TAvgInit,
+          batAgeInit=batAgeInit,
+          IRateAvgInit=IRateAvgInit,
+          AhStart=AhStart)
+          annotation (Placement(transformation(extent={{58,-22},{78,-2}})));
+        Modelica.Blocks.Interfaces.BooleanInput PluggedIn "Boolean parameter for connection of EV to grid"
+          annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+        Modelica.Blocks.Interfaces.RealInput PDriveCtrl "Control signal of EV for driving [W]"
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        Modelica.Blocks.Logical.Switch switch1
+          annotation (Placement(transformation(extent={{-80,30},{-60,50}})));
+        Modelica.Blocks.Interfaces.RealOutput PPlug "Actual power through EV plug [W]"
+          annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
+        Modelica.Blocks.Interfaces.RealOutput PDrive "Actual power of EV while driving [W]"
+          annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
+
+        BatteryRCFlex batteryRCFlex(C_battery=CBatt)
+          annotation (Placement(transformation(extent={{14,-14},{34,6}})));
+        Modelica.Blocks.Sources.RealExpression RValue(y=if PluggedIn then RPlug else
+              RDrive) annotation (Placement(transformation(extent={{-18,-4},{2,16}})));
+        Modelica.Blocks.Sources.RealExpression PPlug_value(y=if PluggedIn then
+              battery.PExt else 0)
+          annotation (Placement(transformation(extent={{68,-50},{88,-30}})));
+        Modelica.Blocks.Sources.RealExpression PDrive_value(y=if PluggedIn then 0
+               else battery.PExt)
+          annotation (Placement(transformation(extent={{68,-90},{88,-70}})));
+      equation
+        connect(battery.SOE, SOE)
+          annotation (Line(points={{-25,45},{94,45},{94,40},{110,40}},
+                                                                   color={0,0,127}));
+        connect(battery.SOC, SOC)
+          annotation (Line(points={{-25,48},{94,48},{94,80},{110,80}},
+                                                                 color={0,0,127}));
+        connect(switch1.u1, PPlugCtrl) annotation (Line(points={{-82,48},{-92,
+                48},{-92,80},{-120,80}}, color={0,0,127}));
+        connect(PDriveCtrl, switch1.u3) annotation (Line(points={{-120,0},{-94,0},{-94,
+                32},{-82,32}},     color={0,0,127}));
+        connect(switch1.y, battery.PCtrl)
+          annotation (Line(points={{-59,40},{-48,40}}, color={0,0,127}));
+        connect(battery_degradation.SOH, battery.SOH) annotation (Line(points={{79,-12},
+                {84,-12},{84,54},{-56,54},{-56,44},{-48,44}}, color={0,0,127}));
+        connect(PluggedIn, switch1.u2)
+          annotation (Line(points={{-120,40},{-82,40}}, color={255,0,255}));
+        connect(batteryRCFlex.TBattC, battery_degradation.T_C) annotation (Line(
+              points={{35,-4},{50,-4},{50,-12},{56,-12}},   color={0,0,127}));
+        connect(T_C, batteryRCFlex.TOutC) annotation (Line(points={{-120,-40},{-86,-40},
+                {-86,-4},{12,-4}},  color={0,0,127}));
+        connect(batteryRCFlex.TBattC, TBatt) annotation (Line(points={{35,-4},{
+                50,-4},{50,0},{110,0}}, color={0,0,127}));
+        connect(PPlug_value.y, PPlug)
+          annotation (Line(points={{89,-40},{110,-40}}, color={0,0,127}));
+        connect(PDrive_value.y, PDrive)
+          annotation (Line(points={{89,-80},{110,-80}}, color={0,0,127}));
+        connect(batteryRCFlex.R, RValue.y)
+          annotation (Line(points={{12,0},{8,0},{8,6},{3,6}}, color={0,0,127}));
+        connect(battery.P, batteryRCFlex.PBatt) annotation (Line(points={{-25,32},{-20,
+                32},{-20,-8},{12,-8}}, color={0,0,127}));
+        connect(battery_degradation.P, battery.P) annotation (Line(points={{56,-16},{-20,
+                -16},{-20,32},{-25,32}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)),
+          experiment(StopTime=86400), Documentation(info="<html>
+    <p>Simplified EV model. This model simulated the battery behavior of an EV based on control signals while driving or charging/discharging when connected to the grid. It considers temperature and utilization of the battery to calculate battery degradation. The state of health of the battery is then again used to update the capacity of the EV's battery during the simulation.
+    
+    </p> </html>"));
+      end EV;
+
+      model BatteryRCFlex
+        parameter Modelica.SIunits.HeatCapacity C_battery=7e6;
+        Modelica.Blocks.Interfaces.RealInput TOutC "Outside temperature [°C]"
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        Modelica.Blocks.Interfaces.RealInput PBatt "Power going into or coming from the battery [W]"
+          annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+        Modelica.Blocks.Math.Abs abs1
+          annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+        Modelica.Blocks.Interfaces.RealOutput TBattC "Battery temperature [°C]"
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
+              C_battery)
+          annotation (Placement(transformation(extent={{6,0},{26,20}})));
+        Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
+          prescribedTemperature
+          annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+        Modelica.Thermal.HeatTransfer.Celsius.TemperatureSensor temperatureSensor
+          annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+        Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow
+          annotation (Placement(transformation(extent={{-40,-50},{-20,-30}})));
+        Modelica.Blocks.Interfaces.RealInput R
+          annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+        Modelica.Thermal.HeatTransfer.Components.ConvectiveResistor
+          convectiveResistor
+          annotation (Placement(transformation(extent={{-20,-10},{-40,10}})));
+      equation
+        connect(abs1.u, PBatt) annotation (Line(points={{-82,-40},{-120,-40}},
+                                  color={0,0,127}));
+        connect(prescribedTemperature.T, TOutC)
+          annotation (Line(points={{-82,0},{-120,0}}, color={0,0,127}));
+        connect(heatCapacitor.port, temperatureSensor.port)
+          annotation (Line(points={{16,0},{40,0}}, color={191,0,0}));
+        connect(temperatureSensor.T, TBattC)
+          annotation (Line(points={{60,0},{110,0}}, color={0,0,127}));
+        connect(abs1.y, prescribedHeatFlow.Q_flow)
+          annotation (Line(points={{-59,-40},{-40,-40}}, color={0,0,127}));
+        connect(prescribedHeatFlow.port, heatCapacitor.port)
+          annotation (Line(points={{-20,-40},{16,-40},{16,0}}, color={191,0,0}));
+        connect(convectiveResistor.solid, heatCapacitor.port)
+          annotation (Line(points={{-20,0},{16,0}}, color={191,0,0}));
+        connect(prescribedTemperature.port, convectiveResistor.fluid)
+          annotation (Line(points={{-60,0},{-40,0}}, color={191,0,0}));
+        connect(R, convectiveResistor.Rc) annotation (Line(points={{-120,40},{
+                -30,40},{-30,10}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)),
+              Documentation(info="<html> <p>RC model of a battery. It can be used to simulate the temperature of a battery based on power and R&C parameters.</p> </html>"));
+      end BatteryRCFlex;
+
+      package Examples
+        extends Modelica.Icons.ExamplesPackage;
+
+        model Test_EV_1_week
+          Modelica.Blocks.Sources.Sine TemperatureSine(
+            amplitude=20,
+            freqHz=1/86400,
+            offset=20)
+            annotation (Placement(transformation(extent={{-74,-56},{-54,-36}})));
+          SCooDER.Components.ElectricVehicle.EV eV(
+            SOC_start=0,
+            SOC_min=0,                             RDrive=0.008,
+            Pmax=60000,
+            Capacity=24000)
+            annotation (Placement(transformation(extent={{32,8},{52,28}})));
+          Modelica.Blocks.Sources.BooleanPulse PluggedInPulse(
+            width=90,
+            period=43200,
+            startTime=0)
+            annotation (Placement(transformation(extent={{-74,12},{-54,32}})));
+          Modelica.Blocks.Noise.NormalNoise DrivingPowerCtrl(
+            samplePeriod=60,
+            mu=-10000,
+            sigma=7500)
+            annotation (Placement(transformation(extent={{-74,-22},{-54,-2}})));
+          inner Modelica.Blocks.Noise.GlobalSeed globalSeed
+            annotation (Placement(transformation(extent={{38,62},{58,82}})));
+          Modelica.Blocks.Sources.Constant ChargingPowerCtrl(k=5000)
+            annotation (Placement(transformation(extent={{-74,46},{-54,66}})));
+        equation
+          connect(PluggedInPulse.y, eV.PluggedIn)
+            annotation (Line(points={{-53,22},{30,22}}, color={255,0,255}));
+          connect(TemperatureSine.y, eV.T_C) annotation (Line(points={{-53,-46},{-14,-46},
+                  {-14,14},{30,14}}, color={0,0,127}));
+          connect(DrivingPowerCtrl.y, eV.PDriveCtrl) annotation (Line(points={{-53,-12},
+                  {-20,-12},{-20,18},{30,18}}, color={0,0,127}));
+          connect(ChargingPowerCtrl.y, eV.PPlugCtrl) annotation (Line(points={{-53,56},{
+                  -20,56},{-20,26},{30,26}}, color={0,0,127}));
+          annotation (
+            Icon(coordinateSystem(preserveAspectRatio=false)),
+            Diagram(coordinateSystem(preserveAspectRatio=false)),
+            experiment(StopTime=604800),Documentation(info="<html><p>This is a model of an EV with degrading battery modeled for the first week of usage. Is is driven twice a day and plugged in for the rest of the time. The driving pattern is represented with random noise with the option of recharging the battery when braking.</p> </html>"));
+        end Test_EV_1_week;
+
+        model Test_EV_10_years
+          Modelica.Blocks.Sources.Sine TemperatureSine(
+            amplitude=20,
+            freqHz=1/86400,
+            offset=20)
+            annotation (Placement(transformation(extent={{-40,-58},{-20,-38}})));
+          SCooDER.Components.ElectricVehicle.EV eV(
+            SOC_start=0,
+            SOC_min=0,                             RDrive=0.008,
+            Pmax=60000,
+            Capacity=24000)
+            annotation (Placement(transformation(extent={{32,8},{52,28}})));
+          Modelica.Blocks.Sources.BooleanPulse PluggedInPulse(
+            width=95,
+            period=43200,
+            startTime=0)
+            annotation (Placement(transformation(extent={{-40,12},{-20,32}})));
+          Modelica.Blocks.Sources.Constant ChargingPowerCtrl(k=5000)
+            annotation (Placement(transformation(extent={{-40,46},{-20,66}})));
+          Modelica.Blocks.Sources.Constant DrivingPowerCtrl(k=-10000)
+            annotation (Placement(transformation(extent={{-40,-22},{-20,-2}})));
+        equation
+          connect(PluggedInPulse.y, eV.PluggedIn)
+            annotation (Line(points={{-19,22},{30,22}}, color={255,0,255}));
+          connect(TemperatureSine.y, eV.T_C) annotation (Line(points={{-19,-48},{20,-48},
+                  {20,14},{30,14}},  color={0,0,127}));
+          connect(ChargingPowerCtrl.y, eV.PPlugCtrl) annotation (Line(points={{-19,56},{
+                  14,56},{14,26},{30,26}},   color={0,0,127}));
+          connect(DrivingPowerCtrl.y, eV.PDriveCtrl) annotation (Line(points={{-19,-12},
+                  {0,-12},{0,18},{30,18}}, color={0,0,127}));
+          annotation (
+            Icon(coordinateSystem(preserveAspectRatio=false)),
+            Diagram(coordinateSystem(preserveAspectRatio=false)),
+            experiment(StopTime=315360000),
+                                        Documentation(info="<html> <p> This package contains examples of EV model applications </p> </html>"));
+        end Test_EV_10_years;
+
+      annotation (preferredView="info", Documentation(info="<html>
+<p>
+This package contains examples for the use of models that can be found in
+<a href=\"modelica://SCooDER.Components.ElectricVehicle\">
+SCooDER.Components.ElectricVehicle</a>.
+</p>
+</html>"));
+      end Examples;
+    end ElectricVehicle;
   end Components;
 
   package Systems
@@ -6356,12 +6968,12 @@ Added model and documentation.
       connect(inverter1.P_PV, pv1.P)
         annotation (Line(points={{4,56},{-20,56},{-43,56}},
                                                    color={0,0,127}));
-      connect(inverter3.P_Batt, battery3.P_batt) annotation (Line(points={{4,-33},{
-              -4,-33},{-4,-40},{-9,-40}}, color={0,0,127}));
-      connect(inverter2.P_Batt, battery2.P_batt)
-        annotation (Line(points={{4,7},{-4,7},{-4,0},{-9,0}}, color={0,0,127}));
-      connect(inverter1.P_Batt, battery1.P_batt) annotation (Line(points={{4,47},{
-              -4,47},{-4,40},{-9,40}}, color={0,0,127}));
+      connect(inverter3.P_Batt, battery3.P) annotation (Line(points={{4,-33},{-4,
+              -33},{-4,-40},{-9,-40}}, color={0,0,127}));
+      connect(inverter2.P_Batt, battery2.P) annotation (Line(points={{4,7},{-4,
+              7},{-4,0},{-9,0}}, color={0,0,127}));
+      connect(inverter1.P_Batt, battery1.P) annotation (Line(points={{4,47},{-4,
+              47},{-4,40},{-9,40}}, color={0,0,127}));
       connect(scale1, pv1.scale)
         annotation (Line(points={{-110,40},{-66,40},{-66,52}}, color={0,0,127}));
       connect(scale2, pv2.scale) annotation (Line(points={{-110,26},{-92,26},{-92,
@@ -6395,12 +7007,13 @@ Added model and documentation.
         annotation (Line(points={{90,60},{90,50}}, color={0,120,120}));
       connect(FL_feed.terminal_n, terminal_p) annotation (Line(points={{90,80},{90,
               80},{90,90},{110,90}}, color={0,120,120}));
-      connect(inverter3.batt_ctrl_inv, battery3.P_ctrl) annotation (Line(points={{5,
-              -38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,0,127}));
-      connect(inverter2.batt_ctrl_inv, battery2.P_ctrl) annotation (Line(points={{5,
-              2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
-      connect(inverter1.batt_ctrl_inv, battery1.P_ctrl) annotation (Line(points={{5,
-              42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
+      connect(inverter3.batt_ctrl_inv, battery3.PCtrl) annotation (Line(points=
+              {{5,-38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,
+              0,127}));
+      connect(inverter2.batt_ctrl_inv, battery2.PCtrl) annotation (Line(points=
+              {{5,2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
+      connect(inverter1.batt_ctrl_inv, battery1.PCtrl) annotation (Line(points=
+              {{5,42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
       connect(invCtrlBus3, inverter3.invCtrlBus) annotation (Line(
           points={{50,-100},{50,-100},{50,-54},{16,-54},{16,-40}},
           color={255,204,51},
@@ -7045,12 +7658,12 @@ Added model and documentation.
       connect(inverter1.P_PV, pv1.P)
         annotation (Line(points={{4,56},{-20,56},{-43,56}},
                                                    color={0,0,127}));
-      connect(inverter3.P_Batt, battery3.P_batt) annotation (Line(points={{4,-33},{
-              -4,-33},{-4,-40},{-9,-40}}, color={0,0,127}));
-      connect(inverter2.P_Batt, battery2.P_batt)
-        annotation (Line(points={{4,7},{-4,7},{-4,0},{-9,0}}, color={0,0,127}));
-      connect(inverter1.P_Batt, battery1.P_batt) annotation (Line(points={{4,47},{
-              -4,47},{-4,40},{-9,40}}, color={0,0,127}));
+      connect(inverter3.P_Batt, battery3.P) annotation (Line(points={{4,-33},{-4,
+              -33},{-4,-40},{-9,-40}}, color={0,0,127}));
+      connect(inverter2.P_Batt, battery2.P) annotation (Line(points={{4,7},{-4,
+              7},{-4,0},{-9,0}}, color={0,0,127}));
+      connect(inverter1.P_Batt, battery1.P) annotation (Line(points={{4,47},{-4,
+              47},{-4,40},{-9,40}}, color={0,0,127}));
       connect(scale1, pv1.scale)
         annotation (Line(points={{-110,40},{-66,40},{-66,52}}, color={0,0,127}));
       connect(scale2, pv2.scale) annotation (Line(points={{-110,26},{-92,26},{-92,
@@ -7084,12 +7697,13 @@ Added model and documentation.
         annotation (Line(points={{90,60},{90,50}}, color={0,120,120}));
       connect(FL_feed.terminal_n, terminal_p) annotation (Line(points={{90,80},{90,
               80},{90,90},{110,90}}, color={0,120,120}));
-      connect(inverter3.batt_ctrl_inv, battery3.P_ctrl) annotation (Line(points={{5,
-              -38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,0,127}));
-      connect(inverter2.batt_ctrl_inv, battery2.P_ctrl) annotation (Line(points={{5,
-              2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
-      connect(inverter1.batt_ctrl_inv, battery1.P_ctrl) annotation (Line(points={{5,
-              42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
+      connect(inverter3.batt_ctrl_inv, battery3.PCtrl) annotation (Line(points=
+              {{5,-38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,
+              0,127}));
+      connect(inverter2.batt_ctrl_inv, battery2.PCtrl) annotation (Line(points=
+              {{5,2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
+      connect(inverter1.batt_ctrl_inv, battery1.PCtrl) annotation (Line(points=
+              {{5,42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
       connect(inverter1.invCtrlBus, fLEXGRID_interface.invCtrlBus1) annotation (
           Line(
           points={{16,40},{14,40},{14,28},{32,28},{32,-60},{35,-60}},
@@ -8681,22 +9295,23 @@ Added model and documentation.
         annotation (Line(points={{60,10},{26,10}},     color={0,120,120}));
       connect(mpz_dist.inv_3, inverter3.term_p) annotation (Line(points={{60,4},{40,
               4},{40,-30},{26,-30}}, color={0,120,120}));
-      connect(inverter3.P_Batt, battery3.P_batt) annotation (Line(points={{4,-33},{
-              -4,-33},{-4,-40},{-9,-40}}, color={0,0,127}));
-      connect(inverter2.P_Batt, battery2.P_batt)
-        annotation (Line(points={{4,7},{-4,7},{-4,0},{-9,0}}, color={0,0,127}));
-      connect(inverter1.P_Batt, battery1.P_batt) annotation (Line(points={{4,47},{
-              -4,47},{-4,40},{-9,40}}, color={0,0,127}));
+      connect(inverter3.P_Batt, battery3.P) annotation (Line(points={{4,-33},{-4,
+              -33},{-4,-40},{-9,-40}}, color={0,0,127}));
+      connect(inverter2.P_Batt, battery2.P) annotation (Line(points={{4,7},{-4,
+              7},{-4,0},{-9,0}}, color={0,0,127}));
+      connect(inverter1.P_Batt, battery1.P) annotation (Line(points={{4,47},{-4,
+              47},{-4,40},{-9,40}}, color={0,0,127}));
       connect(FL_feed.terminal_p, sens_FLEXGRID.terminal_n)
         annotation (Line(points={{90,60},{90,50}}, color={0,120,120}));
       connect(FL_feed.terminal_n, terminal_p) annotation (Line(points={{90,80},{90,
               80},{90,90},{110,90}}, color={0,120,120}));
-      connect(inverter3.batt_ctrl_inv, battery3.P_ctrl) annotation (Line(points={{5,
-              -38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,0,127}));
-      connect(inverter2.batt_ctrl_inv, battery2.P_ctrl) annotation (Line(points={{5,
-              2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
-      connect(inverter1.batt_ctrl_inv, battery1.P_ctrl) annotation (Line(points={{5,
-              42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
+      connect(inverter3.batt_ctrl_inv, battery3.PCtrl) annotation (Line(points=
+              {{5,-38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,
+              0,127}));
+      connect(inverter2.batt_ctrl_inv, battery2.PCtrl) annotation (Line(points=
+              {{5,2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
+      connect(inverter1.batt_ctrl_inv, battery1.PCtrl) annotation (Line(points=
+              {{5,42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
       connect(invCtrlBus3, inverter3.invCtrlBus) annotation (Line(
           points={{50,-100},{50,-100},{50,-54},{16,-54},{16,-40}},
           color={255,204,51},
@@ -9053,12 +9668,12 @@ Added model and documentation.
       connect(inverter1.P_PV, pv1.P)
         annotation (Line(points={{4,56},{-20,56},{-43,56}},
                                                    color={0,0,127}));
-      connect(inverter3.P_Batt, battery3.P_batt) annotation (Line(points={{4,-33},{
-              -4,-33},{-4,-40},{-9,-40}}, color={0,0,127}));
-      connect(inverter2.P_Batt, battery2.P_batt)
-        annotation (Line(points={{4,7},{-4,7},{-4,0},{-9,0}}, color={0,0,127}));
-      connect(inverter1.P_Batt, battery1.P_batt) annotation (Line(points={{4,47},{
-              -4,47},{-4,40},{-9,40}}, color={0,0,127}));
+      connect(inverter3.P_Batt, battery3.P) annotation (Line(points={{4,-33},{-4,
+              -33},{-4,-40},{-9,-40}}, color={0,0,127}));
+      connect(inverter2.P_Batt, battery2.P) annotation (Line(points={{4,7},{-4,
+              7},{-4,0},{-9,0}}, color={0,0,127}));
+      connect(inverter1.P_Batt, battery1.P) annotation (Line(points={{4,47},{-4,
+              47},{-4,40},{-9,40}}, color={0,0,127}));
       connect(scale1, pv1.scale)
         annotation (Line(points={{-110,40},{-66,40},{-66,52}}, color={0,0,127}));
       connect(scale2, pv2.scale) annotation (Line(points={{-110,26},{-92,26},{-92,
@@ -9092,12 +9707,13 @@ Added model and documentation.
         annotation (Line(points={{90,60},{90,50}}, color={0,120,120}));
       connect(FL_feed.terminal_n, terminal_p) annotation (Line(points={{90,80},{90,
               80},{90,90},{110,90}}, color={0,120,120}));
-      connect(inverter3.batt_ctrl_inv, battery3.P_ctrl) annotation (Line(points={{5,
-              -38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,0,127}));
-      connect(inverter2.batt_ctrl_inv, battery2.P_ctrl) annotation (Line(points={{5,
-              2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
-      connect(inverter1.batt_ctrl_inv, battery1.P_ctrl) annotation (Line(points={{5,
-              42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
+      connect(inverter3.batt_ctrl_inv, battery3.PCtrl) annotation (Line(points=
+              {{5,-38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,
+              0,127}));
+      connect(inverter2.batt_ctrl_inv, battery2.PCtrl) annotation (Line(points=
+              {{5,2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
+      connect(inverter1.batt_ctrl_inv, battery1.PCtrl) annotation (Line(points=
+              {{5,42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
       connect(invCtrlBus3, inverter3.invCtrlBus) annotation (Line(
           points={{50,-100},{50,-100},{50,-54},{16,-54},{16,-40}},
           color={255,204,51},
@@ -10061,12 +10677,12 @@ Added model and documentation.
       connect(inverter1.P_PV, pv1.P)
         annotation (Line(points={{4,56},{-20,56},{-43,56}},
                                                    color={0,0,127}));
-      connect(inverter3.P_Batt, battery3.P_batt) annotation (Line(points={{4,-33},{
-              -4,-33},{-4,-40},{-9,-40}}, color={0,0,127}));
-      connect(inverter2.P_Batt, battery2.P_batt)
-        annotation (Line(points={{4,7},{-4,7},{-4,0},{-9,0}}, color={0,0,127}));
-      connect(inverter1.P_Batt, battery1.P_batt) annotation (Line(points={{4,47},{
-              -4,47},{-4,40},{-9,40}}, color={0,0,127}));
+      connect(inverter3.P_Batt, battery3.P) annotation (Line(points={{4,-33},{-4,
+              -33},{-4,-40},{-9,-40}}, color={0,0,127}));
+      connect(inverter2.P_Batt, battery2.P) annotation (Line(points={{4,7},{-4,
+              7},{-4,0},{-9,0}}, color={0,0,127}));
+      connect(inverter1.P_Batt, battery1.P) annotation (Line(points={{4,47},{-4,
+              47},{-4,40},{-9,40}}, color={0,0,127}));
       connect(scale1, pv1.scale)
         annotation (Line(points={{-110,40},{-66,40},{-66,52}}, color={0,0,127}));
       connect(scale2, pv2.scale) annotation (Line(points={{-110,26},{-92,26},{-92,
@@ -10100,12 +10716,13 @@ Added model and documentation.
         annotation (Line(points={{90,60},{90,50}}, color={0,120,120}));
       connect(FL_feed.terminal_n, terminal_p) annotation (Line(points={{90,80},{90,
               80},{90,90},{110,90}}, color={0,120,120}));
-      connect(inverter3.batt_ctrl_inv, battery3.P_ctrl) annotation (Line(points={{5,
-              -38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,0,127}));
-      connect(inverter2.batt_ctrl_inv, battery2.P_ctrl) annotation (Line(points={{5,
-              2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
-      connect(inverter1.batt_ctrl_inv, battery1.P_ctrl) annotation (Line(points={{5,
-              42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
+      connect(inverter3.batt_ctrl_inv, battery3.PCtrl) annotation (Line(points=
+              {{5,-38},{0,-38},{0,-54},{-40,-54},{-40,-40},{-32,-40}}, color={0,
+              0,127}));
+      connect(inverter2.batt_ctrl_inv, battery2.PCtrl) annotation (Line(points=
+              {{5,2},{0,2},{0,-14},{-40,-14},{-40,0},{-32,0}}, color={0,0,127}));
+      connect(inverter1.batt_ctrl_inv, battery1.PCtrl) annotation (Line(points=
+              {{5,42},{0,42},{0,26},{-40,26},{-40,40},{-32,40}}, color={0,0,127}));
       connect(invCtrlBus3, inverter3.invCtrlBus) annotation (Line(
           points={{50,-100},{50,-100},{50,-54},{16,-54},{16,-40}},
           color={255,204,51},
@@ -12881,16 +13498,17 @@ Q = P  tan(arccos(pf))
 
 annotation (
   uses(
- Modelica(version="3.2.2"),
-    Complex(version="3.2.2"),
     CyDER(version="1"),
-    Buildings(version="6.0.0"),
     SmartInverter(version="6"),
-    DymolaCommands(version="1.5")),
-  version="6",
+      Modelica(version="3.2.3"),
+      Complex(version="3.2.3"),
+      DymolaCommands(version="1.7"),
+      Buildings(version="7.0.0")),
+  version="8",
   conversion(noneFromVersion="", noneFromVersion="1",
     noneFromVersion="2",
     noneFromVersion="3",
     noneFromVersion="4",
-    noneFromVersion="5"));
+    noneFromVersion="5",
+      noneFromVersion="7"));
 end SCooDER;

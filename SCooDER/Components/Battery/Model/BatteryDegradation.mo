@@ -17,9 +17,9 @@ model BatteryDegradation
 
   parameter Real startTime = 0;
   parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]";
-  parameter Real batAgeInit = 0 "Initial age of battery in seconds";
-  parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started";
-  parameter Real AhStart = 0 "Ah throughput of battery before simulation started";
+  parameter Real batAgeInit = 0 "Initial age of battery [s]";
+  parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
+  parameter Real AhStart = 0 "Ah throughput of battery before simulation started [Ah]";
 
   Modelica.Blocks.Interfaces.RealInput T_C
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
@@ -34,7 +34,7 @@ model BatteryDegradation
   Real TAvg "[K]";
   Real IRate "Time for the battery to be charged or discharged with full power [h-1]";
   Real Ah "Ah throughput in [Ah]";
-  Real IRateAvg "Average I-Rate over battery lifetime";
+  Real IRateAvg "Average I-Rate over battery lifetime [h-1]";
   Real batAge "Battery age [s]";
   Real TInt "Integral of temperature since simulation start [K]";
 
@@ -47,7 +47,7 @@ equation
   batAge = batAgeInit + time + 1e-6 "Total Battery age [s]";
   T = T_C+273.15 "Temperature [K]";
   der(TInt) = T "Integral of temperature over simulation time";
-  TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature)";
+  TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature [K])";
   IRate = (P/V)/(Capacity/V) "I-rate of battery [h-1]";
 
   if time <= startTime then
@@ -57,15 +57,13 @@ equation
   end if;
 
   der(Ah) = abs(P/V)/3600/2 "Divided by 2, because it will count charging and discharing as Ah throughput, so it would be doubled otherwise";
-  if (1 - CapLossCyc/100 - CapLossCal/100 <0) then
-          SOH = 0;
+  if (1 - CapLossCyc/100 - CapLossCal/100 <1e-6) then
+          SOH = 1e-6;
   elseif (1 - CapLossCyc/100 - CapLossCal/100 >1) then
           SOH = 1;
   else
           SOH = 1 - CapLossCyc/100 - CapLossCal/100;
   end if;
-
- // SOH = 1 - CapLossCyc/100 - CapLossCal/100;
   CapLossCal = f*sqrt(batAge/86400)*exp(-Ea/(R*TAvg)) "Capacity losses due to degradation by time [%]";
   CapLossCyc =( a*(TAvg^2) + b*TAvg + c)*exp((d*TAvg + e)*IRateAvg)*Ah "Capacity losses due to battery cycling [%]";
 

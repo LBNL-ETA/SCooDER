@@ -13,12 +13,12 @@ model EV
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
 
-  parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery [J/K]"
+  parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
 annotation (Dialog(group="RC parameters"));
-  parameter Modelica.SIunits.ThermalResistance RPlug=0.004 "R parameter for battery while stationary [K/W]"
+  parameter Modelica.SIunits.ThermalResistance RPlug=0.004 "R parameter for battery while stationary"
 annotation (Dialog(group="RC parameters"));
 
-  parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving [K/W]"
+  parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving"
 annotation (Dialog(group="RC parameters"));
 
   parameter Real a=8.860644141827217e-06
@@ -37,8 +37,8 @@ annotation (Dialog(group="RC parameters"));
   annotation (Dialog(group="Battery degradation parameters"));
   parameter Real Ea=24.5e3
   annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real V( unit="V") = 380;
-  parameter Real Pmax( unit="W") = 3300;
+  parameter Real V( unit="V") = 380 "Nominal battery Voltage";
+  parameter Real Pmax( unit="W") = 3300 "Maximum battery power";
   parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
 
   parameter Real startTime = 0;

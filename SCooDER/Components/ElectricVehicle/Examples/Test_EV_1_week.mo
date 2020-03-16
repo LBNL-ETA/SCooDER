@@ -11,7 +11,8 @@ model Test_EV_1_week
     Pmax=60000,
     Capacity=24000)
     annotation (Placement(transformation(extent={{32,8},{52,28}})));
-  Modelica.Blocks.Sources.BooleanPulse PluggedInPulse(
+  Modelica.Blocks.Sources.Pulse        PluggedInPulse(
+    amplitude=1,
     width=90,
     period=43200,
     startTime=0)
@@ -26,14 +27,14 @@ model Test_EV_1_week
   Modelica.Blocks.Sources.Constant ChargingPowerCtrl(k=5000)
     annotation (Placement(transformation(extent={{-74,46},{-54,66}})));
 equation
-  connect(PluggedInPulse.y, eV.PluggedIn)
-    annotation (Line(points={{-53,22},{30,22}}, color={255,0,255}));
   connect(TemperatureSine.y, eV.T_C) annotation (Line(points={{-53,-46},{-14,-46},
           {-14,14},{30,14}}, color={0,0,127}));
   connect(DrivingPowerCtrl.y, eV.PDriveCtrl) annotation (Line(points={{-53,-12},
           {-20,-12},{-20,18},{30,18}}, color={0,0,127}));
   connect(ChargingPowerCtrl.y, eV.PPlugCtrl) annotation (Line(points={{-53,56},{
           -20,56},{-20,26},{30,26}}, color={0,0,127}));
+  connect(PluggedInPulse.y, eV.PluggedIn)
+    annotation (Line(points={{-53,22},{30,22}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false)),
     Diagram(coordinateSystem(preserveAspectRatio=false)),

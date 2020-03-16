@@ -47,7 +47,7 @@ equation
   batAge = batAgeInit + time + 1e-6 "Total Battery age [s]";
   T = T_C+273.15 "Temperature [K]";
   der(TInt) = T "Integral of temperature over simulation time";
-  TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature [K])";
+  TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature) [K]";
   IRate = (P/V)/(Capacity/V) "I-rate of battery [h-1]";
 
   if time <= startTime then

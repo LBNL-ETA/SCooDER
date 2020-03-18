@@ -1,6 +1,6 @@
 within SCooDER.Systems.ElectricVehicle;
 model FleetEVs
-  parameter Integer nin = 1;
+  parameter Integer nin = 1 "Amount of EVs on site";
 
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl[nin] "Control of individual EVs when plugged in [W]"
     annotation (Placement(transformation(extent={{-140,34},{-100,74}})));
@@ -31,7 +31,7 @@ equation
 
  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html>
-        <p>Fleet of EVs on one site. The inputs are the individual EV controls, a PV generation on site, the general load of the site, and the outside Temperature. The output is the load of the whole site. 
+        <p>Fleet of EVs on one site. The parameter sets the amount of EVs on site. The inputs are the individual EV controls, a PV generation on site, the general load of the site, and the outside Temperature. The output is the load of the whole site. 
     
     </p> </html>"));
 end FleetEVs;

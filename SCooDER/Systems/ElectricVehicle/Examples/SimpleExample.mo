@@ -1,7 +1,7 @@
 within SCooDER.Systems.ElectricVehicle.Examples;
 model SimpleExample
 
-  SCooDER.Systems.ElectricVehicle.FleetEVs fleetEVs(nin=2)
+  SCooDER.Systems.ElectricVehicle.FleetEVs fleetEVs(NumberEVs=2)
     annotation (Placement(transformation(extent={{-10,-4},{10,16}})));
   Modelica.Blocks.Sources.Constant TemperatureC(k=20)
     annotation (Placement(transformation(extent={{-60,44},{-40,64}})));

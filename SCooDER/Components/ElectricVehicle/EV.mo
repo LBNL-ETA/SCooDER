@@ -107,9 +107,9 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Sources.RealExpression PDrive_value(y=if Plugged_In.y then 0
          else battery.PExt)
     annotation (Placement(transformation(extent={{68,-90},{88,-70}})));
-  Modelica.Blocks.Interfaces.RealInput PluggedIn
+  Modelica.Blocks.Interfaces.RealInput PluggedIn "If this value is greater/equal to 1, then the car is plugged in. Otherwise, it is driving"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
-  Modelica.Blocks.Logical.GreaterEqualThreshold Plugged_In(threshold=1)
+  Modelica.Blocks.Logical.GreaterEqualThreshold Plugged_In(threshold=1) "Boolean if car is plugged in. If true, the car is plugged in."
     annotation (Placement(transformation(extent={{-94,30},{-74,50}})));
 equation
   connect(battery.SOE, SOE)

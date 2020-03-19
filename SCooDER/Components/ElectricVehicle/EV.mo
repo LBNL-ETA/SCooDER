@@ -40,7 +40,7 @@ annotation (Dialog(group="RC parameters"));
   annotation (Dialog(group="Battery degradation parameters"));
   parameter Real V( unit="V") = 380 "Nominal battery Voltage";
 
-  parameter Real startTime = 0;
+  parameter Real startTime = 0 "Set this value to the startTime set for the simulation. Otherwise, the averages will be calculated wrong. [s]";
   parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real batAgeInit = 0 "Initial age of battery [s]"

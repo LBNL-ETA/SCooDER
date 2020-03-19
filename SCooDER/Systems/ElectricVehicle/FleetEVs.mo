@@ -1,8 +1,8 @@
 within SCooDER.Systems.ElectricVehicle;
 model FleetEVs
   parameter Real NumberEVs = 2;
-  parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site"
-annotation(dialog(enable=false));
+  parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
+  parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages will be calculated wrong. [s]";
 
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start= 0, unit="W") "Control of individual EVs when plugged in [W]"
     annotation (Placement(transformation(extent={{-140,34},{-100,74}})));
@@ -31,7 +31,8 @@ equation
 
   PSite = sum(eV.PPlug)-PPv+PBase;
 
- annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+annotation(dialog(enable=false),
+             Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html>
         <p>Fleet of EVs on one site. The parameter sets the amount of EVs on site. The inputs are the individual EV controls, a PV generation on site, the general load of the site, and the outside Temperature. The output is the load of the whole site. 
     

@@ -15,7 +15,7 @@ model BatteryDegradation
   parameter Real Pmax( unit="W") = 3300;
   parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
 
-  parameter Real startTime = 0;
+  parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages are calculated wrong. [s]";
   parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]";
   parameter Real batAgeInit = 0 "Initial age of battery [s]";
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
@@ -44,7 +44,7 @@ initial equation
     TAvg = TAvgInit;
 
 equation
-  batAge = batAgeInit + time + 1e-6 "Total Battery age [s]";
+  batAge = batAgeInit + (time - startTime) + 1e-6 "Total Battery age [s]";
   T = T_C+273.15 "Temperature [K]";
   der(TInt) = T "Integral of temperature over simulation time";
   TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature) [K]";
@@ -53,7 +53,7 @@ equation
   if time <= startTime then
     der(IRateAvg) = IRateAvgInit;
   else
-    der(IRateAvg*(time+1e-6)) = IRate;
+    der(IRateAvg*(time - startTime +1e-6)) = IRate;
   end if;
 
   der(Ah) = abs(P/V)/3600/2 "Divided by 2, because it will count charging and discharing as Ah throughput, so it would be doubled otherwise";

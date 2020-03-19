@@ -12,7 +12,7 @@ model EV
     "Charging efficiency";
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
-    parameter Real TInit( min = -273.14) = 20  "Temperature of battery at simulation start [C]";
+    parameter Real TInit( min = -273.14) = 20  "Temperature of battery at simulation start [°C]";
 
   parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
 annotation (Dialog(group="RC parameters"));
@@ -41,7 +41,7 @@ annotation (Dialog(group="RC parameters"));
   parameter Real V( unit="V") = 380 "Nominal battery Voltage";
 
   parameter Real startTime = 0 "Set this value to the startTime set for the simulation. Otherwise, the averages will be calculated wrong. [s]";
-  parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]"
+  parameter Real TAvgInit = 20 "Average battery temperature before simulation started [°C]"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real batAgeInit = 0 "Initial age of battery [s]"
   annotation (Dialog(group="Battery initialization parameters"));
@@ -99,7 +99,7 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealOutput PDrive(unit="W") "Actual power of EV while driving [W]"
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
-  BatteryRCFlex batteryRCFlex(C_battery=CBatt, TStart=TInit)
+  BatteryRCFlex batteryRCFlex(C_battery=CBatt, TInit=TInit)
     annotation (Placement(transformation(extent={{32,-14},{52,6}})));
   Modelica.Blocks.Sources.RealExpression RValue(y=if Plugged_In.y then RPlug else
         RDrive) annotation (Placement(transformation(extent={{0,-4},{20,16}})));

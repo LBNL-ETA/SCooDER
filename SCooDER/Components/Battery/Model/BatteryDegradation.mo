@@ -11,17 +11,17 @@ model BatteryDegradation
   parameter Real f=14876;
   parameter Real R=8.314;
   parameter Real Ea=24.5e3;
-  parameter Real V( unit="V") = 380;
-  parameter Real Pmax( unit="W") = 3300;
+  parameter Real V( unit="V") = 380 "Nominal battery voltage";
+  parameter Real Pmax( unit="W") = 3300 "Maximum battery power";
   parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
 
   parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages are calculated wrong. [s]";
-  parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]";
+  parameter Real TAvgInit( min=0, unit="K") = 293.15  "Average battery temperature before simulation started";
   parameter Real batAgeInit = 0 "Initial age of battery [s]";
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started [Ah]";
 
-  Modelica.Blocks.Interfaces.RealInput T_C
+  Modelica.Blocks.Interfaces.RealInput T( start=293.15, unit="K") "Temperature outside [K]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput SOH
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
@@ -30,13 +30,13 @@ model BatteryDegradation
 
   Real CapLossCyc "Capacity lost, because of charging cycles [%]";
   Real CapLossCal "Capacity lost, because of degradation over time [%]";
-  Real T "[K]";
-  Real TAvg "[K]";
+
+  Real TAvg(min=0, unit="K") "Average temperature of battery over battery lifetime [K]";
   Real IRate "Time for the battery to be charged or discharged with full power [h-1]";
   Real Ah "Ah throughput in [Ah]";
   Real IRateAvg "Average I-Rate over battery lifetime [h-1]";
   Real batAge "Battery age [s]";
-  Real TInt "Integral of temperature since simulation start [K]";
+  Real TInt(min=0) "Integral of temperature since simulation start [K]";
 
 initial equation
     IRateAvg = (P/V)/(Capacity/V);
@@ -45,7 +45,6 @@ initial equation
 
 equation
   batAge = batAgeInit + (time - startTime) + 1e-6 "Total Battery age [s]";
-  T = T_C+273.15 "Temperature [K]";
   der(TInt) = T "Integral of temperature over simulation time";
   TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature) [K]";
   IRate = (P/V)/(Capacity/V) "I-rate of battery [h-1]";

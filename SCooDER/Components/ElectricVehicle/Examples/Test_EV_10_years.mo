@@ -3,7 +3,7 @@ model Test_EV_10_years
   Modelica.Blocks.Sources.Sine TemperatureSine(
     amplitude=20,
     freqHz=1/86400,
-    offset=20)
+    offset=293.15)
     annotation (Placement(transformation(extent={{-40,-58},{-20,-38}})));
   SCooDER.Components.ElectricVehicle.EV eV(
     SOC_start=0,
@@ -20,8 +20,8 @@ model Test_EV_10_years
     startTime=0)
     annotation (Placement(transformation(extent={{-40,12},{-20,32}})));
 equation
-  connect(TemperatureSine.y, eV.T_C) annotation (Line(points={{-19,-48},{20,-48},
-          {20,14},{30,14}},  color={0,0,127}));
+  connect(TemperatureSine.y, eV.TOut) annotation (Line(points={{-19,-48},{20,-48},
+          {20,14},{30,14}}, color={0,0,127}));
   connect(ChargingPowerCtrl.y, eV.PPlugCtrl) annotation (Line(points={{-19,56},{
           14,56},{14,26},{30,26}},   color={0,0,127}));
   connect(DrivingPowerCtrl.y, eV.PDriveCtrl) annotation (Line(points={{-19,-12},

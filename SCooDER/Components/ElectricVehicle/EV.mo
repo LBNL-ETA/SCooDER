@@ -1,10 +1,10 @@
-﻿within SCooDER.Components.ElectricVehicle;
+within SCooDER.Components.ElectricVehicle;
 model EV
   parameter Real CapNom(min=0) = 24000 "Battery capacity at start of life [Wh]";
-  parameter Real PMax(min=0, unit="W") = 60000  "Max battery power [W]";
+  parameter Real PMax(min=0, unit="W") = 60000  "Max battery power";
   parameter Real SOC_start(min=0, max=1, unit="1") = 0.1
     "Initial SOC value";
-  parameter Real SOC_min(min=0, max=1, unit="1") = 0.1
+  parameter Real SOC_min(min=0, max=1, unit="1") = 0
     "Minimum SOC value";
   parameter Real SOC_max(min=0, max=1, unit="1") = 1
     "Maximum SOC value";
@@ -12,7 +12,7 @@ model EV
     "Charging efficiency";
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
-    parameter Real TInit( min = -273.14) = 20  "Temperature of battery at simulation start [°C]";
+    parameter Real TInit( min = 0, unit="K") = 293.15  "Temperature of battery at simulation start";
 
   parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
 annotation (Dialog(group="RC parameters"));
@@ -41,7 +41,7 @@ annotation (Dialog(group="RC parameters"));
   parameter Real V( unit="V") = 380 "Nominal battery Voltage";
 
   parameter Real startTime = 0 "Set this value to the startTime set for the simulation. Otherwise, the averages will be calculated wrong. [s]";
-  parameter Real TAvgInit = 20 "Average battery temperature before simulation started [°C]"
+  parameter Real TAvgInit( min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real batAgeInit = 0 "Initial age of battery [s]"
   annotation (Dialog(group="Battery initialization parameters"));
@@ -60,13 +60,13 @@ annotation (Dialog(group="RC parameters"));
     etaCha=etaCha,
     etaDis=etaDis)
     annotation (Placement(transformation(extent={{-30,30},{-10,50}})));
-  Modelica.Blocks.Interfaces.RealInput T_C( start=20)
-                                                     "Outside temperature [°C]"
+  Modelica.Blocks.Interfaces.RealInput TOut(min=0, start=293.15, unit="K")
+    "Outside temperature"
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl( start=1, unit="W")
-    "Battery control signal [W]"
+    "Battery control signal "
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-  Modelica.Blocks.Interfaces.RealOutput TBatt( start=20) "Battery temperature [°C]"
+  Modelica.Blocks.Interfaces.RealOutput TBatt(min=0, start=293.15, unit="K") "Battery temperature"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Interfaces.RealOutput SOE( start=0) "Energy stored in battery [Wh]"
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
@@ -90,13 +90,16 @@ annotation (Dialog(group="RC parameters"));
     IRateAvgInit=IRateAvgInit,
     AhStart=AhStart)
     annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
-  Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W") "Control signal of EV for driving [W]"
+  Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W")
+    "Control signal of EV for driving"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{-62,30},{-42,50}})));
-  Modelica.Blocks.Interfaces.RealOutput PPlug(unit="W") "Actual power through EV plug [W]"
+  Modelica.Blocks.Interfaces.RealOutput PPlug(unit="W")
+    "Actual power through EV plug "
     annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
-  Modelica.Blocks.Interfaces.RealOutput PDrive(unit="W") "Actual power of EV while driving [W]"
+  Modelica.Blocks.Interfaces.RealOutput PDrive(unit="W")
+    "Actual power of EV while driving "
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
   BatteryRCFlex batteryRCFlex(C_battery=CBatt, TInit=TInit)
@@ -129,12 +132,10 @@ equation
     annotation (Line(points={{-41,40},{-32,40}}, color={0,0,127}));
   connect(battery_degradation.SOH, battery.SOH) annotation (Line(points={{87,-12},
           {90,-12},{90,52},{-38,52},{-38,44},{-32,44}}, color={0,0,127}));
-  connect(batteryRCFlex.TBattC, battery_degradation.T_C) annotation (Line(
-        points={{53,-4},{58,-4},{58,-12},{64,-12}},   color={0,0,127}));
-  connect(T_C, batteryRCFlex.TOutC) annotation (Line(points={{-120,-40},{-86,-40},
-          {-86,-4},{30,-4}},  color={0,0,127}));
-  connect(batteryRCFlex.TBattC, TBatt) annotation (Line(points={{53,-4},{58,-4},
-          {58,0},{110,0}},        color={0,0,127}));
+  connect(TOut, batteryRCFlex.TOut) annotation (Line(points={{-120,-40},{-86,-40},
+          {-86,-4},{30,-4}}, color={0,0,127}));
+  connect(batteryRCFlex.TBatt, TBatt) annotation (Line(points={{53,-4},{58,-4},{
+          58,0},{110,0}}, color={0,0,127}));
   connect(PPlug_value.y, PPlug)
     annotation (Line(points={{89,-40},{110,-40}}, color={0,0,127}));
   connect(PDrive_value.y, PDrive)
@@ -150,6 +151,8 @@ equation
     annotation (Line(points={{-73,40},{-64,40}}, color={255,0,255}));
   connect(Plugged_In.u, PluggedIn)
     annotation (Line(points={{-96,40},{-120,40}}, color={0,0,127}));
+  connect(batteryRCFlex.TBatt, battery_degradation.T) annotation (Line(points={{
+          53,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>

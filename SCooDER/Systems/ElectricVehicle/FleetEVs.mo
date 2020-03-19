@@ -1,6 +1,6 @@
 within SCooDER.Systems.ElectricVehicle;
 model FleetEVs
-  parameter Real NumberEVs = 2;
+  parameter Real NumberEVs = 14;
   parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
   parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages will be calculated wrong. [s]";
 
@@ -10,7 +10,8 @@ model FleetEVs
     annotation (Placement(transformation(extent={{-140,-2},{-100,38}})));
   Modelica.Blocks.Interfaces.RealInput PDriveCtrl[NumberEVsInt](each start= 0,unit="W")          "Control of individual EVs when driving [W]"
     annotation (Placement(transformation(extent={{-140,-38},{-100,2}})));
-  Modelica.Blocks.Interfaces.RealInput T_C( start=20) "Outside Temperature [C]"
+  Modelica.Blocks.Interfaces.RealInput T(start=293.15, min=0, unit="K")
+    "Outside Temperature [K]"
     annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
   Components.ElectricVehicle.EV eV[NumberEVsInt]
     annotation (Placement(transformation(extent={{-24,6},{-4,26}})));
@@ -26,7 +27,7 @@ equation
     PPlugCtrl[i] = eV[i].PPlugCtrl;
     PDriveCtrl[i] = eV[i].PDriveCtrl;
     PluggedIn[i] = eV[i].PluggedIn;
-    T_C = eV[i].T_C;
+    T = eV[i].TOut;
   end for;
 
   PSite = sum(eV.PPlug)-PPv+PBase;

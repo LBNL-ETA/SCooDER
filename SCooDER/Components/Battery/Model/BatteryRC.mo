@@ -2,6 +2,7 @@
 model BatteryRC
   parameter Modelica.SIunits.HeatCapacity C_battery=7e6;
   parameter Modelica.SIunits.ThermalResistance R_battery=0.004;
+  parameter Real TInit = 20 "Initial battery temperature [°C]";
   Modelica.Blocks.Interfaces.RealInput TOutC "Outside temperature [°C]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealInput PBatt "Power going into or coming from the battery [W]"
@@ -11,7 +12,7 @@ model BatteryRC
   Modelica.Blocks.Interfaces.RealOutput TBattC "Battery temperature [°C]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
-        C_battery)
+        C_battery, T(fixed=true, start=TInit))
     annotation (Placement(transformation(extent={{6,0},{26,20}})));
   Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
     prescribedTemperature

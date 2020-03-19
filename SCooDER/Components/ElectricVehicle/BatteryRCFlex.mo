@@ -11,7 +11,7 @@ model BatteryRCFlex
   Modelica.Blocks.Interfaces.RealOutput TBattC "Battery temperature [°C]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
-        C_battery, T(start=TInit))
+        C_battery, T(start=TInit, fixed=true))
     annotation (Placement(transformation(extent={{6,0},{26,20}})));
   Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature
     prescribedTemperature

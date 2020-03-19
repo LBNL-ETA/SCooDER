@@ -12,6 +12,7 @@ model EV
     "Charging efficiency";
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
+    parameter Real TInit( min = -273.14) = 20  "Temperature of battery at simulation start [C]";
 
   parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
 annotation (Dialog(group="RC parameters"));
@@ -38,8 +39,6 @@ annotation (Dialog(group="RC parameters"));
   parameter Real Ea=24.5e3
   annotation (Dialog(group="Battery degradation parameters"));
   parameter Real V( unit="V") = 380 "Nominal battery Voltage";
-  parameter Real Pmax( unit="W") = 3300 "Maximum battery power";
-  parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
 
   parameter Real startTime = 0;
   parameter Real TAvgInit = 20 "Average battery temperature before simulation started [C]"
@@ -61,16 +60,17 @@ annotation (Dialog(group="RC parameters"));
     etaCha=etaCha,
     etaDis=etaDis)
     annotation (Placement(transformation(extent={{-30,30},{-10,50}})));
-  Modelica.Blocks.Interfaces.RealInput T_C "Outside temperature [°C]"
+  Modelica.Blocks.Interfaces.RealInput T_C( start=20)
+                                                     "Outside temperature [°C]"
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-  Modelica.Blocks.Interfaces.RealInput PPlugCtrl
+  Modelica.Blocks.Interfaces.RealInput PPlugCtrl( start=1, unit="W")
     "Battery control signal [W]"
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-  Modelica.Blocks.Interfaces.RealOutput TBatt "Battery temperature [°C]"
+  Modelica.Blocks.Interfaces.RealOutput TBatt( start=20) "Battery temperature [°C]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Modelica.Blocks.Interfaces.RealOutput SOE "Energy stored in battery [Wh]"
+  Modelica.Blocks.Interfaces.RealOutput SOE( start=0) "Energy stored in battery [Wh]"
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
-  Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
+  Modelica.Blocks.Interfaces.RealOutput SOC( start=0) "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
   Battery.Model.BatteryDegradation battery_degradation(
     a=a,
@@ -81,14 +81,16 @@ annotation (Dialog(group="RC parameters"));
     f=f,
     R=R,
     Ea=Ea,
+    V=V,
     Pmax=PMax,
     Capacity=CapNom,
+    startTime=startTime,
     TAvgInit=TAvgInit,
     batAgeInit=batAgeInit,
     IRateAvgInit=IRateAvgInit,
     AhStart=AhStart)
     annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
-  Modelica.Blocks.Interfaces.RealInput PDriveCtrl(unit="W") "Control signal of EV for driving [W]"
+  Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W") "Control signal of EV for driving [W]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{-62,30},{-42,50}})));
@@ -97,7 +99,7 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealOutput PDrive(unit="W") "Actual power of EV while driving [W]"
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
-  BatteryRCFlex batteryRCFlex(C_battery=CBatt)
+  BatteryRCFlex batteryRCFlex(C_battery=CBatt, TStart=TInit)
     annotation (Placement(transformation(extent={{32,-14},{52,6}})));
   Modelica.Blocks.Sources.RealExpression RValue(y=if Plugged_In.y then RPlug else
         RDrive) annotation (Placement(transformation(extent={{0,-4},{20,16}})));
@@ -107,7 +109,8 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Sources.RealExpression PDrive_value(y=if Plugged_In.y then 0
          else battery.PExt)
     annotation (Placement(transformation(extent={{68,-90},{88,-70}})));
-  Modelica.Blocks.Interfaces.RealInput PluggedIn "If this value is greater/equal to 1, then the car is plugged in. Otherwise, it is driving"
+  Modelica.Blocks.Interfaces.RealInput PluggedIn( start=1)
+                                                          "If this value is greater/equal to 1, then the car is plugged in. Otherwise, it is driving"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
   Modelica.Blocks.Logical.GreaterEqualThreshold Plugged_In(threshold=1) "Boolean if car is plugged in. If true, the car is plugged in."
     annotation (Placement(transformation(extent={{-94,30},{-74,50}})));

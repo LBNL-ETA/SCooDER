@@ -7,9 +7,7 @@ model Test_EV_1_week
     annotation (Placement(transformation(extent={{-74,-56},{-54,-36}})));
   SCooDER.Components.ElectricVehicle.EV eV(
     SOC_start=0,
-    SOC_min=0,                             RDrive=0.008,
-    Pmax=60000,
-    Capacity=24000)
+    SOC_min=0,                             RDrive=0.008)
     annotation (Placement(transformation(extent={{32,8},{52,28}})));
   Modelica.Blocks.Sources.Pulse        PluggedInPulse(
     amplitude=1,

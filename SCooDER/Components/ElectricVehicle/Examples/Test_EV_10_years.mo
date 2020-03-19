@@ -7,9 +7,7 @@ model Test_EV_10_years
     annotation (Placement(transformation(extent={{-40,-58},{-20,-38}})));
   SCooDER.Components.ElectricVehicle.EV eV(
     SOC_start=0,
-    SOC_min=0,                             RDrive=0.008,
-    Pmax=60000,
-    Capacity=24000)
+    SOC_min=0,                             RDrive=0.008)
     annotation (Placement(transformation(extent={{32,8},{52,28}})));
   Modelica.Blocks.Sources.Constant ChargingPowerCtrl(k=5000)
     annotation (Placement(transformation(extent={{-40,46},{-20,66}})));

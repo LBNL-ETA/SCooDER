@@ -15,7 +15,7 @@ model BatteryDegradation
   parameter Real Pmax( unit="W") = 3300 "Maximum battery power";
   parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
 
-  parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages are calculated wrong. [s]";
+  parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
   parameter Real TAvgInit( min=0, unit="K") = 293.15  "Average battery temperature before simulation started";
   parameter Real batAgeInit = 0 "Initial age of battery [s]";
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
@@ -42,6 +42,7 @@ initial equation
     IRateAvg = (P/V)/(Capacity/V);
     Ah = 0;
     TAvg = TAvgInit;
+    startTime=time;
 
 equation
   batAge = batAgeInit + (time - startTime) + 1e-6 "Total Battery age [s]";

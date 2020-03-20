@@ -42,7 +42,7 @@ annotation (Dialog(group="RC parameters"));
   annotation (Dialog(group="Battery degradation parameters"));
   parameter Real V( unit="V") = 380 "Nominal battery Voltage";
 
-  parameter Real startTime = 0 "Set this value to the startTime set for the simulation. Otherwise, the averages will be calculated wrong. [s]";
+
   parameter Real TAvgInit( min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real batAgeInit( min=0) = 0 "Initial age of battery [s]"
@@ -50,7 +50,13 @@ annotation (Dialog(group="RC parameters"));
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
-  annotation (Dialog(group="Battery initialization parameters"));
+ annotation (Dialog(group="Battery initialization parameters"));
+
+
+  parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
+
+
+
 
   SCooDER.Components.Battery.Model.BatterySOH battery(
     PInt(start=0),
@@ -86,7 +92,6 @@ annotation (Dialog(group="RC parameters"));
     V=V,
     Pmax=PMax,
     Capacity=CapNom,
-    startTime=startTime,
     TAvgInit=TAvgInit,
     batAgeInit=batAgeInit,
     IRateAvgInit=IRateAvgInit,
@@ -123,6 +128,9 @@ annotation (Dialog(group="RC parameters"));
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
   Modelica.Blocks.Logical.GreaterEqualThreshold Plugged_In(threshold=1) "Boolean if car is plugged in. If true, the car is plugged in."
     annotation (Placement(transformation(extent={{-94,30},{-74,50}})));
+
+initial equation
+  startTime=time;
 equation
   connect(battery.SOE, SOE)
     annotation (Line(points={{-7,47},{94,47},{94,40},{110,40}},

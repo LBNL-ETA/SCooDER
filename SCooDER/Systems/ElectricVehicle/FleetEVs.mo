@@ -2,7 +2,7 @@ within SCooDER.Systems.ElectricVehicle;
 model FleetEVs
   parameter Real NumberEVs = 14;
   parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
-  parameter Real startTime = 0 "Set this value to the startTime of the simulation. Otherwise, the averages will be calculated wrong. [s]";
+  parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start= 0, unit="W") "Control of individual EVs when plugged in "
     annotation (Placement(transformation(extent={{-140,34},{-100,74}})));
@@ -22,6 +22,8 @@ model FleetEVs
   Modelica.Blocks.Interfaces.RealInput PBase( start=0, unit="W") "Load of whole site at point of connection"
     annotation (Placement(transformation(extent={{-140,-110},{-100,-70}})));
 
+initial equation
+  startTime = time;
 equation
   for i in 1:NumberEVsInt loop
     PPlugCtrl[i] = eV[i].PPlugCtrl;

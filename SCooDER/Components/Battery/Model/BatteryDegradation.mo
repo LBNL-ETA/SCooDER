@@ -21,22 +21,22 @@ model BatteryDegradation
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started [Ah]";
 
-  Modelica.Blocks.Interfaces.RealInput T( start=293.15, unit="K") "Temperature outside [K]"
+  Modelica.Blocks.Interfaces.RealInput T( start=293.15,min=0, unit="K") "Temperature outside [K]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Modelica.Blocks.Interfaces.RealOutput SOH
+  Modelica.Blocks.Interfaces.RealOutput SOH "Battery state of health [-]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Modelica.Blocks.Interfaces.RealInput P
+  Modelica.Blocks.Interfaces.RealInput P( unit="W") "Internal battery power (before losses are applied)"
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
 
   Real CapLossCyc "Capacity lost, because of charging cycles [%]";
   Real CapLossCal "Capacity lost, because of degradation over time [%]";
 
-  Real TAvg(min=0, unit="K") "Average temperature of battery over battery lifetime [K]";
+  Real TAvg(min=0, start=293.15, unit="K") "Average temperature of battery over battery lifetime";
   Real IRate "Time for the battery to be charged or discharged with full power [h-1]";
   Real Ah "Ah throughput in [Ah]";
   Real IRateAvg "Average I-Rate over battery lifetime [h-1]";
   Real batAge "Battery age [s]";
-  Real TInt(min=0) "Integral of temperature since simulation start [K]";
+  Real TInt(min=0) "Integral of temperature since simulation start";
 
 initial equation
     IRateAvg = (P/V)/(Capacity/V);

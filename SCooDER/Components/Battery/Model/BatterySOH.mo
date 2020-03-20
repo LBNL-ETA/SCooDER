@@ -5,9 +5,9 @@ model BatterySOH
     "Battery Capacity [Wh]";
   parameter Real Pmax(min=0) = 3300
     "Battery Power [W]";
-  parameter Real SOC_start(min=0, max=1, unit="1") = 0.1
+  parameter Real SOC_start(min=0, max=1, unit="1") = 0
     "Initial SOC value";
-  parameter Real SOC_min(min=0, max=1, unit="1") = 0.1
+  parameter Real SOC_min(min=0, max=1, unit="1") = 0
     "Minimum SOC value";
   parameter Real SOC_max(min=0, max=1, unit="1") = 1
     "Maximum SOC value";

@@ -16,7 +16,7 @@ model Charge "Model to compute the battery charge"
   Modelica.Blocks.Interfaces.RealOutput SOC(min=0, max=1) "State of charge [1]" annotation (Placement(transformation(
           extent={{100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,
             10}})));
-  Modelica.Blocks.Interfaces.RealInput EMax( displayUnit = "KWh") "Battery capacity at the timestep [Wh]"
+  Modelica.Blocks.Interfaces.RealInput EMax( displayUnit = "Wh") "Remaining battery capacity [Wh]"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
 protected
   Boolean underCharged "Flag, true if battery is undercharged";

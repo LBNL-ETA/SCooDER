@@ -1,6 +1,6 @@
 within SCooDER.Components.ElectricVehicle;
 model BatteryRCFlex
-  parameter Modelica.SIunits.HeatCapacity C_battery=7e6;
+  parameter Modelica.SIunits.HeatCapacity C_battery=7e6 "Heat capacity of battery";
   parameter Real TInit( min=0, unit = "K") = 293.15 "Temperature at beginning of simulation";
   Modelica.Blocks.Interfaces.RealInput TOut( min=0, start = 293.15, unit = "K") "Outside temperature"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
@@ -8,7 +8,7 @@ model BatteryRCFlex
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
   Modelica.Blocks.Math.Abs abs1
     annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-  Modelica.Blocks.Interfaces.RealOutput TBatt( min=0, unit = "K") "Battery temperature"
+  Modelica.Blocks.Interfaces.RealOutput TBatt(unit = "K") "Battery temperature"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
         C_battery, T(start=TInit, fixed=true))
@@ -21,7 +21,7 @@ model BatteryRCFlex
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow(T_ref(
         displayUnit="K"))
     annotation (Placement(transformation(extent={{-40,-50},{-20,-30}})));
-  Modelica.Blocks.Interfaces.RealInput R
+  Modelica.Blocks.Interfaces.RealInput R( unit="K/W") "convective thermal resistance"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
   Modelica.Thermal.HeatTransfer.Components.ConvectiveResistor
     convectiveResistor

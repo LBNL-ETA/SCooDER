@@ -17,7 +17,7 @@ model Test_Pv_Inv_VoltVarWatt_simple_Slim_curtail
     duration=3600*2)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 equation
-  connect(ramp.y, VVW.v)
+  connect(ramp.y, VVW.Vpu)
     annotation (Line(points={{-39,0},{-12,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
     experiment(StartTime=0, StopTime=86400),

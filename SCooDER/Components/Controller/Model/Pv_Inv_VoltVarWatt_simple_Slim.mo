@@ -31,7 +31,7 @@ model Pv_Inv_VoltVarWatt_simple_Slim
       computeWetBulbTemperature=false, filNam=weather_file)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Q(start=0, unit="var")
     "Reactive power"
@@ -40,7 +40,7 @@ model Pv_Inv_VoltVarWatt_simple_Slim
     "Active power"
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
   Modelica.Blocks.Sources.RealExpression S_curtail_P(y=min(sqrt(SMax^2
-         - VoltVarWatt.Qctrl^2), PV.P))
+         -VoltVarWatt.QCtrl ^2), PV.P))
                   annotation (Placement(transformation(extent={{0,-10},
             {80,10}})));
   voltVarWatt_param VoltVarWatt(
@@ -56,13 +56,13 @@ equation
       points={{-60,70},{-40,70},{-40,54},{-10,54}},
       color={255,204,51},
       thickness=0.5));
-  connect(PV.scale, VoltVarWatt.Plim) annotation (Line(points={{-12,46},
+  connect(PV.scale,VoltVarWatt.PLim)  annotation (Line(points={{-12,46},
           {-20,46},{-20,5},{-29,5}}, color={0,0,127}));
-  connect(VoltVarWatt.v, v)
+  connect(VoltVarWatt.Vpu, Vpu)
     annotation (Line(points={{-52,0},{-120,0}}, color={0,0,127}));
   connect(P, S_curtail_P.y) annotation (Line(points={{110,50},{88,50},{
           88,0},{84,0}}, color={0,0,127}));
-  connect(VoltVarWatt.Qctrl, Q) annotation (Line(points={{-29,-5},{-20,
+  connect(VoltVarWatt.QCtrl, Q) annotation (Line(points={{-29,-5},{-20,
           -5},{-20,-50},{110,-50}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

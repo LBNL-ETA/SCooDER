@@ -38,7 +38,7 @@ model Pv_Inv_VoltVarWatt_simple
     QMaxInd=QMaxInd,
     QMaxCap=QMaxCap)
     annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Q(start=0, unit="var")
     "Reactive power"
@@ -51,13 +51,13 @@ equation
       points={{-60,70},{-40,70},{-40,54},{-10,54}},
       color={255,204,51},
       thickness=0.5));
-  connect(VoltVarWatt.v, v)
+  connect(VoltVarWatt.Vpu, Vpu)
     annotation (Line(points={{-52,0},{-120,0}}, color={0,0,127}));
-  connect(PV.scale, VoltVarWatt.Plim) annotation (Line(points={{-12,46},
+  connect(PV.scale,VoltVarWatt.PLim)  annotation (Line(points={{-12,46},
           {-20,46},{-20,5},{-29,5}}, color={0,0,127}));
   connect(PV.P, P)
     annotation (Line(points={{11,50},{110,50}}, color={0,0,127}));
-  connect(Q, VoltVarWatt.Qctrl) annotation (Line(points={{110,-50},{-20,
+  connect(Q,VoltVarWatt.QCtrl)  annotation (Line(points={{110,-50},{-20,
           -50},{-20,-5},{-29,-5}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

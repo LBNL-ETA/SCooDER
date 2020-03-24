@@ -60,8 +60,8 @@ equation
           60},{-2,60}}, color={0,0,127}));
   connect(load_VVW.Q, kvar_to_var.y) annotation (Line(points={{-2,54},{-10,54},{
           -10,40},{-19,40}}, color={0,0,127}));
-  connect(ref_VVW.V, VVW.v) annotation (Line(points={{17,23},{-90,23},{-90,60},{
-          -82,60}}, color={0,0,127}));
+  connect(ref_VVW.V, VVW.Vpu) annotation (Line(points={{17,23},{-90,23},{-90,60},
+          {-82,60}}, color={0,0,127}));
   connect(ref_VVW.term, load_VVW.terminal) annotation (Line(points={{29,30},{40,
           30},{40,60},{20,60}}, color={0,120,120}));
   connect(kW_to_W1.u, base.P) annotation (Line(points={{-42,-20},{-50,-20},{-50,
@@ -72,8 +72,8 @@ equation
           {-10,-40},{-2,-40}}, color={0,0,127}));
   connect(load_base.Q, kvar_to_var1.y) annotation (Line(points={{-2,-46},{-10,-46},
           {-10,-60},{-19,-60}}, color={0,0,127}));
-  connect(ref_base.V, base.v) annotation (Line(points={{17,-77},{-90,-77},{-90,-40},
-          {-82,-40}}, color={0,0,127}));
+  connect(ref_base.V, base.Vpu) annotation (Line(points={{17,-77},{-90,-77},{-90,
+          -40},{-82,-40}}, color={0,0,127}));
   connect(ref_base.term, load_base.terminal) annotation (Line(points={{29,-70},{
           40,-70},{40,-40},{20,-40}}, color={0,120,120}));
   connect(line_VVW.terminal_n, sens_VVW.terminal_p)

@@ -34,7 +34,7 @@ model generic_wye_voltvar
     computeWetBulbTemperature=false, filNam=weaName)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,70},{-60,90}})));
-  Interfaces.generic_interface_voltvar interface_voltvar(
+  FLEXGRID.Interfaces.generic_interface_voltvar interface_voltvar(
     V_nominal=V_nominal,
     v_max=v_max,
     v_maxdead=v_maxdead,

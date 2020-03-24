@@ -39,7 +39,7 @@ model Pv_Inv_VoltVarWatt_simple_Slim_uStoarge
       computeWetBulbTemperature=false, filNam=weather_file)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,74},{-60,94}})));
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Q(start=0, unit="var") "Reactive power"
     annotation (Placement(transformation(extent={{100,-20},{120,0}})));
@@ -69,15 +69,15 @@ model Pv_Inv_VoltVarWatt_simple_Slim_uStoarge
     annotation (Placement(transformation(extent={{-80,-90},{0,-70}})));
   Modelica.Blocks.Interfaces.RealOutput SOC(start=SOC_min, unit="1") "State of Charge"
     annotation (Placement(transformation(extent={{100,-60},{120,-40}})));
-  Modelica.Blocks.Interfaces.RealOutput P_batt(start=0, unit="W")
+  Modelica.Blocks.Interfaces.RealOutput P_Batt(start=0, unit="W")
     "Power demand Battery"
     annotation (Placement(transformation(extent={{100,-100},{120,-80}})));
   Modelica.Blocks.Interfaces.RealOutput SOE(unit="W.h") "State of Energy"
     annotation (Placement(transformation(extent={{100,-80},{120,-60}})));
   Modelica.Blocks.Math.Add Sum_P
     annotation (Placement(transformation(extent={{70,20},{90,40}})));
-  Modelica.Blocks.Sources.RealExpression P_battery(y=if P_batt < 0 then -1*
-        P_batt else 0)
+  Modelica.Blocks.Sources.RealExpression P_battery(y=if P_Batt < 0 then -1*P_Batt
+               else 0)
     annotation (Placement(transformation(extent={{-26,10},{54,30}})));
   Modelica.Blocks.Sources.RealExpression P_curtailed(y=PV.P - P_feedin.y)
     annotation (Placement(transformation(extent={{-80,-60},{0,-40}})));
@@ -86,9 +86,9 @@ equation
       points={{-60,84},{-10,84}},
       color={255,204,51},
       thickness=0.5));
-  connect(PV.scale, VoltVarWatt.Plim) annotation (Line(points={{-12,76},{-40,76},
+  connect(PV.scale,VoltVarWatt.PLim)  annotation (Line(points={{-12,76},{-40,76},
           {-40,5},{-49,5}}, color={0,0,127}));
-  connect(VoltVarWatt.v, v)
+  connect(VoltVarWatt.Vpu, Vpu)
     annotation (Line(points={{-72,0},{-120,0}}, color={0,0,127}));
   connect(SOC, battery.SOC) annotation (Line(points={{110,-50},{70,-50},{70,-72},
           {61,-72}}, color={0,0,127}));
@@ -98,13 +98,13 @@ equation
           {68,36}}, color={0,0,127}));
   connect(Sum_P.u2, P_battery.y) annotation (Line(points={{68,24},{64,24},{64,20},
           {58,20}}, color={0,0,127}));
-  connect(Q, VoltVarWatt.Qctrl) annotation (Line(points={{110,-10},{-40,-10},{-40,
+  connect(Q,VoltVarWatt.QCtrl)  annotation (Line(points={{110,-10},{-40,-10},{-40,
           -5},{-49,-5}}, color={0,0,127}));
   connect(P_battery_control.y, battery.PCtrl)
     annotation (Line(points={{4,-80},{38,-80}}, color={0,0,127}));
   connect(battery.SOE, SOE) annotation (Line(points={{61,-75},{80.5,-75},{80.5,-70},
           {110,-70}}, color={0,0,127}));
-  connect(battery.P, P_batt) annotation (Line(points={{61,-80},{80,-80},
+  connect(battery.P,P_Batt)  annotation (Line(points={{61,-80},{80,-80},
           {80,-90},{110,-90}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

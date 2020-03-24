@@ -48,7 +48,7 @@ equation
           {-120,-40}}, color={0,0,127}));
   connect(product.y, pV_simple.G)
     annotation (Line(points={{1,0},{18,0}}, color={0,0,127}));
-  connect(pV_simple.PV_generation, P)
+  connect(pV_simple.P, P)
     annotation (Line(points={{41,0},{110,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

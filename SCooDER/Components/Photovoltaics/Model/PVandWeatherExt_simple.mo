@@ -31,7 +31,7 @@ model PVandWeatherExt_simple
     annotation (Placement(transformation(extent={{-140,30},{-100,70}})));
   Modelica.Blocks.Math.Gain WtokW(k=1/1e3)
     annotation (Placement(transformation(extent={{20,0},{40,20}})));
-  Modelica.Blocks.Interfaces.RealOutput P_kw(unit="kW", start=0)
+  Modelica.Blocks.Interfaces.RealOutput P_kW(unit="kW", start=0)
     "Active power"
     annotation (Placement(transformation(extent={{100,0},{120,20}})));
   Modelica.Blocks.Interfaces.RealOutput P(start=0, unit="W")
@@ -48,7 +48,7 @@ equation
           62.4},{-90,62.4},{-90,80},{-120,80}}, color={0,0,127}));
   connect(weaDatInpCon.HGloHor_in, GHI) annotation (Line(points={{-81,
           57},{-90,57},{-90,50},{-120,50}}, color={0,0,127}));
-  connect(WtokW.y, P_kw)
+  connect(WtokW.y,P_kW)
     annotation (Line(points={{41,10},{110,10}}, color={0,0,127}));
   connect(P, pVModule_simple.P)
     annotation (Line(points={{110,50},{11,50}}, color={0,0,127}));

@@ -22,7 +22,8 @@ model PvOrientated_compareModels
     annotation (Placement(transformation(extent={{4,-10},{24,10}})));
   Buildings.Electrical.AC.OnePhase.Sources.FixedVoltage fixVol(f=60, V=120)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-  CyDER.PvModel.Models.PV_simple_tilted pV_smartinverter(
+  Components.Photovoltaics.Model.PVModule_simple
+                                        pV_smartinverter(
     lat=Modelica.SIunits.Conversions.to_deg(weaDat.lat),
     A=A_PV,
     til=til,
@@ -58,10 +59,8 @@ equation
       thickness=0.5));
   connect(fixVol.terminal, pv_buildings.terminal)
     annotation (Line(points={{-40,0},{4,0}},   color={0,120,120}));
-  connect(shading.y, pV_smartinverter.Shading) annotation (Line(points={{-39,-30},
-          {-30,-30},{-30,-34},{-2,-34}}, color={0,0,127}));
   connect(pV_smartinverter.weaBus, pv_buildings.weaBus) annotation (Line(
-      points={{0,-30},{-24,-30},{-24,50},{14,50},{14,9}},
+      points={{0,-26},{-24,-26},{-24,50},{14,50},{14,9}},
       color={255,204,51},
       thickness=0.5));
   connect(HDifTil_buildings.weaBus, pv_buildings.weaBus) annotation (Line(
@@ -80,6 +79,8 @@ equation
       points={{42,-76},{6,-76},{6,-30},{-28,-30},{-28,50},{14,50},{14,9}},
       color={255,204,51},
       thickness=0.5));
+  connect(shading.y, pV_smartinverter.scale) annotation (Line(points={{-39,-30},
+          {-20,-30},{-20,-34},{-2,-34}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end PvOrientated_compareModels;

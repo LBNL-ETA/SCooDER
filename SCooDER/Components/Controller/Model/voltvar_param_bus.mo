@@ -15,20 +15,20 @@ model voltvar_param_bus
     q_maxind=q_maxind,
     q_maxcap=q_maxcap)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  Inverter.Interfaces.InvCtrlBus invCtrlBus annotation (Placement(
+  Inverter.Interfaces.InvCtrlBus InvCtrlBus annotation (Placement(
         transformation(extent={{80,-20},{120,20}}), iconTransformation(extent={{
             90,-10},{110,10}})));
   Modelica.Blocks.Math.Gain voltageScale(k=1/V_nominal)
     annotation (Placement(transformation(extent={{-52,-10},{-32,10}})));
 equation
-  connect(voltageScale.y, voltvar.v_pu)
-    annotation (Line(points={{-31,0},{-12,0}},            color={0,0,127}));
-  connect(voltageScale.u, invCtrlBus.v) annotation (Line(points={{-54,0},{-60,0},
+  connect(voltageScale.y, voltvar.Vpu)
+    annotation (Line(points={{-31,0},{-12,0}}, color={0,0,127}));
+  connect(voltageScale.u,InvCtrlBus. v) annotation (Line(points={{-54,0},{-60,0},
           {-60,30},{60,30},{60,0.1},{100.1,0.1}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar.qctrl, invCtrlBus.qctrl) annotation (Line(points={{11,0},{
+  connect(voltvar.QCtrl,InvCtrlBus. qctrl) annotation (Line(points={{11,0},{
           100.1,0},{100.1,0.1}}, color={0,0,127}), Text(
       string="%second",
       index=1,

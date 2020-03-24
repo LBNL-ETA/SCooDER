@@ -10,7 +10,7 @@ model Validate_VoltVarWattControl
     voltVarWatt_param_firstorder(Tfirstorder=0.001)
     annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
 equation
-  connect(voltVarWatt_param_firstorder.v, ramp.y)
+  connect(voltVarWatt_param_firstorder.Vpu, ramp.y)
     annotation (Line(points={{-10,0},{-69,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

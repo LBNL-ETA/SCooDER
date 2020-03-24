@@ -42,8 +42,7 @@ model Test_Inverter_FMU
         extent={{-20,-20},{20,20}},
         rotation=180,
         origin={120,50})));
-  Modelica.Blocks.Interfaces.RealInput P_Bat(
-                                            unit="W")
+  Modelica.Blocks.Interfaces.RealInput P_Batt(unit="W")
     "Power generation from PV (pos if produced)" annotation (Placement(
         transformation(
         extent={{-20,-20},{20,20}},
@@ -126,18 +125,18 @@ equation
       string="%first",
       index=-1,
       extent={{-6,3},{-6,3}}));
-  connect(P_Bat, invCtrlBus1.batt_ctrl) annotation (Line(points={{120,20},{76,
+  connect(P_Batt, invCtrlBus1.batt_ctrl) annotation (Line(points={{120,20},{76,
           20},{76,30.05},{30.05,30.05}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(P_Bat, invCtrlBus2.batt_ctrl) annotation (Line(points={{120,20},{76,
+  connect(P_Batt, invCtrlBus2.batt_ctrl) annotation (Line(points={{120,20},{76,
           20},{76,-20},{54,-20},{54,-19.95},{30.05,-19.95}}, color={0,0,127}),
       Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(P_Bat, invCtrlBus3.batt_ctrl) annotation (Line(points={{120,20},{76,
+  connect(P_Batt, invCtrlBus3.batt_ctrl) annotation (Line(points={{120,20},{76,
           20},{76,-69.95},{30.05,-69.95}}, color={0,0,127}), Text(
       string="%second",
       index=1,

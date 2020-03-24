@@ -11,7 +11,7 @@ model Validate_VoltVarControl_param
     voltVar_param
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 equation
-  connect(voltVar_param.v, ramp.y)
+  connect(voltVar_param.Vpu, ramp.y)
     annotation (Line(points={{-12,0},{-69,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

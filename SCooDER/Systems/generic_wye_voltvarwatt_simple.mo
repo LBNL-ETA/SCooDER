@@ -185,11 +185,11 @@ equation
           {64,-20},{64,-0.533333},{70.2,-0.533333}}, color={0,120,120}));
   connect(sens1.terminal_n, wye.terminals[1]) annotation (Line(points={{48,20},{
           64,20},{64,0.533333},{70.2,0.533333}}, color={0,120,120}));
-  connect(inv1.v, vpu1.y)
+  connect(inv1.Vpu, vpu1.y)
     annotation (Line(points={{-46,40},{-63.6,40}}, color={0,0,127}));
-  connect(vpu3.y, inv3.v)
+  connect(vpu3.y, inv3.Vpu)
     annotation (Line(points={{-63.6,-40},{-46,-40}}, color={0,0,127}));
-  connect(vpu2.y, inv2.v)
+  connect(vpu2.y, inv2.Vpu)
     annotation (Line(points={{-63.6,0},{-46,0}}, color={0,0,127}));
   connect(sens3.V, vpu3.u) annotation (Line(points={{59,-30},{64,-30},{64,-54},
           {-80,-54},{-80,-40},{-72.8,-40}}, color={0,0,127}));

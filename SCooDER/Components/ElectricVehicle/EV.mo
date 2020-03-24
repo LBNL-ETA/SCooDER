@@ -52,7 +52,6 @@ annotation (Dialog(group="RC parameters"));
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
  annotation (Dialog(group="Battery initialization parameters"));
 
-
   parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
 

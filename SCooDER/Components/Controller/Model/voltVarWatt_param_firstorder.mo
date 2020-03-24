@@ -1,7 +1,7 @@
 within SCooDER.Components.Controller.Model;
 model voltVarWatt_param_firstorder
 
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Qctrl(start=0, unit="var")
     "Reactive power control signal"
@@ -42,10 +42,10 @@ equation
 
   connect(voltVar.QCon, Qctrl)
     annotation (Line(points={{13,-50},{110,-50}}, color={0,0,127}));
-  connect(voltWatt.v, v) annotation (Line(points={{-10,50},{-40,50},{-40,0},{-120,
-          0}}, color={0,0,127}));
-  connect(voltVar.v, v) annotation (Line(points={{-10,-50},{-40,-50},{-40,0},{-120,
-          0}}, color={0,0,127}));
+  connect(voltWatt.Vpu, Vpu) annotation (Line(points={{-10,50},{-40,50},{-40,0},
+          {-120,0}}, color={0,0,127}));
+  connect(voltVar.Vpu, Vpu) annotation (Line(points={{-10,-50},{-40,-50},{-40,0},
+          {-120,0}}, color={0,0,127}));
   connect(sub.y, Plim)
     annotation (Line(points={{61,50},{110,50}}, color={0,0,127}));
   connect(sub.u2, voltWatt.QCon) annotation (Line(points={{38,44},{20,44},{20,50},

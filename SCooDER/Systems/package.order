@@ -2,7 +2,7 @@ Examples
 generic_wye_voltvar
 generic_direct_wye
 generic_wye_voltvarwatt_simple
-ElectricVehicle
+FleetEVs
 FLEXGRID
 IEEE13
 Interfaces

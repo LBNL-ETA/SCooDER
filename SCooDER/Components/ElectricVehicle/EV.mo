@@ -57,7 +57,7 @@ annotation (Dialog(group="RC parameters"));
 
 
 
-  SCooDER.Components.Battery.Model.BatterySOH battery(
+  SCooDER.Components.Battery.Model.Submodels.BatterySOH battery(
     PInt(start=0),
     EMaxNom=CapNom,
     Pmax=PMax,
@@ -79,7 +79,7 @@ annotation (Dialog(group="RC parameters"));
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
   Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Battery.Model.BatteryDegradation battery_degradation(
+  Battery.Model.Submodels.BatteryDegradation battery_degradation(
     a=a,
     b=b,
     c=c,
@@ -110,7 +110,8 @@ annotation (Dialog(group="RC parameters"));
     "Actual power of EV while driving "
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
-  BatteryRCFlex batteryRCFlex(C_battery=CBatt,
+  Battery.Model.Submodels.BatteryRCFlex batteryRCFlex(
+    C_battery=CBatt,
     TInit=TBattInit,
     TOut(start=TOutInit))
     annotation (Placement(transformation(extent={{30,-14},{50,6}})));

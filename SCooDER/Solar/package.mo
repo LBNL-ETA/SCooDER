@@ -1,5 +1,5 @@
 within SCooDER;
-package Solar
+package Solar "Solar irradiation modeling"
 
 
 
@@ -7,4 +7,9 @@ package Solar
 
 
 
+annotation (
+preferredView="info", Documentation(info="<html>
+This package contains models to simulate solar irradiation.
+</a>
+</html>"));
 end Solar;

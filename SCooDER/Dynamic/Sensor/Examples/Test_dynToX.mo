@@ -49,9 +49,9 @@ equation
   connect(dynToPQ.p_v, SineVoltage.p)
     annotation (Line(points={{50,10},{50,20},{90,20}}, color={0,0,255}));
   connect(variableInductor.L, ramp_L.y)
-    annotation (Line(points={{-30.8,10},{-40,10},{-40,-19}}, color={0,0,127}));
+    annotation (Line(points={{-32,10},{-40,10},{-40,-19}},   color={0,0,127}));
   connect(ramp_R.y, variableResistor.R)
-    annotation (Line(points={{-80,-19},{-80,10},{-71,10}}, color={0,0,127}));
+    annotation (Line(points={{-80,-19},{-80,10},{-72,10}}, color={0,0,127}));
   connect(variableInductor.p, SineVoltage.p)
     annotation (Line(points={{-20,20},{90,20}}, color={0,0,255}));
   connect(variableResistor.p, SineVoltage.p)

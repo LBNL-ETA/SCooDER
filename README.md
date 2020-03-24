@@ -8,8 +8,8 @@ This [Modelica](https://www.modelica.org/) model library is developed to facilit
 This package is developed to model various components of the electric power system in the context of future scenarios with high penetrations of Distributed Energy Resources (DER). The library is structured in four main categories:
 
 * Solar: This library contains solar irradiaiton models.
-* Components: This library contains the component models for various power system devices. It includes: Sensor, Inverter, Transformer, Photovoltacis, Battery, Controller, and Grid. Each component library ceontains of a Model and Examples folder.
-* Systems: This library contains ensembles of components to form whole systems. An example (see below in Examples section) is the Flexgrid model which consists of three single-phase inverters, three batteries, and a number of sensors.
+* Components: This library contains the component models for various power system devices. It includes: Sensor, Inverter, Transformer, Photovoltacis, Battery, Controller, Grid, ElectricVehicle, uPMU, and Conversion. Each component library contains of a Model and Examples folder.
+* Systems: This library contains ensembles of components to form whole systems. An example (see below in Examples section) is the Flexgrid model which consists of three single-phase inverters, three batteries, and a number of sensors. 
 * uPMU: This library is specific to [micro-synchrophasor measurement units](https://www.powerstandards.com/product/micropmu) and covers the simulaiton of sensors and the integration of sensor measurements into simulations.
 
 *Please note that the SCooDER package and especially the examples are still under development. Please open an issue for specific questions*

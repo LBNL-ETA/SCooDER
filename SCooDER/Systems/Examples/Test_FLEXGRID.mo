@@ -44,7 +44,7 @@ model Test_FLEXGRID
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.FixedVoltage grid(f=
         60, V=208)
     annotation (Placement(transformation(extent={{80,8},{60,28}})));
-  FLEXGRID.Interfaces.FLEXGRID_interface interface
+  Interfaces.FLEXGRID_interface interface
     annotation (Placement(transformation(extent={{-20,-72},{20,-32}})));
 equation
   connect(flexgrid.scale1, One1.y) annotation (Line(points={{-22,4},{-52,4},{

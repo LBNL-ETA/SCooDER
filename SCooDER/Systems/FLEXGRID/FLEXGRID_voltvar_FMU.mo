@@ -101,7 +101,7 @@ model FLEXGRID_voltvar_FMU
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={50,-110})));
-  Interfaces.FLEXGRID_interface_voltvar interface(
+  SCooDER.Systems.Interfaces.FLEXGRID_interface_voltvar interface(
     V_nominal=V_nominal,
     v_max=v_max,
     v_maxdead=v_maxdead,

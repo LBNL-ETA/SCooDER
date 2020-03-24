@@ -116,7 +116,7 @@ model FLEXGRID_FMU
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={50,-110})));
-  Interfaces.FLEXGRID_interface interface
+  SCooDER.Systems.Interfaces.FLEXGRID_interface interface
     annotation (Placement(transformation(extent={{-20,-30},{20,10}})));
   Components.uPMU.Model.uPMUSource_3ph source
     annotation (Placement(transformation(extent={{60,48},{40,68}})));

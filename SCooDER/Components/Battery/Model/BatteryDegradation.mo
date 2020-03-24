@@ -61,8 +61,7 @@ equation
           SOH = 1e-6;
   elseif (1 - CapLossCyc/100 - CapLossCal/100 >1) then
           SOH = 1;
-  else
-          SOH = 1 - CapLossCyc/100 - CapLossCal/100;
+  else    SOH = 1 - CapLossCyc/100 - CapLossCal/100;
   end if;
   CapLossCal = f*sqrt(batAge/86400)*exp(-Ea/(R*TAvg)) "Capacity losses due to degradation by time [%]";
   CapLossCyc =( a*(TAvg^2) + b*TAvg + c)*exp((d*TAvg + e)*IRateAvg)*Ah "Capacity losses due to battery cycling [%]";

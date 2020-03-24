@@ -1,7 +1,6 @@
 within SCooDER.Components.Grid.Model;
 model Line "Model of an electrical line without neutral cable"
-  extends
-    Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.TwoPort;
+  extends Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.TwoPort;
   extends Buildings.Electrical.Transmission.BaseClasses.PartialBaseLine(
   V_nominal(start = 480),
   commercialCable = Buildings.Electrical.Transmission.Functions.selectCable_low(P_nominal, V_nominal));

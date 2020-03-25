@@ -1,5 +1,5 @@
 within SCooDER;
-package Systems
+package Systems "Combinations of multiple components to larger systems"
 
 
 

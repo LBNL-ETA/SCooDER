@@ -4,7 +4,9 @@ model FLEXGRID_direct_wye_FMU
   FLEXGRID_direct_wye flexgrid
     annotation (Placement(transformation(extent={{-20,20},{20,60}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon1(
-    computeWetBulbTemperature=false, filNam="C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos")
+    computeWetBulbTemperature=false, filNam=
+        Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,70},{-60,90}})));
   Modelica.Blocks.Interfaces.RealInput scale3(start=1,

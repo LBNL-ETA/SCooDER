@@ -3,8 +3,9 @@ model Comparisons
   "PV module comparisons between simplified, Buildings library and Diode model (TGM library)."
   extends Modelica.Icons.Example;
 
-  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon(
-    filNam="C:/Users/Christoph/Documents/Buildings 4.0.0/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon(filNam=
+        Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"),
     computeWetBulbTemperature=false)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,50},{-60,70}})));

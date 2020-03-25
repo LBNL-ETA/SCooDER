@@ -1,5 +1,5 @@
 within SCooDER;
-package Dynamic
+package Dynamic "Dynamic models for DERs"
 
 annotation (
 preferredView="info", Documentation(info="<html>

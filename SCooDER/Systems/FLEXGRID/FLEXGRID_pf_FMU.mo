@@ -6,7 +6,7 @@ model FLEXGRID_pf_FMU
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon1(
     computeWetBulbTemperature=false, filNam="C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos")
     "Weather data reader with radiation data obtained from the inputs' connectors"
-    annotation (Placement(transformation(extent={{-80,70},{-60,90}})));
+    annotation (Placement(transformation(extent={{-80,72},{-60,92}})));
   Modelica.Blocks.Interfaces.RealInput scale3(start=1,
     min=0,
     max=1,
@@ -173,7 +173,7 @@ model FLEXGRID_pf_FMU
         origin={110,-10})));
 equation
   connect(weaDatInpCon1.weaBus, flexgrid.weaBus) annotation (Line(
-      points={{-60,80},{-30,80},{-30,56},{-20,56}},
+      points={{-60,82},{-30,82},{-30,56},{-20,56}},
       color={255,204,51},
       thickness=0.5));
   connect(flexgrid.invCtrlBus1, interface.invCtrlBus1) annotation (Line(

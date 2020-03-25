@@ -3,13 +3,11 @@ model PvOrientated_compareModels
   parameter Real A_PV=1 "Area of PV system";
   parameter Real til=10 "Surface tilt [deg]";
   parameter Real azi=0 "Surface azimuth [deg]";
-  parameter String filNam="C:/Users/Christoph/Documents/GitHub/cyder/hil/controls/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos";
-  //parameter String filNam="USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos";
+  parameter String filNam= Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos");
 
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3
                                             weaDat(
-      computeWetBulbTemperature=false, filNam=
-        filNam)
+      computeWetBulbTemperature=false, filNam=filNam)
     "Weather data model"
     annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
   Buildings.Electrical.AC.OnePhase.Sources.PVSimpleOriented pv_buildings(

@@ -1,5 +1,5 @@
 within SCooDER.Systems;
-package FLEXGRID
+package FLEXGRID "FLEXGRID models"
 annotation (
 preferredView="info", Documentation(info="<html>
 This package contains <a href=\"https://flexlab.lbl.gov/introducing-flexgrid\">

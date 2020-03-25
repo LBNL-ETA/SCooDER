@@ -6,8 +6,8 @@ model Test_Pv_Inv_VoltVarWatt_simple_Slim_uStorage
     thrP=1,
     hysP=1,
     n=75,
-    weather_file=
-        "C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+    weather_file=Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"),
     P_discharge=1.5,
     EMax=10)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));

@@ -7,7 +7,7 @@ model generic_wye_voltvar
   parameter Real v_min( start=0.95, unit="1")=0.95 "Voltage minimum [p.u.]";
   parameter Real q_maxind( start=1000, unit="var")=2500 "Maximal Reactive Power (Inductive) [var]";
   parameter Real q_maxcap( start=1000, unit="var")=2500 "Maximal Reactive Power (Capacitive) [var]";
-  parameter String weaName = "C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos" "Path to weather file";
+  parameter String weaName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
   parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
   parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";

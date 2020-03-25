@@ -171,8 +171,8 @@ equation
       extent={{6,3},{6,3}}));
   connect(sens_FLEXGRID.terminal_p, wye.terminal) annotation (Line(points={{90,
           30},{90,30},{90,10},{80,10}}, color={0,120,120}));
-  connect(inverter1.term_p, wye.terminals[1]) annotation (Line(points={{26,50},{
-          38,50},{38,50},{50,50},{50,10.5333},{60.2,10.5333}},  color={0,120,
+  connect(inverter1.term_p, wye.terminals[1]) annotation (Line(points={{26,50},
+          {38,50},{38,50},{50,50},{50,10.5333},{60.2,10.5333}}, color={0,120,
           120}));
   connect(inverter2.term_p, wye.terminals[2])
     annotation (Line(points={{26,10},{60.2,10},{60.2,10}}, color={0,120,120}));

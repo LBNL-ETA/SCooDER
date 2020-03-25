@@ -1,7 +1,7 @@
 within SCooDER.Systems.IEEE13;
 model IEEE13_PV_extBus_simple
-  //parameter String weaName = "C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos" "Path to weather file";
-  parameter String weaName = "/home/sim/Documents/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos" "Path to weather file";
+  parameter String weaName= Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
+
   Components.Grid.Model.Network ieee13(redeclare
       Components.Grid.Records.IEEE_13 grid, V_nominal=4.16e3/sqrt(3))
     annotation (Placement(transformation(

@@ -1,5 +1,6 @@
 within SCooDER.Systems;
-package Interfaces
+package Interfaces "Interfaces supporting systems modeling"
+
 
 annotation (
 preferredView="info", Documentation(info="<html>

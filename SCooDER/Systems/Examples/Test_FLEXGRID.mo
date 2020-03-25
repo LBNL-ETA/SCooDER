@@ -32,13 +32,16 @@ model Test_FLEXGRID
     computeWetBulbTemperature=false,
     HSou=Buildings.BoundaryConditions.Types.RadiationDataSource.Input_HDirNor_HDifHor,
     TDryBulSou=Buildings.BoundaryConditions.Types.DataSource.Input,
-    filNam="C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos")
+    filNam=Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-50,40},{-30,60}})));
   Modelica.Blocks.Math.UnitConversions.From_degC from_degC
     annotation (Placement(transformation(extent={{-76,84},{-64,96}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon1(
-    computeWetBulbTemperature=false, filNam="C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos")
+    computeWetBulbTemperature=false, filNam=
+        Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-50,80},{-30,100}})));
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.FixedVoltage grid(f=

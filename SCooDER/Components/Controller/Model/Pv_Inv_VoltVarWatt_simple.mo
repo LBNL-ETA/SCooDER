@@ -1,7 +1,7 @@
 within SCooDER.Components.Controller.Model;
 model Pv_Inv_VoltVarWatt_simple
   // Weather data
-  parameter String weather_file = "" "Path to weather file";
+  parameter String weather_file = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   // PV generation
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
   parameter Real A(min=0, unit="m2") = 1.65 "Net surface area per module";

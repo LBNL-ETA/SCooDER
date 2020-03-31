@@ -35,7 +35,7 @@ model BatterySOH
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
   Modelica.Blocks.Sources.RealExpression soe_calc(y=soc_model.SOC*EMax)
     annotation (Placement(transformation(extent={{20,40},{40,60}})));
-  Modelica.Blocks.Sources.RealExpression power_calc(y=PInt)
+  Modelica.Blocks.Sources.RealExpression power_calc(y=PExt)
     annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
   Modelica.Blocks.Interfaces.RealInput SOH "State of Health [-]"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
@@ -56,21 +56,21 @@ model BatterySOH
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 equation
   if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
-    if (PInt < 0) then
-      PInt =max(Pmax*(-1), PCtrl);
+    if (PCtrl < 0) then
+      PExt = max(Pmax*(-1), PCtrl);
     else
-      PInt =min(Pmax, PCtrl);
+      PExt = min(Pmax, PCtrl);
     end if;
   else
     if (PCtrl < 0) and (soc_model.SOC > SOC_min) then
-      PInt =max(Pmax*(-1), PCtrl);
+      PExt = max(Pmax*(-1), PCtrl);
     elseif (PCtrl > 0) and (soc_model.SOC < SOC_max) then
-      PInt =min(Pmax, PCtrl);
+      PExt = min(Pmax, PCtrl);
     else
-      PInt = 0;
+      PExt = 0;
     end if;
   end if;
-  PExt = if (PInt > 0) then PInt*etaCha else PInt*(1/etaDis);
+  PInt = if (PExt > 0) then PExt*etaCha else PExt*(1/etaDis);
   EMax = EMaxNom * 3600 * SOH "Adapt EMax by SOH";
   P = max(abs(PExt), abs(PInt)) "Power flow inside the battery (before losses are applied) [W]";
 

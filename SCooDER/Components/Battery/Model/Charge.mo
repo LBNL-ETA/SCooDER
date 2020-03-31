@@ -28,7 +28,7 @@ initial equation
   SOC = SOC_start;
 equation
   // Charge balance of battery
-  PAct = if P > 0 then etaCha*P else (2-etaDis)*P;
+  PAct = if P > 0 then etaCha*P else (1/etaDis)*P;
   der(SOC)=PAct/(EMax+1e-6);
 
   // Equations to warn if state of charge exceeds 0 and 1

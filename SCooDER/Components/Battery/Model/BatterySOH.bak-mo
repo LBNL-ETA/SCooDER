@@ -35,7 +35,7 @@ model BatterySOH
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
   Modelica.Blocks.Sources.RealExpression soe_calc(y=soc_model.SOC*EMax)
     annotation (Placement(transformation(extent={{20,40},{40,60}})));
-  Modelica.Blocks.Sources.RealExpression power_calc(y=PExt)
+  Modelica.Blocks.Sources.RealExpression power_calc(y=PInt)
     annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
   Modelica.Blocks.Interfaces.RealInput SOH "State of Health [-]"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));

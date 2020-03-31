@@ -13,9 +13,8 @@ model FleetEVs
   Modelica.Blocks.Interfaces.RealInput T(start=293.15, min=0, unit="K")
     "Outside Temperature [K]"
     annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
-  Components.ElectricVehicle.EV
-     eV[NumberEVsInt]
-    annotation (Placement(transformation(extent={{-24,6},{-4,26}})));
+  Components.ElectricVehicle.EV eV[NumberEVsInt]
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Interfaces.RealOutput PSite(unit="W") "Load of site without EVs and PV "
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Interfaces.RealInput PPv( start=0, unit="W") "PV generation on site "

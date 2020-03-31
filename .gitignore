@@ -13,8 +13,10 @@
 
 # Modelica #
 ############
+*.mat
 *_log.txt
 buildlog.txt
-dslog.txt
+ds*.txt
 dsmodel.c
 *.xml
+*.h

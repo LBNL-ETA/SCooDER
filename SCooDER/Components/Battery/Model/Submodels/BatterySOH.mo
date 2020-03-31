@@ -16,9 +16,8 @@ model BatterySOH
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
 
-
-  Modelica.SIunits.Energy EMax "Remaining max battery capacity considering SOH";
- Modelica.Blocks.Interfaces.RealInput PCtrl(unit="W")
+ Modelica.SIunits.Energy EMax "Remaining max battery capacity considering SOH";
+ Modelica.Blocks.Interfaces.RealInput PCtrl(start=0, unit="W")
     "Power control to charge (positive) discharge (negativ) the battery"
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
@@ -29,8 +28,7 @@ model BatterySOH
         origin={-120,0})));
   Modelica.Blocks.Interfaces.RealOutput SOC "State of Charge [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Modelica.Blocks.Interfaces.RealOutput PInt( start=0)
-    "Integral of internal battery power getting stored in the battery (after losses) and beeing provided by the battery (before losses) [W]"
+  Modelica.Blocks.Interfaces.RealOutput PInt(start=0, unit="W") "DC Battery Power"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Interfaces.RealOutput SOE "State of Energy [Wh]"
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
@@ -49,12 +47,8 @@ model BatterySOH
     annotation (Placement(transformation(extent={{-100,62},{-80,82}})));
   Modelica.Blocks.Math.Product Product
     annotation (Placement(transformation(extent={{-68,44},{-48,64}})));
-
-  Modelica.Blocks.Interfaces.RealOutput PExt
-    "Charging power (before losses) and discharging power (after losses) measured outside (external) of battery [W]"
+  Modelica.Blocks.Interfaces.RealOutput PExt(start=0, unit="W") "AC Battery Power"
     annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
-  Modelica.Blocks.Interfaces.RealOutput P "Actual power (before losses) [W]"
-    annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 equation
   if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
     if (PCtrl < 0) then
@@ -73,7 +67,6 @@ equation
   end if;
   PInt = if (PExt > 0) then PExt*etaCha else PExt*(1/etaDis);
   EMax = EMaxNom * 3600 * SOH "Adapt EMax by SOH";
-  P = max(abs(PExt), abs(PInt)) "Power flow inside the battery (before losses are applied) [W]";
 
   connect(soe_calc.y, SOE)
     annotation (Line(points={{41,50},{110,50}}, color={0,0,127}));

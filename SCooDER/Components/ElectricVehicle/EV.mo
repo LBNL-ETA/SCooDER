@@ -158,16 +158,16 @@ equation
   connect(batteryRCFlex.R, RValue.y)
     annotation (Line(points={{28,0},{24,0},{24,6},{21,6}},
                                                         color={0,0,127}));
-  connect(battery.P, batteryRCFlex.PBatt) annotation (Line(points={{-7,34},{-4,34},
-          {-4,-8},{28,-8}},      color={0,0,127}));
-  connect(battery_degradation.P, battery.P) annotation (Line(points={{64,-16},{-4,
-          -16},{-4,34},{-7,34}},   color={0,0,127}));
   connect(Plugged_In.y, switch1.u2)
     annotation (Line(points={{-73,40},{-64,40}}, color={255,0,255}));
   connect(Plugged_In.u, PluggedIn)
     annotation (Line(points={{-96,40},{-120,40}}, color={0,0,127}));
   connect(batteryRCFlex.TBatt, battery_degradation.TBatt) annotation (Line(
         points={{51,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
+  connect(batteryRCFlex.PBatt, battery.PInt) annotation (Line(points={{28,-8},{
+          -4,-8},{-4,42},{-7,42}}, color={0,0,127}));
+  connect(battery_degradation.P, battery.PInt) annotation (Line(points={{64,-16},
+          {-4,-16},{-4,42},{-7,42}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>

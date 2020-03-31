@@ -8,10 +8,11 @@ model InverterLoad_pf
       terminal,
     V_nominal(start=120));
 
-  Modelica.Blocks.Interfaces.RealInput pf_in(unit="1") "Power factor" annotation (Placement(transformation(
+  Modelica.Blocks.Interfaces.RealInput PF(unit="1") "Power factor" annotation (
+      Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=180,
-        origin={120,60}),  iconTransformation(
+        origin={120,60}), iconTransformation(
         extent={{-20,-20},{20,20}},
         rotation=180,
         origin={120,60})));
@@ -21,7 +22,7 @@ protected
   Modelica.SIunits.Power Q = P*tan(-acos(pf_internal))
     "Reactive power";
 equation
-  connect(pf_in, pf_internal);
+  connect(PF, pf_internal);
 
   i[1] = -homotopy(actual = (v[2]*Q + v[1]*P)/(v[1]^2 + v[2]^2), simplified= 0.0);
   i[2] = -homotopy(actual = (v[2]*P - v[1]*Q)/(v[1]^2 + v[2]^2), simplified= 0.0);

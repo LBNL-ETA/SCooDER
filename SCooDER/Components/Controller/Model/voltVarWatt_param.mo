@@ -1,9 +1,9 @@
 within SCooDER.Components.Controller.Model;
 model voltVarWatt_param
 
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Modelica.Blocks.Interfaces.RealOutput Qctrl(start=0, unit="var")
+  Modelica.Blocks.Interfaces.RealOutput QCtrl(start=0, unit="var")
     "Reactive power control signal"
     annotation (Placement(transformation(extent={{100,-60},{120,-40}})));
 
@@ -27,8 +27,8 @@ model voltVarWatt_param
     QMaxInd=QMaxInd,
     QMaxCap=QMaxCap)
     annotation (Placement(transformation(extent={{-8,-60},{12,-40}})));
-  Modelica.Blocks.Interfaces.RealOutput Plim(start=1, unit="1")
-    "Reactive power control signal"
+  Modelica.Blocks.Interfaces.RealOutput PLim(start=1, unit="1")
+    "Active power control signal"
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
   Modelica.Blocks.Math.Add sub(k2=-1)
     annotation (Placement(transformation(extent={{40,40},{60,60}})));
@@ -36,13 +36,13 @@ model voltVarWatt_param
     annotation (Placement(transformation(extent={{0,70},{20,90}})));
 equation
 
-  connect(voltVar.QCon, Qctrl)
+  connect(voltVar.QCon,QCtrl)
     annotation (Line(points={{13,-50},{110,-50}}, color={0,0,127}));
-  connect(voltWatt.v, v) annotation (Line(points={{-10,50},{-40,50},{-40,0},{-120,
-          0}}, color={0,0,127}));
-  connect(voltVar.v, v) annotation (Line(points={{-10,-50},{-40,-50},{-40,0},{-120,
-          0}}, color={0,0,127}));
-  connect(sub.y, Plim)
+  connect(voltWatt.Vpu, Vpu) annotation (Line(points={{-10,50},{-40,50},{-40,0},
+          {-120,0}}, color={0,0,127}));
+  connect(voltVar.Vpu, Vpu) annotation (Line(points={{-10,-50},{-40,-50},{-40,0},
+          {-120,0}}, color={0,0,127}));
+  connect(sub.y,PLim)
     annotation (Line(points={{61,50},{110,50}}, color={0,0,127}));
   connect(sub.u2, voltWatt.QCon) annotation (Line(points={{38,44},{20,44},{20,50},
           {13,50}}, color={0,0,127}));

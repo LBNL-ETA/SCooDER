@@ -59,27 +59,27 @@ model Test_Inverter_voltvar_pf
 equation
   connect(inverter.term_p, fixVol.terminal)
     annotation (Line(points={{60,80},{70,80},{80,80}}, color={0,120,120}));
-  connect(inverter.P_Batt, inverter.batt_ctrl_inv) annotation (Line(points={{38,
+  connect(inverter.P_Batt, inverter.BattCtrlInv) annotation (Line(points={{38,
           77},{38,77},{38,72},{39,72}}, color={0,0,127}));
   connect(inverter.P_PV, PV1.y) annotation (Line(points={{38,86},{28,86},{28,90},
           {21,90}}, color={0,0,127}));
-  connect(Q_max.y, voltvar.q_maxcap)
+  connect(Q_max.y, voltvar.QMaxCap)
     annotation (Line(points={{1,30},{6,30},{6,12}}, color={0,0,127}));
-  connect(voltvar.q_maxind, Q_max.y) annotation (Line(points={{12,12},{12,12},{12,
-          30},{1,30}}, color={0,0,127}));
-  connect(lower_voltage.y, voltvar.v_min) annotation (Line(points={{-51,-58},{-22,
-          -58},{-22,-8},{-2,-8}},            color={0,0,127}));
-  connect(upper_voltage.y, voltvar.v_max) annotation (Line(points={{-51,62},{-22,
-          62},{-22,8},{-2,8}},           color={0,0,127}));
-  connect(voltvar.v_mindead,lower_deadband_voltage. y) annotation (Line(
-        points={{-2,-4},{-32,-4},{-32,-18},{-51,-18}},  color={0,0,127}));
-  connect(upper_deadband_voltage.y, voltvar.v_maxdead) annotation (Line(
-        points={{-51,22},{-32,22},{-32,4},{-2,4}},  color={0,0,127}));
-  connect(voltvar.q_control, qToPf.q)
+  connect(voltvar.QMaxInd, Q_max.y) annotation (Line(points={{12,12},{12,12},{
+          12,30},{1,30}}, color={0,0,127}));
+  connect(lower_voltage.y, voltvar.VMin) annotation (Line(points={{-51,-58},{-22,
+          -58},{-22,-8},{-2,-8}}, color={0,0,127}));
+  connect(upper_voltage.y, voltvar.VMax) annotation (Line(points={{-51,62},{-22,
+          62},{-22,8},{-2,8}}, color={0,0,127}));
+  connect(voltvar.VMinDead, lower_deadband_voltage.y) annotation (Line(points={
+          {-2,-4},{-32,-4},{-32,-18},{-51,-18}}, color={0,0,127}));
+  connect(upper_deadband_voltage.y, voltvar.VMaxDead) annotation (Line(points={
+          {-51,22},{-32,22},{-32,4},{-2,4}}, color={0,0,127}));
+  connect(voltvar.QCtrl, qToPf.Q)
     annotation (Line(points={{21,0},{24.5,0},{28,0}}, color={0,0,127}));
-  connect(inverter.p, qToPf.p) annotation (Line(points={{61,88},{62,88},{64,88},
+  connect(inverter.P,qToPf.P)  annotation (Line(points={{61,88},{62,88},{64,88},
           {64,28},{40,28},{40,12}}, color={0,0,127}));
-  connect(voltvar.v_pu, Voltage.y) annotation (Line(points={{-2,0},{-76,0},{-76,
+  connect(voltvar.Vpu, Voltage.y) annotation (Line(points={{-2,0},{-76,0},{-76,
           20},{-79,20}}, color={0,0,127}));
   connect(invCtrlBus, inverter.invCtrlBus) annotation (Line(
       points={{39,59},{42,59},{42,70},{48,70}},
@@ -93,7 +93,7 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(qToPf.pf, invCtrlBus.pf) annotation (Line(points={{51,0},{44,0},{44,
+  connect(qToPf.PF, invCtrlBus.pf) annotation (Line(points={{51,0},{44,0},{44,
           59.025},{39.025,59.025}}, color={0,0,127}), Text(
       string="%second",
       index=1,

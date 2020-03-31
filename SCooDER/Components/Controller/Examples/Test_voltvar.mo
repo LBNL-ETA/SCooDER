@@ -28,20 +28,20 @@ model Test_voltvar
         rotation=-90,
         origin={0,60})));
 equation
-  connect(ramp.y, voltvar.v_pu)
+  connect(ramp.y, voltvar.Vpu)
     annotation (Line(points={{-69,0},{-12,0}}, color={0,0,127}));
-  connect(lower_voltage.y, voltvar.v_min) annotation (Line(points={{-39,
-          -60},{-20,-60},{-20,-8},{-12,-8}}, color={0,0,127}));
-  connect(upper_voltage.y, voltvar.v_max) annotation (Line(points={{-39,
-          60},{-20,60},{-20,8},{-12,8}}, color={0,0,127}));
-  connect(voltvar.v_mindead, lower_deadband_voltage.y) annotation (Line(
-        points={{-12,-4},{-30,-4},{-30,-20},{-39,-20}}, color={0,0,127}));
-  connect(upper_deadband_voltage.y, voltvar.v_maxdead) annotation (Line(
-        points={{-39,20},{-30,20},{-30,4},{-12,4}}, color={0,0,127}));
-  connect(qmax_capacitive.y, voltvar.q_maxcap) annotation (Line(points={{-1.9984e-015,
+  connect(lower_voltage.y, voltvar.VMin) annotation (Line(points={{-39,-60},{-20,
+          -60},{-20,-8},{-12,-8}}, color={0,0,127}));
+  connect(upper_voltage.y, voltvar.VMax) annotation (Line(points={{-39,60},{-20,
+          60},{-20,8},{-12,8}}, color={0,0,127}));
+  connect(voltvar.VMinDead, lower_deadband_voltage.y) annotation (Line(points={
+          {-12,-4},{-30,-4},{-30,-20},{-39,-20}}, color={0,0,127}));
+  connect(upper_deadband_voltage.y, voltvar.VMaxDead) annotation (Line(points={
+          {-39,20},{-30,20},{-30,4},{-12,4}}, color={0,0,127}));
+  connect(qmax_capacitive.y, voltvar.QMaxCap) annotation (Line(points={{-1.9984e-015,
           49},{0,49},{0,30},{-4,30},{-4,12}}, color={0,0,127}));
-  connect(qmax_inductive.y, voltvar.q_maxind) annotation (Line(points={{40,49},{40,
-          49},{40,40},{12,40},{12,20},{2,20},{2,12}}, color={0,0,127}));
+  connect(qmax_inductive.y, voltvar.QMaxInd) annotation (Line(points={{40,49},{
+          40,49},{40,40},{12,40},{12,20},{2,20},{2,12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end Test_voltvar;

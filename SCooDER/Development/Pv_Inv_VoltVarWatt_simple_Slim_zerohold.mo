@@ -72,13 +72,13 @@ equation
       thickness=0.5));
   connect(pVModule_simple.P, WtokW.u)
     annotation (Line(points={{11,50},{18,50}}, color={0,0,127}));
-  connect(pVModule_simple.scale, voltVarWatt_param.Plim) annotation (Line(
+  connect(pVModule_simple.scale,voltVarWatt_param.PLim)  annotation (Line(
         points={{-12,46},{-20,46},{-20,5},{-29,5}}, color={0,0,127}));
-  connect(voltVarWatt_param.Qctrl, varTokvar.u) annotation (Line(points={{-29,-5},
+  connect(voltVarWatt_param.QCtrl, varTokvar.u) annotation (Line(points={{-29,-5},
           {-20,-5},{-20,-50},{18,-50}}, color={0,0,127}));
   connect(v, zeroOrderHold_v.u)
     annotation (Line(points={{-120,0},{-92,0}}, color={0,0,127}));
-  connect(zeroOrderHold_v.y, voltVarWatt_param.v)
+  connect(zeroOrderHold_v.y, voltVarWatt_param.Vpu)
     annotation (Line(points={{-69,0},{-52,0}}, color={0,0,127}));
   connect(varTokvar.y, zeroOrderHold_q.u)
     annotation (Line(points={{41,-50},{58,-50}}, color={0,0,127}));

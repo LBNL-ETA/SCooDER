@@ -1,5 +1,3 @@
 Battery
-BatterySOH
-BatteryRC
-Charge
-BatteryDegradation
+BatteryAdv
+Submodels

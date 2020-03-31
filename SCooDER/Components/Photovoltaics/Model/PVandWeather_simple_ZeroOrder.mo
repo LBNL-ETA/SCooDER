@@ -1,7 +1,7 @@
 within SCooDER.Components.Photovoltaics.Model;
 model PVandWeather_simple_ZeroOrder
   // Weather data
-  parameter String weather_file = "" "Path to weather file";
+  parameter String weather_file = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   // PV generation
   parameter Real n(min=0, unit="1") = 26 "Number of PV modules";
   parameter Real A(min=0, unit="m2") = 1.65 "Net surface area per module";
@@ -28,7 +28,7 @@ model PVandWeather_simple_ZeroOrder
     annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
   Modelica.Blocks.Interfaces.RealInput scale(start=1, unit="1")
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Modelica.Blocks.Interfaces.RealOutput P_kw(unit="kW", start=0)
+  Modelica.Blocks.Interfaces.RealOutput P_kW(unit="kW", start=0)
     "Active power"
     annotation (Placement(transformation(extent={{100,0},{120,20}})));
   Modelica.Blocks.Math.Gain WtokW(k=1/1e3)
@@ -47,7 +47,7 @@ equation
                                                color={0,0,127}));
   connect(pVModule_simple_ZeroOrder.scale, scale) annotation (Line(points={{-12,
           46},{-40,46},{-40,0},{-120,0}}, color={0,0,127}));
-  connect(WtokW.y, P_kw)
+  connect(WtokW.y,P_kW)
     annotation (Line(points={{41,10},{110,10}}, color={0,0,127}));
   connect(pVModule_simple_ZeroOrder.P, P)
     annotation (Line(points={{11,50},{110,50}}, color={0,0,127}));

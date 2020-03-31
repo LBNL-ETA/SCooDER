@@ -87,7 +87,7 @@ model Inverter_pf
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={60,-70})));
-  Modelica.Blocks.Interfaces.RealOutput batt_ctrl_inv
+  Modelica.Blocks.Interfaces.RealOutput BattCtrlInv
     "Battery control signal to battery"
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
   Flexgrid.Components.Inverter.Interfaces.InvCtrlBus invCtrlBus annotation (
@@ -115,10 +115,10 @@ model Inverter_pf
   Modelica.Blocks.Sources.RealExpression Battery_Ctrl(y=batt_ctrl_filtered)
     "Controlledbattery power with constraints"
     annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
-  Modelica.Blocks.Interfaces.RealOutput p( start=0, unit="W")
+  Modelica.Blocks.Interfaces.RealOutput P( start=0, unit="W")
                                                              "active power output [W]"
     annotation (Placement(transformation(extent={{-100,70},{-120,90}})));
-  Modelica.Blocks.Interfaces.RealOutput q( start=0, unit="var") "reactive power output [var]"
+  Modelica.Blocks.Interfaces.RealOutput Q( start=0, unit="var") "reactive power output [var]"
     annotation (Placement(transformation(extent={{-100,40},{-120,60}})));
 equation
   p_max = P_max_calc.y;
@@ -155,7 +155,7 @@ equation
     annotation (Line(points={{-62,-34},{-72,-34},{-79,-34}}, color={0,0,127}));
   connect(P_max_calc.u2, firstOrder_plim.y) annotation (Line(points={{-62,-46},{
           -70,-46},{-70,-60},{-70,-59}}, color={0,0,127}));
-  connect(batt_final.y, batt_ctrl_inv) annotation (Line(points={{91,-24},{94,-24},
+  connect(batt_final.y, BattCtrlInv) annotation (Line(points={{91,-24},{94,-24},
           {94,-80},{110,-80}}, color={0,0,127}));
   connect(ActivePower_Ctrl.y, Load.Pow)
     annotation (Line(points={{-31,50},{-31,50},{-48,50}},color={0,0,127}));
@@ -173,19 +173,19 @@ equation
     annotation (Line(points={{61,-30},{68,-30}}, color={0,0,127}));
   connect(abs_active.u, ActivePower_Ctrl.y) annotation (Line(points={{-2,-12},{
           -40,-12},{-40,50},{-31,50}}, color={0,0,127}));
-  connect(PF_Ctrl.y, Load.pf_in) annotation (Line(points={{-31,70},{-40,70},{
-          -40,56},{-48,56}}, color={0,0,127}));
-  connect(sens_Inverter.S[1], p) annotation (Line(points={{-89,24},{-94,24},{-94,
+  connect(PF_Ctrl.y, Load.PF) annotation (Line(points={{-31,70},{-40,70},{-40,
+          56},{-48,56}}, color={0,0,127}));
+  connect(sens_Inverter.S[1],P)  annotation (Line(points={{-89,24},{-94,24},{-94,
           80},{-110,80}}, color={0,0,127}));
-  connect(q, sens_Inverter.S[2]) annotation (Line(points={{-110,50},{-94,50},{-94,
+  connect(Q, sens_Inverter.S[2]) annotation (Line(points={{-110,50},{-94,50},{-94,
           24},{-89,24}}, color={0,0,127}));
-  connect(q, invCtrlBus.q) annotation (Line(points={{-110,50},{-110,50},{-94,50},
+  connect(Q, invCtrlBus.q) annotation (Line(points={{-110,50},{-110,50},{-94,50},
           {-94,-100},{20,-100},{20,-100},{20,-99.95},{20.05,-99.95}}, color={0,0,
           127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(p, invCtrlBus.p) annotation (Line(points={{-110,80},{-94,80},{-94,-100},
+  connect(P, invCtrlBus.p) annotation (Line(points={{-110,80},{-94,80},{-94,-100},
           {-36,-100},{-36,-99.95},{20.05,-99.95}}, color={0,0,127}), Text(
       string="%second",
       index=1,

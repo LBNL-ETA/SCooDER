@@ -13,8 +13,8 @@ model PVsimple
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={-120,0})));
-  Modelica.Blocks.Interfaces.RealOutput PV_generation "PV generation"
+  Modelica.Blocks.Interfaces.RealOutput P "PV generation"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
 equation
-  PV_generation = A * n * eta * G;
+  P = A*n*eta*G;
 end PVsimple;

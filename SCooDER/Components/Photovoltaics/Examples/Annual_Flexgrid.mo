@@ -4,7 +4,9 @@ model Annual_Flexgrid
   Model.PVModule_simple Single_flexgrid
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon1(
-      computeWetBulbTemperature=false, filNam="C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos")
+      computeWetBulbTemperature=false, filNam=
+        Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
   Modelica.Blocks.Sources.Constant shade(k=1)

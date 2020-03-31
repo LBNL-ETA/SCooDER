@@ -76,7 +76,7 @@ equation
     annotation (Line(points={{41,-50},{110,-50}}, color={0,0,127}));
   connect(P, S_curtail_P.y) annotation (Line(points={{110,50},{92,50},{92,
           0},{84,0}}, color={0,0,127}));
-  connect(v, voltVarWatt_param_firstorder.v)
+  connect(v, voltVarWatt_param_firstorder.Vpu)
     annotation (Line(points={{-120,0},{-52,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

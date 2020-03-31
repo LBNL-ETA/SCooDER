@@ -191,21 +191,21 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar1.invCtrlBus, invCtrlBus1) annotation (Line(
+  connect(voltvar1.InvCtrlBus, invCtrlBus1) annotation (Line(
       points={{-40,-70},{-40,100}},
       color={255,204,51},
       thickness=0.5), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar2.invCtrlBus, invCtrlBus2) annotation (Line(
+  connect(voltvar2.InvCtrlBus, invCtrlBus2) annotation (Line(
       points={{0,-70},{0,-70},{0,100}},
       color={255,204,51},
       thickness=0.5), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar3.invCtrlBus, invCtrlBus3) annotation (Line(
+  connect(voltvar3.InvCtrlBus, invCtrlBus3) annotation (Line(
       points={{40,-70},{40,-70},{40,100},{50,100}},
       color={255,204,51},
       thickness=0.5), Text(

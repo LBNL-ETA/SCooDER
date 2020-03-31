@@ -52,13 +52,12 @@ annotation (Dialog(group="RC parameters"));
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
  annotation (Dialog(group="Battery initialization parameters"));
 
-
   parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
 
 
 
-  SCooDER.Components.Battery.Model.BatterySOH battery(
+  SCooDER.Components.Battery.Model.Submodels.BatterySOH battery(
     PInt(start=0),
     EMaxNom=CapNom,
     Pmax=PMax,
@@ -80,7 +79,8 @@ annotation (Dialog(group="RC parameters"));
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
   Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Battery.Model.BatteryDegradation battery_degradation(
+  Battery.Model.Submodels.BatteryDegradation battery_degradation(
+    TBatt(start=TOutInit),
     a=a,
     b=b,
     c=c,
@@ -96,7 +96,6 @@ annotation (Dialog(group="RC parameters"));
     batAgeInit=batAgeInit,
     IRateAvgInit=IRateAvgInit,
     AhStart=AhStart,
-    T(start=TOutInit),
     TAvg(start=TAvgInit))
     annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
   Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W")
@@ -111,7 +110,8 @@ annotation (Dialog(group="RC parameters"));
     "Actual power of EV while driving "
     annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
-  BatteryRCFlex batteryRCFlex(C_battery=CBatt,
+  Battery.Model.Submodels.BatteryRCFlex batteryRCFlex(
+    C_battery=CBatt,
     TInit=TBattInit,
     TOut(start=TOutInit))
     annotation (Placement(transformation(extent={{30,-14},{50,6}})));
@@ -166,8 +166,8 @@ equation
     annotation (Line(points={{-73,40},{-64,40}}, color={255,0,255}));
   connect(Plugged_In.u, PluggedIn)
     annotation (Line(points={{-96,40},{-120,40}}, color={0,0,127}));
-  connect(batteryRCFlex.TBatt, battery_degradation.T) annotation (Line(points={{51,-4},
-          {58,-4},{58,-12},{64,-12}},        color={0,0,127}));
+  connect(batteryRCFlex.TBatt, battery_degradation.TBatt) annotation (Line(
+        points={{51,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>

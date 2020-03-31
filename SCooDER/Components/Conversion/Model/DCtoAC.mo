@@ -2,7 +2,8 @@ within SCooDER.Components.Conversion.Model;
 model DCtoAC
   extends Buildings.Electrical.Interfaces.VariableVoltageSource(
     V(start = 1),
-    redeclare package PhaseSystem = PhaseSystems.TwoConductor,
+    redeclare package PhaseSystem =
+        Buildings.Electrical.PhaseSystems.TwoConductor,
     redeclare Buildings.Electrical.DC.Interfaces.Terminal_p terminal,
     final potentialReference=true,
     final definiteReference=false);

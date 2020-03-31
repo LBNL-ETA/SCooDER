@@ -64,16 +64,16 @@ equation
   connect(pv.terminal,sens2. terminal_p)
     annotation (Line(points={{80,-40},{10,-40}},
                                                color={0,120,120}));
-  connect(variableInductor.L, ramp_L.y) annotation (Line(points={{-30.8,70},
-          {-40,70},{-40,41}}, color={0,0,127}));
-  connect(ramp_R.y, variableResistor.R) annotation (Line(points={{-80,41},{
-          -80,70},{-71,70}}, color={0,0,127}));
+  connect(variableInductor.L, ramp_L.y) annotation (Line(points={{-32,70},{-40,
+          70},{-40,41}},      color={0,0,127}));
+  connect(ramp_R.y, variableResistor.R) annotation (Line(points={{-80,41},{-80,
+          70},{-72,70}},     color={0,0,127}));
   connect(variableInductor.n, interface_MBL1.p_i)
     annotation (Line(points={{-20,60},{0,60}}, color={0,0,255}));
   connect(variableResistor.n, interface_MBL1.p_i)
     annotation (Line(points={{-60,60},{0,60}}, color={0,0,255}));
-  connect(V_sens.y, signalVoltage.v) annotation (Line(points={{70,81},{58,
-          81},{58,70},{47,70}}, color={0,0,127}));
+  connect(V_sens.y, signalVoltage.v) annotation (Line(points={{70,81},{58,81},{
+          58,70},{52,70}},      color={0,0,127}));
   connect(ground1.p, signalVoltage.n)
     annotation (Line(points={{40,60},{40,60}}, color={0,0,255}));
   connect(signalVoltage.p, interface_MBL1.p_v)

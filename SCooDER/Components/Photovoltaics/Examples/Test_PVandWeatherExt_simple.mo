@@ -3,7 +3,8 @@ model Test_PVandWeatherExt_simple
   extends Modelica.Icons.Example;
 
   Model.PVandWeatherExt_simple PV(weather_file=
-        "C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos")
+        Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     annotation (Placement(transformation(extent={{40,-8},{60,12}})));
   Modelica.Blocks.Sources.Constant curtail(k=1)
     annotation (Placement(transformation(extent={{-60,-20},{-40,0}})));

@@ -7,7 +7,7 @@ model generic_wye_voltvarwatt_simple
   parameter Real v_min( start=0.95, unit="1")=0.95 "Voltage minimum [p.u.]";
   parameter Real q_maxind( start=1000, unit="var")=2500 "Maximal Reactive Power (Inductive) [var]";
   parameter Real q_maxcap( start=1000, unit="var")=2500 "Maximal Reactive Power (Capacitive) [var]";*/
-  parameter String weaName = "C:/Users/Christoph/Documents/SmartInverter/smartinverter_simulation/ExampleData/USA_CA_San.Francisco.Intl.AP.724940_TMY3_CONVERTED.mos" "Path to weather file";
+  parameter String weaName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
   parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
   parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";
@@ -185,11 +185,11 @@ equation
           {64,-20},{64,-0.533333},{70.2,-0.533333}}, color={0,120,120}));
   connect(sens1.terminal_n, wye.terminals[1]) annotation (Line(points={{48,20},{
           64,20},{64,0.533333},{70.2,0.533333}}, color={0,120,120}));
-  connect(inv1.v, vpu1.y)
+  connect(inv1.Vpu, vpu1.y)
     annotation (Line(points={{-46,40},{-63.6,40}}, color={0,0,127}));
-  connect(vpu3.y, inv3.v)
+  connect(vpu3.y, inv3.Vpu)
     annotation (Line(points={{-63.6,-40},{-46,-40}}, color={0,0,127}));
-  connect(vpu2.y, inv2.v)
+  connect(vpu2.y, inv2.Vpu)
     annotation (Line(points={{-63.6,0},{-46,0}}, color={0,0,127}));
   connect(sens3.V, vpu3.u) annotation (Line(points={{59,-30},{64,-30},{64,-54},
           {-80,-54},{-80,-40},{-72.8,-40}}, color={0,0,127}));

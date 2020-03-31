@@ -1,6 +1,6 @@
 within SCooDER.Systems.Examples;
 model Test_FLEXGRID_voltvar_FMU
-  FLEXGRID_voltvar_FMU fLEXGRID_voltvar_FMU
+  FLEXGRID.FLEXGRID_voltvar_FMU fLEXGRID_voltvar_FMU
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
   Modelica.Blocks.Sources.Sine Voltage1(
     phase=0,

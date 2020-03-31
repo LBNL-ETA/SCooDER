@@ -52,7 +52,7 @@ equation
           {-120,-40}}, color={0,0,127}));
   connect(product.y, pV_simple.G)
     annotation (Line(points={{1,0},{18,0}}, color={0,0,127}));
-  connect(pV_simple.PV_generation, P)
+  connect(pV_simple.P, P)
     annotation (Line(points={{41,0},{110,0}}, color={0,0,127}));
   connect(product.u1, zeroOrderHold_Pv.y)
     annotation (Line(points={{-22,6},{-40,6},{-40,9}}, color={0,0,127}));

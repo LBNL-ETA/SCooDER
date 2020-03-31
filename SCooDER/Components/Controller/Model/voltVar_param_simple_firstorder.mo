@@ -1,7 +1,7 @@
 within SCooDER.Components.Controller.Model;
 model voltVar_param_simple_firstorder
 
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput QCon(start=0, unit="var") "Q control signal"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
@@ -25,7 +25,7 @@ model voltVar_param_simple_firstorder
     annotation (Placement(transformation(extent={{60,-10},{80,10}})));
 equation
 
-  connect(voltVar_param1.v, v)
+  connect(voltVar_param1.Vpu, Vpu)
     annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
   connect(voltVar_param1.QCon, firstOrder.u)
     annotation (Line(points={{11,0},{11,0},{58,0}}, color={0,0,127}));

@@ -65,16 +65,16 @@ equation
       thickness=0.5));
   connect(pVModule_simple_ZeroOrder.P, WtokW.u)
     annotation (Line(points={{11,50},{18,50}}, color={0,0,127}));
-  connect(pVModule_simple_ZeroOrder.scale, voltVarWatt_param.Plim)
+  connect(pVModule_simple_ZeroOrder.scale,voltVarWatt_param.PLim)
     annotation (Line(points={{-12,46},{-20,46},{-20,5},{-29,5}}, color={0,
           0,127}));
-  connect(voltVarWatt_param.Qctrl, varTokvar.u) annotation (Line(points={{-29,-5},
+  connect(voltVarWatt_param.QCtrl, varTokvar.u) annotation (Line(points={{-29,-5},
           {-20,-5},{-20,-50},{18,-50}}, color={0,0,127}));
   connect(varTokvar.y, Q)
     annotation (Line(points={{41,-50},{110,-50}}, color={0,0,127}));
   connect(P, S_curtail_P.y) annotation (Line(points={{110,50},{92,50},{92,
           0},{84,0}}, color={0,0,127}));
-  connect(v, voltVarWatt_param.v)
+  connect(v, voltVarWatt_param.Vpu)
     annotation (Line(points={{-120,0},{-52,0}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

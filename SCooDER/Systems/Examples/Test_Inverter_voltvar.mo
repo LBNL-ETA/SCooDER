@@ -94,16 +94,16 @@ equation
   connect(inverter.P_PV, PV1.y) annotation (Line(points={{28,86},{18,86},{18,
           90},{11,90}},
                     color={0,0,127}));
-  connect(Q_max.y, voltvar.q_maxcap)
+  connect(Q_max.y, voltvar.QMaxCap)
     annotation (Line(points={{1,30},{6,30},{6,12}}, color={0,0,127}));
-  connect(lower_voltage.y, voltvar.v_min) annotation (Line(points={{-51,-58},
-          {-26,-58},{-26,-8},{-2,-8}},       color={0,0,127}));
-  connect(upper_voltage.y, voltvar.v_max) annotation (Line(points={{-51,62},{
-          -26,62},{-26,8},{-2,8}},       color={0,0,127}));
-  connect(voltvar.v_mindead,lower_deadband_voltage. y) annotation (Line(
-        points={{-2,-4},{-32,-4},{-32,-18},{-39,-18}},  color={0,0,127}));
-  connect(upper_deadband_voltage.y, voltvar.v_maxdead) annotation (Line(
-        points={{-39,22},{-32,22},{-32,4},{-2,4}},  color={0,0,127}));
+  connect(lower_voltage.y, voltvar.VMin) annotation (Line(points={{-51,-58},{-26,
+          -58},{-26,-8},{-2,-8}}, color={0,0,127}));
+  connect(upper_voltage.y, voltvar.VMax) annotation (Line(points={{-51,62},{-26,
+          62},{-26,8},{-2,8}}, color={0,0,127}));
+  connect(voltvar.VMinDead, lower_deadband_voltage.y) annotation (Line(points={
+          {-2,-4},{-32,-4},{-32,-18},{-39,-18}}, color={0,0,127}));
+  connect(upper_deadband_voltage.y, voltvar.VMaxDead) annotation (Line(points={
+          {-39,22},{-32,22},{-32,4},{-2,4}}, color={0,0,127}));
   connect(invCtrlBus, inverter.invCtrlBus) annotation (Line(
       points={{40,50},{40,50},{40,60},{40,70}},
       color={255,204,51},
@@ -121,12 +121,12 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar.q_control, invCtrlBus.qctrl) annotation (Line(points={{21,0},{
-          40.05,0},{40.05,50.05}},  color={0,0,127}), Text(
+  connect(voltvar.QCtrl, invCtrlBus.qctrl) annotation (Line(points={{21,0},{
+          40.05,0},{40.05,50.05}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(voltvar.q_maxind, Q_max.y)
+  connect(voltvar.QMaxInd, Q_max.y)
     annotation (Line(points={{12,12},{12,30},{1,30}}, color={0,0,127}));
   connect(fixVol.terminal, RL1.terminal_n) annotation (Line(points={{90,-80},
           {90,-73},{90,-66}}, color={0,120,120}));
@@ -136,7 +136,7 @@ equation
     annotation (Line(points={{90,8},{90,8},{90,-46}}, color={0,120,120}));
   connect(load1.terminal, RL1.terminal_p) annotation (Line(points={{80,-20},{
           90,-20},{90,-46}}, color={0,120,120}));
-  connect(realExpression.y, voltvar.v_pu)
+  connect(realExpression.y, voltvar.Vpu)
     annotation (Line(points={{-59,0},{-30.5,0},{-2,0}}, color={0,0,127}));
   connect(sens.terminal_p, inverter.term_p) annotation (Line(points={{90,28},
           {90,28},{90,80},{50,80}}, color={0,120,120}));

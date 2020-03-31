@@ -24,33 +24,34 @@ model voltvar_param_pf
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={-4,50})));
-  Modelica.Blocks.Interfaces.RealOutput pf( start=1, unit="1")
+  Modelica.Blocks.Interfaces.RealOutput PF( start=1, unit="1")
     "pf control signal"                                                            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Modelica.Blocks.Interfaces.RealInput p(start=0, unit="W") "active power [W]" annotation (Placement(transformation(
+  Modelica.Blocks.Interfaces.RealInput P(start=0, unit="W") "active power [W]" annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=0,
         origin={-120,50})));
-  Modelica.Blocks.Interfaces.RealInput v_pu(start=1, unit="1") "Voltage [p.u.]" annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u.]"
+    annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
 equation
-  connect(voltvar.q_control, qToPf.q)
+  connect(voltvar.QCtrl, qToPf.Q)
     annotation (Line(points={{-7,0},{0.5,0},{8,0}}, color={0,0,127}));
-  connect(Param1.y, voltvar.v_max) annotation (Line(points={{-59,40},{-40,40},{-40,
+  connect(Param1.y, voltvar.VMax) annotation (Line(points={{-59,40},{-40,40},{-40,
           8},{-30,8}}, color={0,0,127}));
-  connect(Param2.y, voltvar.v_maxdead) annotation (Line(points={{-59,20},{-44,20},
+  connect(Param2.y, voltvar.VMaxDead) annotation (Line(points={{-59,20},{-44,20},
           {-44,4},{-30,4}}, color={0,0,127}));
-  connect(Param3.y, voltvar.v_mindead) annotation (Line(points={{-59,-20},{-44,-20},
+  connect(Param3.y, voltvar.VMinDead) annotation (Line(points={{-59,-20},{-44,-20},
           {-44,-4},{-30,-4}}, color={0,0,127}));
-  connect(voltvar.v_min, Param4.y) annotation (Line(points={{-30,-8},{-40,-8},{-40,
+  connect(voltvar.VMin, Param4.y) annotation (Line(points={{-30,-8},{-40,-8},{-40,
           -40},{-59,-40}}, color={0,0,127}));
-  connect(Param5.y, voltvar.q_maxcap)
+  connect(Param5.y, voltvar.QMaxCap)
     annotation (Line(points={{-22,39},{-22,25.5},{-22,12}}, color={0,0,127}));
-  connect(Param6.y, voltvar.q_maxind) annotation (Line(points={{-4,39},{-4,39},{
+  connect(Param6.y, voltvar.QMaxInd) annotation (Line(points={{-4,39},{-4,39},{
           -4,20},{-16,20},{-16,12}}, color={0,0,127}));
-  connect(voltvar.v_pu, v_pu) annotation (Line(points={{-30,0},{-90,0},{-90,-50},
+  connect(voltvar.Vpu, Vpu) annotation (Line(points={{-30,0},{-90,0},{-90,-50},
           {-120,-50}}, color={0,0,127}));
-  connect(p, qToPf.p) annotation (Line(points={{-120,50},{-90,50},{-90,80},{20,
+  connect(P,qToPf.P)  annotation (Line(points={{-120,50},{-90,50},{-90,80},{20,
           80},{20,14},{20,12}},             color={0,0,127}));
-  connect(qToPf.pf, pf)
+  connect(qToPf.PF,PF)
     annotation (Line(points={{31,0},{110,0}},         color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

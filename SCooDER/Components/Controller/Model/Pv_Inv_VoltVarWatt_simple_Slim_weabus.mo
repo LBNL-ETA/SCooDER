@@ -1,7 +1,7 @@
 within SCooDER.Components.Controller.Model;
 model Pv_Inv_VoltVarWatt_simple_Slim_weabus
   // Weather data
-  //parameter String weather_file = "" "Path to weather file";
+  //parameter String weather_file = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   // PV generation
   parameter Real n(min=0, unit="1") = 26 "Number of PV modules";
   parameter Real A(min=0, unit="m2") = 1.65 "Net surface area per module";
@@ -26,7 +26,7 @@ model Pv_Inv_VoltVarWatt_simple_Slim_weabus
     lat=lat,
     til=til,
     azi=azi) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
-  Modelica.Blocks.Interfaces.RealInput v(start=1, unit="1") "Voltage [p.u]"
+  Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Q(start=0, unit="var")
     "Reactive power"
@@ -46,12 +46,12 @@ model Pv_Inv_VoltVarWatt_simple_Slim_weabus
                   weaBus "Bus with weather data"
     annotation (Placement(transformation(extent={{-110,60},{-90,80}})));
   Modelica.Blocks.Sources.RealExpression S_curtail_P(y=min(sqrt(SMax^2 -
-        VoltVarWatt.Qctrl^2), PV.P))
+        VoltVarWatt.QCtrl^2), PV.P))
                   annotation (Placement(transformation(extent={{0,-10},{80,10}})));
 equation
-  connect(PV.scale, VoltVarWatt.Plim) annotation (Line(points={{-12,46},{-20,46},
+  connect(PV.scale,VoltVarWatt.PLim)  annotation (Line(points={{-12,46},{-20,46},
           {-20,5},{-29,5}}, color={0,0,127}));
-  connect(VoltVarWatt.v, v)
+  connect(VoltVarWatt.Vpu, Vpu)
     annotation (Line(points={{-52,0},{-120,0}}, color={0,0,127}));
   connect(weaBus, PV.weaBus) annotation (Line(
       points={{-100,70},{-72,70},{-72,54},{-10,54}},
@@ -63,7 +63,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(P, S_curtail_P.y) annotation (Line(points={{110,50},{88,50},{88,0},{84,
           0}}, color={0,0,127}));
-  connect(Q, VoltVarWatt.Qctrl) annotation (Line(points={{110,-50},{-20,-50},{-20,
+  connect(Q,VoltVarWatt.QCtrl)  annotation (Line(points={{110,-50},{-20,-50},{-20,
           -5},{-29,-5}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

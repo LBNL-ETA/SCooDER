@@ -16,6 +16,7 @@ model BatterySOH
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
 
+
   Modelica.SIunits.Energy EMax "Remaining max battery capacity considering SOH";
  Modelica.Blocks.Interfaces.RealInput PCtrl(unit="W")
     "Power control to charge (positive) discharge (negativ) the battery"
@@ -28,8 +29,8 @@ model BatterySOH
         origin={-120,0})));
   Modelica.Blocks.Interfaces.RealOutput SOC "State of Charge [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Modelica.Blocks.Interfaces.RealOutput PInt
-    "Internal battery power getting stored in the battery (after losses) and beeing provided by the battery (before losses) [W]"
+  Modelica.Blocks.Interfaces.RealOutput PInt( start=0)
+    "Integral of internal battery power getting stored in the battery (after losses) and beeing provided by the battery (before losses) [W]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Interfaces.RealOutput SOE "State of Energy [Wh]"
     annotation (Placement(transformation(extent={{100,40},{120,60}})));

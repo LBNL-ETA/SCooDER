@@ -1,5 +1,5 @@
 within SCooDER.Components.Battery.Model;
-model Battery
+model Battery "Simplified battery model"
   parameter Real EMax(min=0) = 6400
     "Battery Capacity [Wh]";
   parameter Real Pmax(min=0) = 3300

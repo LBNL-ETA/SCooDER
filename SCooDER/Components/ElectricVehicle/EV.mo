@@ -80,6 +80,7 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
   Battery.Model.Submodels.BatteryDegradation battery_degradation(
+    TBatt(start=TOutInit),
     a=a,
     b=b,
     c=c,
@@ -95,7 +96,6 @@ annotation (Dialog(group="RC parameters"));
     batAgeInit=batAgeInit,
     IRateAvgInit=IRateAvgInit,
     AhStart=AhStart,
-    T(start=TOutInit),
     TAvg(start=TAvgInit))
     annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
   Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W")
@@ -166,8 +166,8 @@ equation
     annotation (Line(points={{-73,40},{-64,40}}, color={255,0,255}));
   connect(Plugged_In.u, PluggedIn)
     annotation (Line(points={{-96,40},{-120,40}}, color={0,0,127}));
-  connect(batteryRCFlex.TBatt, battery_degradation.T) annotation (Line(points={{51,-4},
-          {58,-4},{58,-12},{64,-12}},        color={0,0,127}));
+  connect(batteryRCFlex.TBatt, battery_degradation.TBatt) annotation (Line(
+        points={{51,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>

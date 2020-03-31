@@ -1,5 +1,5 @@
 within SCooDER.Components.Battery.Model;
-model BatteryAdv
+model BatteryAdv  "Advanced battery model with temperature modeling and degradation modeling"
 
   parameter Real CapNom(min=0) = 24000 "Battery capacity at start of life [Wh]";
   parameter Real PMax(min=0, unit="W") = 60000  "Max battery power";
@@ -19,11 +19,7 @@ model BatteryAdv
 
   parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
 annotation (Dialog(group="RC parameters"));
-  parameter Modelica.SIunits.ThermalResistance RPlug=0.004 "R parameter for battery while stationary"
-annotation (Dialog(group="RC parameters"));
 
-  parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving"
-annotation (Dialog(group="RC parameters"));
 
   parameter Real a=8.860644141827217e-06
   annotation (Dialog(group="Battery degradation parameters"));
@@ -63,7 +59,8 @@ annotation (Dialog(group="RC parameters"));
     SOC_min=SOC_min,
     SOC_max=SOC_max,
     etaCha=etaCha,
-    etaDis=etaDis)
+    etaDis=etaDis,
+    PInt(start=0))
     annotation (Placement(transformation(extent={{-54,-10},{-34,10}})));
   Submodels.BatteryRCFlex
                       batteryRCFlex(
@@ -72,6 +69,8 @@ annotation (Dialog(group="RC parameters"));
     TOut(start=TOutInit))
     annotation (Placement(transformation(extent={{20,-22},{40,-2}})));
   Submodels.BatteryDegradation batteryDegradation(
+    TAvgInit=TAvgInit,
+    TBatt(start=TOutInit),
     a=a,
     b=b,
     c=c,
@@ -86,12 +85,11 @@ annotation (Dialog(group="RC parameters"));
     batAgeInit=batAgeInit,
     IRateAvgInit=IRateAvgInit,
     AhStart=AhStart,
-    T(start=TOutInit),
     TAvg(start=TAvgInit))
     annotation (Placement(transformation(extent={{54,-22},{74,-2}})));
-  Modelica.Blocks.Interfaces.RealInput PCtrl
+  Modelica.Blocks.Interfaces.RealInput PCtrl( start=0, unit="W")
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Modelica.Blocks.Interfaces.RealInput TOut
+  Modelica.Blocks.Interfaces.RealInput TOut( start=293.15, min=0, unit="K")
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
   Modelica.Blocks.Interfaces.RealOutput SOC
     annotation (Placement(transformation(extent={{100,50},{120,70}})));
@@ -102,34 +100,33 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealOutput P
     annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
 
-  Modelica.Blocks.Interfaces.RealInput RFlex
+  Modelica.Blocks.Interfaces.RealInput RFlex( start=0.004, min = 0)
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
 initial equation
   startTime=time;
 equation
-  connect(batterySOH.P, batteryRCFlex.PBatt) annotation (Line(points={{-33,-8},
-          {-20,-8},{-20,-16},{18,-16}}, color={0,0,127}));
-  connect(batteryRCFlex.TBatt, batteryDegradation.T)
+  connect(batterySOH.P, batteryRCFlex.PBatt) annotation (Line(points={{-33,-8},{-20,
+          -8},{-20,-16},{18,-16}}, color={0,0,127}));
+  connect(batteryRCFlex.TBatt, batteryDegradation.TBatt)
     annotation (Line(points={{41,-12},{52,-12}}, color={0,0,127}));
   connect(batterySOH.PCtrl, PCtrl)
     annotation (Line(points={{-56,0},{-120,0}}, color={0,0,127}));
-  connect(TOut, batteryRCFlex.TOut) annotation (Line(points={{-120,40},{-16,40},
-          {-16,-12},{18,-12}}, color={0,0,127}));
-  connect(batterySOH.P, batteryDegradation.P) annotation (Line(points={{-33,-8},
-          {-20,-8},{-20,-24},{46,-24},{46,-16},{52,-16}},
-                                                     color={0,0,127}));
+  connect(TOut, batteryRCFlex.TOut) annotation (Line(points={{-120,40},{-16,40},{-16,
+          -12},{18,-12}}, color={0,0,127}));
+  connect(batterySOH.P, batteryDegradation.P) annotation (Line(points={{-33,-8},{-20,
+          -8},{-20,-24},{46,-24},{46,-16},{52,-16}}, color={0,0,127}));
   connect(batteryDegradation.SOH, batterySOH.SOH) annotation (Line(points={{75,-12},
           {78,-12},{78,-26},{-60,-26},{-60,4},{-56,4}}, color={0,0,127}));
-  connect(batteryRCFlex.TBatt, TBatt) annotation (Line(points={{41,-12},{46,-12},
-          {46,0},{92,0},{92,-20},{110,-20}}, color={0,0,127}));
+  connect(batteryRCFlex.TBatt, TBatt) annotation (Line(points={{41,-12},{46,-12},{
+          46,0},{92,0},{92,-20},{110,-20}}, color={0,0,127}));
   connect(batterySOH.SOE, SOE)
     annotation (Line(points={{-33,5},{92,5},{92,20},{110,20}}, color={0,0,127}));
   connect(batterySOH.SOC, SOC)
     annotation (Line(points={{-33,8},{88,8},{88,60},{110,60}}, color={0,0,127}));
   connect(batterySOH.PExt, P) annotation (Line(points={{-33,-4},{-24,-4},{-24,-60},
           {110,-60}}, color={0,0,127}));
-  connect(RFlex, batteryRCFlex.R) annotation (Line(points={{-120,80},{8,80},{8,
-          -8},{18,-8}}, color={0,0,127}));
+  connect(RFlex, batteryRCFlex.R)
+    annotation (Line(points={{-120,80},{8,80},{8,-8},{18,-8}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end BatteryAdv;

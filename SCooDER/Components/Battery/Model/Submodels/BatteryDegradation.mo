@@ -1,16 +1,16 @@
-within SCooDER.Components.Battery.Model.Submodels;
+﻿within SCooDER.Components.Battery.Model.Submodels;
 model BatteryDegradation
-  //parameter Real a=8.61e-6 "default Wang fitted";
-  //parameter Real b=-5.13e-3 "default Wang fitted";
-  //parameter Real c=7.63e-1 "default Wang fitted";
-  parameter Real a=8.860644141827217e-06;
-  parameter Real b=-0.005297550909189135;
-  parameter Real c=0.7922675255918518;
-  parameter Real d=-6.7e-3;
-  parameter Real e=2.35;
-  parameter Real f=14876;
-  parameter Real R=8.314;
-  parameter Real Ea=24.5e3;
+  //parameter Real a=8.61e-6 "Default Wang fitted";
+  //parameter Real b=-5.13e-3 "Default Wang fitted";
+  //parameter Real c=7.63e-1 "Default Wang fitted";
+  parameter Real a=8.860644141827217e-06 "Custom fitting";
+  parameter Real b=-0.005297550909189135 "Custom fitting";
+  parameter Real c=0.7922675255918518 "Custom fitting";
+  parameter Real d=-6.7e-3 "Default Wang fitted";
+  parameter Real e=2.35 "Default Wang fitted";
+  parameter Real f=14876 "Default Wang fitted";
+  parameter Real R=8.314 "Default Wang fitted";
+  parameter Real Ea=24.5e3 "Default Wang fitted";
   parameter Real V( unit="V") = 380 "Nominal battery voltage";
   parameter Real Pmax( unit="W") = 3300 "Maximum battery power";
   parameter Real Capacity = 6400 "Battery capacity at start of life [Wh]";
@@ -21,7 +21,10 @@ model BatteryDegradation
   parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started [h-1]";
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started [Ah]";
 
-  Modelica.Blocks.Interfaces.RealInput T( start=293.15,min=0, unit="K") "Temperature outside [K]"
+  Modelica.Blocks.Interfaces.RealInput TBatt(
+    start=293.15,
+    min=0,
+    unit="K") "Temperature Battery [K]"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput SOH "Battery state of health [-]"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
@@ -46,7 +49,8 @@ initial equation
 
 equation
   batAge = batAgeInit + (time - startTime) + 1e-6 "Total Battery age [s]";
-  der(TInt) = T "Integral of temperature over simulation time";
+  der(TInt) =TBatt
+                "Integral of temperature over simulation time";
   TAvg = (TInt + (TAvgInit*batAgeInit))/batAge "Average temperature of battery lifetime (simulation time and pre simulation temperature) [K]";
   IRate = (P/V)/(Capacity/V) "I-rate of battery [h-1]";
 
@@ -67,5 +71,24 @@ equation
   CapLossCyc =( a*(TAvg^2) + b*TAvg + c)*exp((d*TAvg + e)*IRateAvg)*Ah "Capacity losses due to battery cycling [%]";
 
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-        coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html> <p>This model represents the degradation of a battery as a combination of calendar and cycle losses.</p> </html>"));
+        coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html> <p>This model represents the degradation of a battery as a combination of calendar and cycle losses. 
+        It is based on the paper 'Degradation of lithium ion batteries employing graphite negatives and nickele-cobalte-manganese oxide + spinel manganese oxide positives: 
+        Part 1, aging mechanisms and life estimation' (Wang, John, et al.). The combined battery loss of calendar and cycle losses in percent is based on the following equation:
+        </p><bk/>
+        <p>QLoss,% = ( a*(TAvg^2) + b*TAvg + c)*exp((d*TAvg + e)*IRateAvg)*Ah + f*sqrt(batAge/86400)*exp(-Ea/(R*TAvg)) </p>
+        with<bk/>
+        
+        <ul>
+        <li>a,b,c,d,e,f being custom fitted parameters</li>
+        <li>TAvg being the average temperature of the battery over its lifetime [K]</li>
+        <li>IRateAvg being the average I-Rate of the battery over its lifetime </li>
+        <li>Ah being the Ah-throughput of the battery over its lifetime [Ah]</li>
+        <li>batAge being the battery age [s]</li>
+        <li>Ea being the activation energy [kJ/mol]</li>
+        <li>R being the gas constant [J/(mol*K)]</li>
+        
+        </ul>
+        <h2> References </h2>
+        Wang, John, Justin Purewal, Ping Liu, Jocelyn Hicks-Garner, Souren Soukazian, Elena Sherman, Adam Sorenson, Luan Vu, Harshad Tataria, and Mark W. Verbrugge. 'Degradation of lithium ion batteries employing graphite negatives and nickel–cobalt–manganese oxide+ spinel manganese oxide positives: Part 1, aging mechanisms and life estimation.' Journal of Power Sources 269 (2014): 937-948.
+        </html>"));
 end BatteryDegradation;

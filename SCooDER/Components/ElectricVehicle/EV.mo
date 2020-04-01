@@ -24,32 +24,14 @@ annotation (Dialog(group="RC parameters"));
   parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving"
 annotation (Dialog(group="RC parameters"));
 
-  parameter Real a=8.860644141827217e-06
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real b=-0.005297550909189135
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real c=0.7922675255918518
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real d=-6.7e-3
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real e=2.35
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real f=14876
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real R=8.314
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real Ea=24.5e3
-  annotation (Dialog(group="Battery degradation parameters"));
-  parameter Real V( unit="V") = 380 "Nominal battery Voltage";
-
-
-  parameter Real TAvgInit( min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
+  parameter Real V(unit="V") = 345 "Nominal battery Voltage";
+  parameter Real TAvgInit(min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
-  parameter Real batAgeInit( min=0) = 0 "Initial age of battery [s]"
+  parameter Real batAgeInit(min=0) = 60 "Initial age of battery [s]"
   annotation (Dialog(group="Battery initialization parameters"));
-  parameter Real IRateAvgInit = 0 "Average IRate of battery before simulation started"
+  parameter Real CRateAvgInit(min=0) = 0.1 "Average IRate of battery before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
-  parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
+  parameter Real AhInit(min=0) = 1 "Ah throughput of battery before simulation started"
  annotation (Dialog(group="Battery initialization parameters"));
 
   parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
@@ -80,22 +62,13 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
   Battery.Model.Submodels.BatteryDegradation battery_degradation(
+    CRateAvgInit=CRateAvgInit,
     TBatt(start=TOutInit),
-    a=a,
-    b=b,
-    c=c,
-    d=d,
-    e=e,
-    f=f,
-    R=R,
-    Ea=Ea,
     V=V,
-    Pmax=PMax,
     Capacity=CapNom,
     TAvgInit=TAvgInit,
     batAgeInit=batAgeInit,
-    IRateAvgInit=IRateAvgInit,
-    AhStart=AhStart,
+    AhInit=AhInit,
     TAvg(start=TAvgInit))
     annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
   Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W")

@@ -12,8 +12,8 @@ model EV
     "Charging efficiency";
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
-    parameter Real TBattInit( min = 0, unit="K") = 293.15  "Temperature of battery at simulation start";
-    parameter Real TOutInit( min = 0, unit="K") = 293.15  "Outside temperature at simulation start";
+  parameter Real TBattInit( min = 0, unit="K") = 293.15  "Temperature of battery at simulation start";
+  parameter Real TOutInit( min = 0, unit="K") = 293.15  "Outside temperature at simulation start";
 
 
   parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
@@ -27,13 +27,15 @@ annotation (Dialog(group="RC parameters"));
   parameter Real V(unit="V") = 345 "Nominal battery Voltage";
   parameter Real TAvgInit(min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
-  parameter Real batAgeInit(min=0) = 60 "Initial age of battery [s]"
+  parameter Real batAgeInit(min=0, unit="s") = 60 "Initial age of battery"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real CRateAvgInit(min=0) = 0.1 "Average IRate of battery before simulation started"
   annotation (Dialog(group="Battery initialization parameters"));
   parameter Real AhInit(min=0) = 1 "Ah throughput of battery before simulation started"
- annotation (Dialog(group="Battery initialization parameters"));
+   annotation (Dialog(group="Battery initialization parameters"));
 
+  parameter Real FlagLowCycle(min=0, max=1) = 0 "Consider low cycling of calendar aging (0.5 C constantly) [1=true; 0=false]"
+  annotation (Dialog(group="Battery initialization parameters"));
   parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
 
@@ -52,7 +54,7 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Interfaces.RealInput TOut(min=0, start=293.15, unit="K")
     "Outside temperature"
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-  Modelica.Blocks.Interfaces.RealInput PPlugCtrl( start=0, unit="W")
+  Modelica.Blocks.Interfaces.RealInput PPlugCtrl(start=0, unit="W")
     "Battery control signal "
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
   Modelica.Blocks.Interfaces.RealOutput TBatt(unit="K") "Battery temperature"
@@ -63,6 +65,7 @@ annotation (Dialog(group="RC parameters"));
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
   Battery.Model.Submodels.BatteryDegradation battery_degradation(
     CRateAvgInit=CRateAvgInit,
+    FlagLowCycle=FlagLowCycle,
     TBatt(start=TOutInit),
     V=V,
     Capacity=CapNom,

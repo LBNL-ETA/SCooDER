@@ -5,17 +5,17 @@ package FleetEVs
     parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
     parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
-    Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start= 0, unit="W") "Control of individual EVs when plugged in "
+    Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start=0, unit="W") "Control of individual EVs when plugged in "
       annotation (Placement(transformation(extent={{-140,34},{-100,74}})));
-    Modelica.Blocks.Interfaces.RealInput PluggedIn[NumberEVsInt](  each start= 1)        "This input sets an individual EV as plugged in, when >= 1"
+    Modelica.Blocks.Interfaces.RealInput PluggedIn[NumberEVsInt](each start=1)        "This input sets an individual EV as plugged in, when >= 1"
       annotation (Placement(transformation(extent={{-140,-2},{-100,38}})));
-    Modelica.Blocks.Interfaces.RealInput PDriveCtrl[NumberEVsInt](each start= 0,unit="W")          "Control of individual EVs when driving"
+    Modelica.Blocks.Interfaces.RealInput PDriveCtrl[NumberEVsInt](each start=0,unit="W")          "Control of individual EVs when driving"
       annotation (Placement(transformation(extent={{-140,-38},{-100,2}})));
     Modelica.Blocks.Interfaces.RealInput T(start=293.15, min=0, unit="K")
       "Outside Temperature [K]"
       annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
     Components.ElectricVehicle.EV
-       eV[NumberEVsInt]
+       eV[NumberEVsInt](each FlagLowCycle=1)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
     Modelica.Blocks.Interfaces.RealOutput PSite(unit="W") "Load of site without EVs and PV "
       annotation (Placement(transformation(extent={{100,-10},{120,10}})));

@@ -21,6 +21,7 @@ model BatteryDegradation
   parameter Real batAgeInit(min=0, unit="s") = 60 "Initial age of battery";
   parameter Real CRateAvgInit(min=0) = 1 "Initial average CRate of battery before simulation started [W/Wh]";
   parameter Real AhInit(min=0) = 1 "Initial energy throughput of battery [Ah]";
+  parameter Real FlagLowCycle(min=0, max=1) = 0 "Consider low cycling of calendar aging (0.5 C constantly) [1=true; 0=false]";
 
   Modelica.Blocks.Interfaces.RealInput TBatt(
     start=293.15,
@@ -40,6 +41,7 @@ model BatteryDegradation
   Real CRateAvg "Average C-Rate over battery lifetime [h-1]";
   Real batAge "Battery age [s]";
   Real TInt "Integral of temperature since simulation start";
+  Real Ah_calendar "Ah throughput embedded in calendar aging (0.5 C cycling) [Ah]";
 
 initial equation
   startTime = time;
@@ -62,7 +64,17 @@ equation
     SOH = 1 - CapLossCyc / 100 - CapLossCal / 100;
   end if;
   CapLossCal = f * sqrt(batAge / 86400) * exp(-Ea / (R * TAvg)) "Capacity losses due to degradation by time [%]";
-  CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * Ah "Capacity losses due to battery cycling [%]";
+
+  Ah_calendar = Capacity / V * 0.5 * batAge / 3600;
+  if (FlagLowCycle == 1) then
+    if (Ah > Ah_calendar) then
+      CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * Ah "Capacity losses due to battery cycling [%]";
+    else
+      CapLossCyc = 0;
+    end if;
+  else
+    CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * Ah "Capacity losses due to battery cycling [%]";
+  end if;
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html> <p>This model represents the degradation of a battery as a combination of calendar and cycle losses. 
         It is based on the paper 'Degradation of lithium ion batteries employing graphite negatives and nickele-cobalte-manganese oxide + spinel manganese oxide positives: 

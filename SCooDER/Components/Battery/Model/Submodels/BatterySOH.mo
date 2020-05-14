@@ -38,28 +38,29 @@ model BatterySOH
     annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
   Modelica.Blocks.Interfaces.RealInput SOH "State of Health [-]"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
-  Charge soc_model(
+  Charge_energy
+         soc_model(
     etaCha=etaCha,
     etaDis=etaDis,
     SOC_start=SOC_start)
     annotation (Placement(transformation(extent={{20,70},{40,90}})));
-  Modelica.Blocks.Sources.Constant Wh_to_Ws(k=3600*EMaxNom)
+  Modelica.Blocks.Sources.Constant Wh_to_Wh(k=EMaxNom)
     annotation (Placement(transformation(extent={{-100,62},{-80,82}})));
   Modelica.Blocks.Math.Product Product
     annotation (Placement(transformation(extent={{-68,44},{-48,64}})));
   Modelica.Blocks.Interfaces.RealOutput PExt(start=0, unit="W") "AC Battery Power"
     annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
 equation
-  if (soc_model.SOC>=SOC_min) and (soc_model.SOC<=SOC_max) then
+  if (soc_model.SOC > (SOC_min+1e-6)) and (soc_model.SOC < (SOC_max-1e-6)) then
     if (PCtrl < 0) then
       PExt = max(Pmax*(-1), PCtrl);
     else
       PExt = min(Pmax, PCtrl);
     end if;
   else
-    if (PCtrl < 0) and (soc_model.SOC > SOC_min) then
+    if (PCtrl < 0) and (soc_model.SOC > (SOC_min+1e-6)) then
       PExt = max(Pmax*(-1), PCtrl);
-    elseif (PCtrl > 0) and (soc_model.SOC < SOC_max) then
+    elseif (PCtrl > 0) and (soc_model.SOC < (SOC_max-1e-6)) then
       PExt = min(Pmax, PCtrl);
     else
       PExt = 0;
@@ -76,7 +77,7 @@ equation
                      color={0,0,127}));
   connect(SOH, Product.u2) annotation (Line(points={{-120,40},{-94,40},{-94,48},
           {-70,48}}, color={0,0,127}));
-  connect(Wh_to_Ws.y, Product.u1) annotation (Line(points={{-79,72},{-76,
+  connect(Wh_to_Wh.y, Product.u1) annotation (Line(points={{-79,72},{-76,
           72},{-76,60},{-70,60}}, color={0,0,127}));
   connect(Product.y, soc_model.EMax) annotation (Line(points={{-47,54},{-30,54},
           {-30,90},{4,90},{4,84},{18,84}}, color={0,0,127}));

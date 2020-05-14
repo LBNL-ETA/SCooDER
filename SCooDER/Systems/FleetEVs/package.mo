@@ -17,13 +17,18 @@ package FleetEVs
     Components.ElectricVehicle.EV
        eV[NumberEVsInt](each FlagLowCycle=1)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-    Modelica.Blocks.Interfaces.RealOutput PSite(unit="W") "Load of site without EVs and PV "
+    Modelica.Blocks.Interfaces.RealOutput PSite(unit="W")
+    "Load of site without EVs and PV "
       annotation (Placement(transformation(extent={{100,-10},{120,10}})));
     Modelica.Blocks.Interfaces.RealInput PPv( start=0, unit="W") "PV generation on site "
       annotation (Placement(transformation(extent={{-140,-74},{-100,-34}})));
     Modelica.Blocks.Interfaces.RealInput PBase( start=0, unit="W") "Load of whole site at point of connection"
       annotation (Placement(transformation(extent={{-140,-110},{-100,-70}})));
 
+    Modelica.Blocks.Interfaces.RealOutput Time
+    annotation (Placement(transformation(extent={{100,60},{120,80}})));
+  Modelica.Blocks.Sources.RealExpression realExpression(y=time)
+    annotation (Placement(transformation(extent={{60,60},{80,80}})));
   initial equation
     startTime = time;
   equation
@@ -36,6 +41,8 @@ package FleetEVs
 
     PSite = sum(eV.PPlug)-PPv+PBase;
 
+  connect(realExpression.y, Time)
+    annotation (Line(points={{81,70},{110,70}}, color={0,0,127}));
   annotation(dialog(enable=false),
                Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)), Documentation(info="<html>

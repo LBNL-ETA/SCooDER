@@ -1,5 +1,5 @@
 within SCooDER.Components.Battery.Model.Submodels;
-model Charge "Model to compute the battery charge"
+model Charge_energy "Model to compute the battery charge as energy"
   extends Modelica.Blocks.Icons.Block;
   parameter Modelica.SIunits.Efficiency etaCha(max=1) = 0.9
     "Efficiency during charging";
@@ -13,10 +13,15 @@ model Charge "Model to compute the battery charge"
                                          final unit="W") annotation (Placement(transformation(
           extent={{-140,-20},{-100,20}}),iconTransformation(extent={{-140,-20},{
             -100,20}})));
+  Modelica.Blocks.Interfaces.RealOutput SOE(min=0, displayUnit="Wh") "State of energy
+   [Wh]" annotation (Placement(transformation(
+          extent={{100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,
+            10}})));
+  Real SOE_int(min=0, displayUnit="Wh") "State of energy [Wh]";
   Modelica.Blocks.Interfaces.RealOutput SOC(min=0, max=1) "State of charge [1]" annotation (Placement(transformation(
           extent={{100,-10},{120,10}}), iconTransformation(extent={{100,-10},{120,
             10}})));
-  Modelica.Blocks.Interfaces.RealInput EMax( displayUnit = "Wh") "Remaining battery capacity [Wh]"
+  Modelica.Blocks.Interfaces.RealInput EMax(displayUnit="Wh") "Battery capacity [Wh]"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
 protected
   Boolean underCharged "Flag, true if battery is undercharged";
@@ -25,11 +30,19 @@ initial equation
   pre(underCharged) = SOC_start < 0;
   pre(overCharged)  = SOC_start > 1;
 
-  SOC = SOC_start;
+  SOE_int = EMax * SOC_start;
 equation
   // Charge balance of battery
   PAct = if P > 0 then etaCha*P else (1/etaDis)*P;
-  der(SOC)=PAct/(EMax+1e-6);
+  der(SOE_int)=PAct/3600;
+  if (SOE_int >= EMax) then
+    SOE = EMax;
+  elseif (SOE_int <= 0) then
+    SOE = 0;
+  else
+    SOE = SOE_int;
+  end if;
+  SOC = SOE / EMax;
 
   // Equations to warn if state of charge exceeds 0 and 1
   underCharged = SOC < 0;
@@ -94,4 +107,4 @@ Revised documentation.
 </li>
 </ul>
 </html>"));
-end Charge;
+end Charge_energy;

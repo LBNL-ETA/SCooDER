@@ -68,7 +68,7 @@ equation
   Ah_calendar = Capacity / V * 0.5 * batAge / 3600;
   if (FlagLowCycle == 1) then
     if (Ah > Ah_calendar) then
-      CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * Ah "Capacity losses due to battery cycling [%]";
+      CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * (Ah - Ah_calendar) "Capacity losses due to battery cycling [%]";
     else
       CapLossCyc = 0;
     end if;

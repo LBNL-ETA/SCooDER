@@ -66,7 +66,7 @@ equation
   CapLossCal = f * sqrt(batAge / 86400) * exp(-Ea / (R * TAvg)) "Capacity losses due to degradation by time [%]";
 
   Ah_calendar = Capacity / V * 0.5 * batAge / 3600;
-  if (FlagLowCycle == 1) then
+  if (FlagLowCycle >= 0.5) then
     if (Ah > Ah_calendar) then
       CapLossCyc = (a * TAvg^2 + b*TAvg + c) * exp((d * TAvg + e) * CRateAvg) * (Ah - Ah_calendar) "Capacity losses due to battery cycling [%]";
     else

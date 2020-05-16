@@ -6,14 +6,16 @@ package FleetEVs
     parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 
     Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start=0, unit="W") "Control of individual EVs when plugged in "
-      annotation (Placement(transformation(extent={{-140,34},{-100,74}})));
+      annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
+    Modelica.Blocks.Interfaces.RealInput PRegCtrl[NumberEVsInt](each start=0, unit="W") "Control of individual EVs frequency regulation when plugged in "
+      annotation (Placement(transformation(extent={{-140,-50},{-100,-10}})));
     Modelica.Blocks.Interfaces.RealInput PluggedIn[NumberEVsInt](each start=1)        "This input sets an individual EV as plugged in, when >= 1"
-      annotation (Placement(transformation(extent={{-140,-2},{-100,38}})));
+      annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
     Modelica.Blocks.Interfaces.RealInput PDriveCtrl[NumberEVsInt](each start=0,unit="W")          "Control of individual EVs when driving"
-      annotation (Placement(transformation(extent={{-140,-38},{-100,2}})));
+      annotation (Placement(transformation(extent={{-140,10},{-100,50}})));
     Modelica.Blocks.Interfaces.RealInput T(start=293.15, min=0, unit="K")
       "Outside Temperature [K]"
-      annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
+      annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
     Components.ElectricVehicle.EV
        eV[NumberEVsInt](each FlagLowCycle=1)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -21,7 +23,7 @@ package FleetEVs
     "Load of site without EVs and PV "
       annotation (Placement(transformation(extent={{100,-10},{120,10}})));
     Modelica.Blocks.Interfaces.RealInput PPv( start=0, unit="W") "PV generation on site "
-      annotation (Placement(transformation(extent={{-140,-74},{-100,-34}})));
+      annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
     Modelica.Blocks.Interfaces.RealInput PBase( start=0, unit="W") "Load of whole site at point of connection"
       annotation (Placement(transformation(extent={{-140,-110},{-100,-70}})));
 
@@ -39,7 +41,7 @@ package FleetEVs
       T = eV[i].TOut;
     end for;
 
-    PSite = sum(eV.PPlug)-PPv+PBase;
+    PSite = sum(eV.PPlug)-PPv+PBase-sum(PRegCtrl);
 
   connect(realExpression.y, Time)
     annotation (Line(points={{81,70},{110,70}}, color={0,0,127}));

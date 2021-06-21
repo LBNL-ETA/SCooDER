@@ -7,7 +7,7 @@ model PVandWeather_simple
   parameter Real A(min=0, unit="m2") = 1.65 "Net surface area per module";
   parameter Real eta(min=0, max=1, unit="1") = 0.158
     "Module conversion efficiency";
-  parameter Real lat(unit="deg") = 37.9 "Latitude";
+  //parameter Real lat(unit="deg") = 37.9 "Latitude";
   parameter Real til(unit="deg") = 10 "Surface tilt";
   parameter Real azi(unit="deg") = 0 "Surface azimuth 0-S, 90-W, 180-N, 270-E ";
 
@@ -15,11 +15,11 @@ model PVandWeather_simple
     n=n,
     A=A,
     eta=eta,
-    lat=lat,
+    lat=weaDat.lat,
     til=til,
     azi=azi) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
-  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon(
-      computeWetBulbTemperature=false, filNam=weather_file)
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+                                       filNam=weather_file)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
   Modelica.Blocks.Interfaces.RealInput scale(start=1, unit="1")
@@ -33,7 +33,7 @@ model PVandWeather_simple
     "Active power"
     annotation (Placement(transformation(extent={{100,40},{120,60}})));
 equation
-  connect(weaDatInpCon.weaBus, pVModule_simple.weaBus) annotation (Line(
+  connect(weaDat.weaBus, pVModule_simple.weaBus) annotation (Line(
       points={{-60,70},{-40,70},{-40,54},{-10,54}},
       color={255,204,51},
       thickness=0.5));

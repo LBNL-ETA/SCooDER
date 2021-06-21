@@ -5,3 +5,4 @@ Test_Inverter_voltvar_pf
 Test_FLEXGRID_FMU
 Test_PVannual
 Annual_Flexgrid
+PVandBatt

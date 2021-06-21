@@ -35,6 +35,8 @@ model Copperplate_extPQ
     annotation (Placement(transformation(extent={{100,60},{120,80}})));
   Modelica.Blocks.Sources.RealExpression P_head_kW(y=sum(P_load)/1e3)
     annotation (Placement(transformation(extent={{20,54},{40,74}})));
+  Inverter.Model.SpotLoad_Y_PQ_extBus_dummy Y_load[nodes](V_start=V_nominal)
+    annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 equation
   connect(co2map.y[1], co2calc.u1) annotation (Line(points={{41,90},{48,90},{48,
           76},{58,76}}, color={0,0,127}));

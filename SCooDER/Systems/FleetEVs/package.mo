@@ -1,7 +1,7 @@
 within SCooDER.Systems;
 package FleetEVs
   model FleetEVs "Fleet of multiple EVs on one site"
-    parameter Real NumberEVs = 14;
+    parameter Real NumberEVs = 17;
     parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
     parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
 

@@ -29,8 +29,8 @@ model Battery "Simplified battery model"
   Modelica.Blocks.Interfaces.RealOutput P "Power demand Battery"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Buildings.Electrical.DC.Storage.BaseClasses.Charge soc_model(
-    etaCha=etaCha,
-    etaDis=etaDis,
+    etaCha=1,
+    etaDis=1,
     SOC_start=SOC_start,
     EMax=EMax*3600) "Charge model"
     annotation (Placement(transformation(extent={{20,70},{40,90}})));
@@ -56,7 +56,7 @@ equation
       P = 0;
     end if;
   end if;
-  PEff =if (P > 0) then P*etaCha else P*(1/etaDis);
+  PEff = if (P > 0) then P*etaCha else P*(1/etaDis);
 
   connect(soc_model.SOC, SOC) annotation (Line(
       points={{41,80},{110,80}},

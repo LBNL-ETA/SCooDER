@@ -105,6 +105,14 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Sources.RealExpression PCtrl_value(y=if PluggedIn >= 1 then
         PPlugCtrl else PDriveCtrl)
     annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
+  Modelica.Blocks.Sources.RealExpression PBattAndReg(y=if PRegCtrl > 0 then
+        abs1.y + PRegCtrl*etaCha else abs1.y + abs(PRegCtrl*(1/etaDis)))
+    annotation (Placement(transformation(extent={{-20,-30},{0,-10}})));
+  Modelica.Blocks.Interfaces.RealInput PRegCtrl(start=0, unit="W")
+    "Regulation control signal "
+    annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
+  Modelica.Blocks.Math.Abs abs1
+    annotation (Placement(transformation(extent={{0,34},{10,44}})));
 initial equation
   startTime=time;
 equation
@@ -129,12 +137,14 @@ equation
                                                         color={0,0,127}));
   connect(batteryRCFlex.TBatt, battery_degradation.TBatt) annotation (Line(
         points={{51,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
-  connect(batteryRCFlex.PBatt, battery.PInt) annotation (Line(points={{28,-8},{
-          -4,-8},{-4,42},{-7,42}}, color={0,0,127}));
-  connect(battery_degradation.P, battery.PInt) annotation (Line(points={{64,-16},
-          {-4,-16},{-4,42},{-7,42}}, color={0,0,127}));
   connect(PCtrl_value.y, battery.PCtrl) annotation (Line(points={{-39,40},{-34,40},
           {-34,42},{-30,42}}, color={0,0,127}));
+  connect(batteryRCFlex.PBatt, PBattAndReg.y) annotation (Line(points={{28,-8},{
+          16,-8},{16,-20},{1,-20}}, color={0,0,127}));
+  connect(battery_degradation.P, PBattAndReg.y) annotation (Line(points={{64,-16},
+          {16,-16},{16,-20},{1,-20}}, color={0,0,127}));
+  connect(battery.PInt, abs1.u) annotation (Line(points={{-7,42},{-4,42},{-4,39},
+          {-1,39}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>

@@ -1,14 +1,14 @@
 within SCooDER.Components.Battery.Model.Submodels;
 model Charge_energy "Model to compute the battery charge as energy"
   extends Modelica.Blocks.Icons.Block;
-  parameter Modelica.SIunits.Efficiency etaCha(max=1) = 0.9
+  parameter Real etaCha(max=1) = 0.9
     "Efficiency during charging";
-  parameter Modelica.SIunits.Efficiency etaDis(max=1) = 0.9
+  parameter Real etaDis(max=1) = 0.9
     "Efficiency during discharging";
   parameter Real SOC_start(min=0, max=1, unit="1")=0.1
     "Initial state of charge";
 
-  Modelica.SIunits.Power PAct "Actual power";
+  Real PAct "Actual power";
   Modelica.Blocks.Interfaces.RealInput P(final quantity="Power",
                                          final unit="W") annotation (Placement(transformation(
           extent={{-140,-20},{-100,20}}),iconTransformation(extent={{-140,-20},{
@@ -47,12 +47,12 @@ equation
   // Equations to warn if state of charge exceeds 0 and 1
   underCharged = SOC < 0;
   overCharged = SOC > 1;
-  when change(underCharged) or change(overCharged) then
+  /*when change(underCharged) or change(overCharged) then
     assert(SOC >= 0, "Warning: Battery is below minimum charge.",
     level=AssertionLevel.warning);
     assert(SOC <= 1, "Warning: Battery is above maximum charge.",
     level=AssertionLevel.warning);
-  end when;
+  end when;*/
 
   annotation ( Documentation(info="<html>
 <p>

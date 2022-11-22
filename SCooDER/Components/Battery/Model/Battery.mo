@@ -26,9 +26,9 @@ model Battery "Simplified battery model"
         origin={-120,0})));
   Modelica.Blocks.Interfaces.RealOutput SOC "State of Charge [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Modelica.Blocks.Interfaces.RealOutput P "Power demand Battery"
+  Modelica.Blocks.Interfaces.RealOutput P(start=0) "Battery AC power consumption"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Buildings.Electrical.DC.Storage.BaseClasses.Charge soc_model(
+  Submodels.Charge                                   soc_model(
     etaCha=1,
     etaDis=1,
     SOC_start=SOC_start,

@@ -17,6 +17,9 @@
 *_log.txt
 buildlog.txt
 ds*.txt
-dsmodel.c
+dsmodel*.c
 *.xml
 *.h
+dymosim.exe
+request
+stop

@@ -3,11 +3,12 @@ package FleetEVs
   model FleetEVs "Fleet of multiple EVs on one site"
     parameter Real NumberEVs = 17;
     parameter Integer NumberEVsInt = integer(floor(NumberEVs)) "Amount of EVs on site";
-    parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
+    parameter Real startTime(fixed=false) "Start time of simulation";
 
     Modelica.Blocks.Interfaces.RealInput PPlugCtrl[NumberEVsInt](each start=0, unit="W") "Control of individual EVs when plugged in "
       annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
-    Modelica.Blocks.Interfaces.RealInput PRegCtrl[NumberEVsInt](each start=0, unit="W") "Control of individual EVs frequency regulation when plugged in "
+    Modelica.Blocks.Interfaces.RealInput PRegCtrl[NumberEVsInt](each start=0, unit="W")
+      "Control of individual EVs frequency regulation when plugged in "
       annotation (Placement(transformation(extent={{-140,-50},{-100,-10}})));
     Modelica.Blocks.Interfaces.RealInput PluggedIn[NumberEVsInt](each start=1)        "This input sets an individual EV as plugged in, when >= 1"
       annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
@@ -31,14 +32,19 @@ package FleetEVs
     annotation (Placement(transformation(extent={{100,60},{120,80}})));
   Modelica.Blocks.Sources.RealExpression realExpression(y=time)
     annotation (Placement(transformation(extent={{60,60},{80,80}})));
+    Modelica.Blocks.Interfaces.RealInput PRegCtrl_hidden[NumberEVsInt](each start=
+         0, unit="W")
+      "Hidden control of individual EVs frequency regulation when plugged in "
+      annotation (Placement(transformation(extent={{-180,-50},{-140,-10}})));
   initial equation
     startTime = time;
   equation
     for i in 1:NumberEVsInt loop
-      PPlugCtrl[i] = eV[i].PPlugCtrl;
-      PDriveCtrl[i] = eV[i].PDriveCtrl;
-      PluggedIn[i] = eV[i].PluggedIn;
-      T = eV[i].TOut;
+      eV[i].PPlugCtrl = PPlugCtrl[i];
+      eV[i].PDriveCtrl = PDriveCtrl[i];
+      eV[i].PluggedIn = PluggedIn[i];
+      eV[i].TOut = T;
+      eV[i].PRegCtrl = PRegCtrl_hidden[i];
     end for;
 
     PSite = sum(eV.PPlug)-PPv+PBase-sum(PRegCtrl);

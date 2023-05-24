@@ -1,12 +1,12 @@
 within SCooDER.Components.Grid.Model;
-model IEEE34_extPQ
-  parameter Integer nodes=34 "Number of inputs";
+model IEEE13_extPQ
+  parameter Integer nodes=13 "Number of inputs";
   parameter Real V_nominal=4.16e3 "System Voltage";
   parameter Boolean use_pf=true "Flag to use power factor instead of Q input";
   parameter Boolean smartinverter=true "Flag to use smart inverter";
   parameter Real pf[nodes]={0.95 for i in 1:nodes} "Fixed power factor when use_pf == true";
-  Network ieee34(V_nominal=V_nominal/sqrt(3), redeclare
-      Buildings.Electrical.Transmission.Grids.IEEE_34_AL120 grid)
+  Network ieee13(V_nominal=V_nominal/sqrt(3), redeclare Records.IEEE_13_simple
+      grid)
     annotation (Placement(transformation(extent={{100,-20},{80,0}})));
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.Grid grid(f=60, V=V_nominal)
     annotation (Placement(transformation(extent={{60,20},{80,40}})));
@@ -107,8 +107,8 @@ model IEEE34_extPQ
     annotation (Placement(transformation(extent={{-76,54},{-68,46}})));
   Modelica.Blocks.Logical.GreaterThreshold en_vvw[nodes](threshold=0.5)
     annotation (Placement(transformation(extent={{-94,46},{-86,54}})));
-  Modelica.Blocks.Interfaces.RealInput En_vvw[nodes](each start=1, each unit="1") if
-                                                                                   smartinverter
+  Modelica.Blocks.Interfaces.RealInput En_vvw[nodes](each start=1, each unit=
+        "1") if                                                                    smartinverter
     annotation (Placement(transformation(
         extent={{20,-20},{-20,20}},
         rotation=180,
@@ -149,7 +149,7 @@ equation
     end for;
   end if;
 
-  connect(grid.terminal,ieee34. terminal[1])
+  connect(grid.terminal,ieee13. terminal[1])
     annotation (Line(points={{70,20},{70,-10},{80,-10}},
                                                      color={0,120,120}));
   connect(co2calc.y, co2)
@@ -163,7 +163,7 @@ equation
     annotation (Line(points={{-60.8,80},{-120,80}}, color={0,0,127}));
   connect(Load.terminal_n, sens.terminal_p)
     annotation (Line(points={{-40,-10},{-30,-10}}, color={0,120,120}));
-  connect(sens.terminal_n,ieee34. terminal)
+  connect(sens.terminal_n, ieee13.terminal)
     annotation (Line(points={{-10,-10},{80,-10}},
                                               color={0,120,120}));
   connect(sens.Vy[1], Vpu.u) annotation (Line(points={{-11,-1.66667},{-11,32},{-80,
@@ -204,4 +204,4 @@ equation
     annotation (Line(points={{-94.8,50},{-120,50}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
-end IEEE34_extPQ;
+end IEEE13_extPQ;

@@ -1,5 +1,5 @@
 within SCooDER.Components.ElectricVehicle;
-model EV
+model EV_simple
   parameter Real CapNom(min=0) = 24000 "Battery capacity at start of life [Wh]";
   parameter Real PMax(min=0, unit="W") = 60000  "Max battery power";
   parameter Real SOC_start(min=0, max=1, unit="1") = 0
@@ -47,53 +47,17 @@ annotation (Dialog(group="RC parameters"));
     etaCha=etaCha,
     etaDis=etaDis)
     annotation (Placement(transformation(extent={{-28,32},{-8,52}})));
-  Modelica.Blocks.Interfaces.RealInput TOut(min=0, start=293.15, unit="K")
-    "Outside temperature"
-    annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl(start=0, unit="W")
     "Battery control signal "
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-  Modelica.Blocks.Interfaces.RealOutput TBatt(unit="K") "Battery temperature"
-    annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Interfaces.RealOutput SOE "Energy stored in battery [Wh]"
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
   Modelica.Blocks.Interfaces.RealOutput SOC "SOC of battery [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
-  Battery.Model.Submodels.BatteryDegradation battery_degradation(
-    CRateAvgInit=CRateAvgInit,
-    FlagLowCycle=FlagLowCycle,
-    TBatt(start=TOutInit),
-    V=V,
-    Capacity=CapNom,
-    TAvgInit=TAvgInit,
-    batAgeInit=batAgeInit,
-    AhInit=AhInit,
-    TAvg(start=TAvgInit))
-    annotation (Placement(transformation(extent={{66,-22},{86,-2}})));
   Modelica.Blocks.Interfaces.RealInput PDriveCtrl(start=0,unit="W")
     "Control signal of EV for driving"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Modelica.Blocks.Interfaces.RealOutput PPlug(unit="W")
-    "Actual power through EV plug "
-    annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
-  Modelica.Blocks.Interfaces.RealOutput PDrive(unit="W")
-    "Actual power of EV while driving "
-    annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
 
-  Battery.Model.Submodels.BatteryRCFlex batteryRCFlex(
-    C_battery=CBatt,
-    TInit=TBattInit,
-    TOut(start=TOutInit))
-    annotation (Placement(transformation(extent={{30,-14},{50,6}})));
-  Modelica.Blocks.Sources.RealExpression RValue(y=if PluggedIn >= 1 then RPlug
-         else RDrive)
-                annotation (Placement(transformation(extent={{0,-4},{20,16}})));
-  Modelica.Blocks.Sources.RealExpression PPlug_value(y=if PluggedIn >= 1 then
-        battery.PExt else 0)
-    annotation (Placement(transformation(extent={{68,-50},{88,-30}})));
-  Modelica.Blocks.Sources.RealExpression PDrive_value(y=if PluggedIn >= 1 then 0
-         else battery.PExt)
-    annotation (Placement(transformation(extent={{68,-90},{88,-70}})));
   Modelica.Blocks.Interfaces.RealInput PluggedIn( start=1)
                                                           "The car is plugged in if this value is >=1, otherwise it is driving"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
@@ -101,14 +65,8 @@ annotation (Dialog(group="RC parameters"));
   Modelica.Blocks.Sources.RealExpression PCtrl_value(y=if PluggedIn >= 1 then
         PPlugCtrl else PDriveCtrl)
     annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
-  Modelica.Blocks.Sources.RealExpression PBattAndReg(y=if PRegCtrl > 0 then
-        abs1.y + PRegCtrl*etaCha else abs1.y + abs(PRegCtrl*(1/etaDis)))
-    annotation (Placement(transformation(extent={{-20,-30},{0,-10}})));
-  Modelica.Blocks.Interfaces.RealInput PRegCtrl(start=0, unit="W")
-    "Regulation control signal "
-    annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
-  Modelica.Blocks.Math.Abs abs1
-    annotation (Placement(transformation(extent={{0,34},{10,44}})));
+  Modelica.Blocks.Sources.RealExpression fixedSOH(y=1)
+    annotation (Placement(transformation(extent={{-60,50},{-40,70}})));
 initial equation
   startTime=time;
 equation
@@ -118,33 +76,14 @@ equation
   connect(battery.SOC, SOC)
     annotation (Line(points={{-7,50},{94,50},{94,80},{110,80}},
                                                            color={0,0,127}));
-  connect(battery_degradation.SOH, battery.SOH) annotation (Line(points={{87,-12},
-          {90,-12},{90,54},{-38,54},{-38,46},{-30,46}}, color={0,0,127}));
-  connect(TOut, batteryRCFlex.TOut) annotation (Line(points={{-120,-40},{-86,-40},
-          {-86,-4},{28,-4}}, color={0,0,127}));
-  connect(batteryRCFlex.TBatt, TBatt) annotation (Line(points={{51,-4},{58,-4},{
-          58,0},{110,0}}, color={0,0,127}));
-  connect(PPlug_value.y, PPlug)
-    annotation (Line(points={{89,-40},{110,-40}}, color={0,0,127}));
-  connect(PDrive_value.y, PDrive)
-    annotation (Line(points={{89,-80},{110,-80}}, color={0,0,127}));
-  connect(batteryRCFlex.R, RValue.y)
-    annotation (Line(points={{28,0},{24,0},{24,6},{21,6}},
-                                                        color={0,0,127}));
-  connect(batteryRCFlex.TBatt, battery_degradation.TBatt) annotation (Line(
-        points={{51,-4},{58,-4},{58,-12},{64,-12}}, color={0,0,127}));
   connect(PCtrl_value.y, battery.PCtrl) annotation (Line(points={{-39,40},{-34,40},
           {-34,42},{-30,42}}, color={0,0,127}));
-  connect(batteryRCFlex.PBatt, PBattAndReg.y) annotation (Line(points={{28,-8},{
-          16,-8},{16,-20},{1,-20}}, color={0,0,127}));
-  connect(battery_degradation.P, PBattAndReg.y) annotation (Line(points={{64,-16},
-          {16,-16},{16,-20},{1,-20}}, color={0,0,127}));
-  connect(battery.PInt, abs1.u) annotation (Line(points={{-7,42},{-4,42},{-4,39},
-          {-1,39}}, color={0,0,127}));
+  connect(fixedSOH.y, battery.SOH) annotation (Line(points={{-39,60},{-34,60},{
+          -34,46},{-30,46}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=86400), Documentation(info="<html>
     <p>Simplified EV model. This model simulated the battery behavior of an EV based on control signals while driving or charging/discharging when connected to the grid. It considers temperature and utilization of the battery to calculate battery degradation. The state of health of the battery is then again used to update the capacity of the EV's battery during the simulation.
     
     </p> </html>"));
-end EV;
+end EV_simple;

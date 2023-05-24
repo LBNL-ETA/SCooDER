@@ -1,13 +1,13 @@
 within SCooDER.Components.Grid.Model;
-model IEEE34_extPQ
-  parameter Integer nodes=34 "Number of inputs";
+model IEEE_extPQ
+  parameter Integer nodes=13 "Number of inputs";
   parameter Real V_nominal=4.16e3 "System Voltage";
   parameter Boolean use_pf=true "Flag to use power factor instead of Q input";
   parameter Boolean smartinverter=true "Flag to use smart inverter";
   parameter Real pf[nodes]={0.95 for i in 1:nodes} "Fixed power factor when use_pf == true";
-  Network ieee34(V_nominal=V_nominal/sqrt(3), redeclare
-      Buildings.Electrical.Transmission.Grids.IEEE_34_AL120 grid)
-    annotation (Placement(transformation(extent={{100,-20},{80,0}})));
+  replaceable parameter Buildings.Electrical.Transmission.Grids.PartialGrid networkmodel=Records.IEEE_13_simple
+    "Record that describe the grid with the number of nodes, links, connections, etc.";
+  Network network(V_nominal=V_nominal/sqrt(3), grid=networkmodel) annotation (Placement(transformation(extent={{100,-20},{80,0}})));
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.Grid grid(f=60, V=V_nominal)
     annotation (Placement(transformation(extent={{60,20},{80,40}})));
   Inverter.Model.SpotLoad_Y_PQ_extBus_firstorder Load[nodes](each V_start=
@@ -149,9 +149,8 @@ equation
     end for;
   end if;
 
-  connect(grid.terminal,ieee34. terminal[1])
-    annotation (Line(points={{70,20},{70,-10},{80,-10}},
-                                                     color={0,120,120}));
+  connect(grid.terminal, network.terminal[1])
+    annotation (Line(points={{70,20},{70,-10},{80,-10}}, color={0,120,120}));
   connect(co2calc.y, co2)
     annotation (Line(points={{81,-90},{110,-90}},
                                                 color={0,0,127}));
@@ -163,9 +162,8 @@ equation
     annotation (Line(points={{-60.8,80},{-120,80}}, color={0,0,127}));
   connect(Load.terminal_n, sens.terminal_p)
     annotation (Line(points={{-40,-10},{-30,-10}}, color={0,120,120}));
-  connect(sens.terminal_n,ieee34. terminal)
-    annotation (Line(points={{-10,-10},{80,-10}},
-                                              color={0,120,120}));
+  connect(sens.terminal_n, network.terminal)
+    annotation (Line(points={{-10,-10},{80,-10}}, color={0,120,120}));
   connect(sens.Vy[1], Vpu.u) annotation (Line(points={{-11,-1.66667},{-11,32},{-80,
           32},{-80,35.2}},                            color={0,0,127}));
   connect(gain_Ppv.y, mul.u1) annotation (Line(points={{-51.6,80},{-30,80},{-30,
@@ -204,4 +202,4 @@ equation
     annotation (Line(points={{-94.8,50},{-120,50}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
-end IEEE34_extPQ;
+end IEEE_extPQ;

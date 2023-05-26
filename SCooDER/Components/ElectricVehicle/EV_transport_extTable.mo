@@ -4,10 +4,18 @@ model EV_transport_extTable
   parameter Integer n_cha=500 "number of charging stations in system";
   parameter Integer n_site=13 "number of sites in system";
   parameter String fileName="" annotation(Evaluate=false);
+  parameter Real startTime=0 "time shift for table to start";
+  parameter Real EMax=30e3 "EV battery size in Wh";
+  parameter Real Pmax=10e3 "EV max charging and discharging in W";
+  parameter Real SOC_start=0.5 "initial soc";
+
   EV_transport EV_trans(
     n_evs=n_evs,
     n_cha=n_cha,
-    n_site=n_site)
+    n_site=n_site,
+    EMax=EMax*ones(n_evs),
+    Pmax=Pmax*ones(n_evs),
+    SOC_start=SOC_start*ones(n_evs))
     annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
   Modelica.Blocks.Sources.CombiTimeTable ev_to_cha(
     tableOnFile=true,
@@ -17,7 +25,9 @@ model EV_transport_extTable
         0),
     tableName="ev_to_cha",
     fileName=fileName,
-    columns=2:n_evs+1) annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})),
+    columns=2:n_evs+1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
+    startTime=startTime)       annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})),
       __Dymola_HideArray=true);
 
   Modelica.Blocks.Math.RealToInteger realToInteger1[n_evs]
@@ -30,7 +40,9 @@ model EV_transport_extTable
         0),
     tableName="cha_to_ev",
     fileName=fileName,
-    columns=2:n_cha+1) annotation (Placement(transformation(extent={{-90,-84},{-70,-64}})),
+    columns=2:n_cha+1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
+    startTime=startTime)       annotation (Placement(transformation(extent={{-90,-84},{-70,-64}})),
       __Dymola_HideArray=true);
 
   Modelica.Blocks.Math.RealToInteger realToInteger3[n_cha]
@@ -43,7 +55,9 @@ model EV_transport_extTable
         0),
     tableName="cha_to_site",
     fileName=fileName,
-    columns=2:n_cha+1) annotation (Placement(transformation(extent={{-90,-56},{-70,-36}})),
+    columns=2:n_cha+1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
+    startTime=startTime)       annotation (Placement(transformation(extent={{-90,-56},{-70,-36}})),
       __Dymola_HideArray=true);
 
   Modelica.Blocks.Math.RealToInteger realToInteger2[n_cha]
@@ -56,7 +70,9 @@ model EV_transport_extTable
         0),
     tableName="ev_drive_p",
     fileName=fileName,
-    columns=2:n_evs+1) annotation (Placement(transformation(extent={{-90,-4},{-70,16}})),
+    columns=2:n_evs+1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
+    startTime=startTime)       annotation (Placement(transformation(extent={{-90,-4},{-70,16}})),
       __Dymola_HideArray=true);
 
   Modelica.Blocks.Interfaces.RealInput PPlugCtrl[n_cha](each start=0, each unit=

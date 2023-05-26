@@ -45,7 +45,7 @@ package IntegratedEnergySystems
 
   model IEEE13_smartBuilding_ev_external
     parameter Integer nodes=13 "Number of inputs";
-    parameter Integer n_trans=1 "Number of transport models in system";
+    parameter Integer n_trans=5 "Number of transport models in system";
     //parameter String weather_file="" "Path to weather file" annotation(Evaluate=false);
     Components.Grid.Model.IEEE13_extPQ Grid(nodes=nodes)
       annotation (Placement(transformation(extent={{20,-10},{40,10}})));

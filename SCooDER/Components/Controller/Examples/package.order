@@ -5,3 +5,4 @@ Validate_VoltVarWattControl
 Test_Pv_Inv_VoltVarWatt_simple_Slim
 Test_Pv_Inv_VoltVarWatt_simple_Slim_curtail
 Test_Pv_Inv_VoltVarWatt_simple_Slim_uStorage
+Test_loadOnOff

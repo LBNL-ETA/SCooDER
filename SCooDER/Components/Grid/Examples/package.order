@@ -1,3 +1,6 @@
 Test_IEEE13
 Test_EplusCsvReader
 Test_IEEE13_extPQ
+Test_IEEE13_extPQ_ltc
+Test_IEEE13_extPQ_ltc_highload
+Test_LTC_ctrl

@@ -45,11 +45,11 @@ model FLEXGRID
     annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
   SmartInverter.Components.Battery.Model.Battery battery3
     annotation (Placement(transformation(extent={{-30,-50},{-10,-30}})));
-  SmartInverter.Components.Photovoltaics.Model.PVModule_simple pv1
+  SmartInverter.Components.Photovoltaics.Model.PVModule_simple pv1(n=14)
     annotation (Placement(transformation(extent={{-64,46},{-44,66}})));
   SmartInverter.Components.Photovoltaics.Model.PVModule_simple pv2(n=28)
     annotation (Placement(transformation(extent={{-64,6},{-44,26}})));
-  SmartInverter.Components.Photovoltaics.Model.PVModule_simple pv3
+  SmartInverter.Components.Photovoltaics.Model.PVModule_simple pv3(n=14)
     annotation (Placement(transformation(extent={{-64,-34},{-44,-14}})));
   Buildings.BoundaryConditions.WeatherData.Bus
                   weaBus "Bus with weather data"
@@ -179,6 +179,12 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
+  connect(battery2.SOC, inverter2.SOC_Batt) annotation (Line(points={{-9,8},{-2,
+          8},{-2,11.6},{4,11.6}}, color={0,0,127}));
+  connect(battery1.SOC, inverter1.SOC_Batt) annotation (Line(points={{-9,48},{
+          -2,48},{-2,51.6},{4,51.6}}, color={0,0,127}));
+  connect(battery3.SOC, inverter3.SOC_Batt) annotation (Line(points={{-9,-32},{
+          -2,-32},{-2,-28.4},{4,-28.4}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end FLEXGRID;

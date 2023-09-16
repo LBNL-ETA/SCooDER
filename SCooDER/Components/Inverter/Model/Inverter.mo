@@ -120,6 +120,14 @@ model Inverter
         sens_Inverter.S[1]^2 + sens_Inverter.S[2]^2))
     "Apparent power output at sensor"
     annotation (Placement(transformation(extent={{-40,-22},{-20,-2}})));
+  Modelica.Blocks.Interfaces.RealInput SOC_Batt(unit="1")
+    "Battery state of charge" annotation (Placement(transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=180,
+        origin={120,-100}), iconTransformation(
+        extent={{-20,-20},{20,20}},
+        rotation=180,
+        origin={120,16})));
 equation
   q_ctrl = if (firstOrder_q.y > 0) then min(min(firstOrder_q.y, QCapmax), S_max_calc.y) else max(max(firstOrder_q.y, (-1)*QIndmax), (-1)*(S_max_calc.y));
   p_max = sqrt(S_max_calc.y^2 - q_ctrl^2);
@@ -193,6 +201,12 @@ equation
           {-40,56},{-48,56}}, color={0,0,127}));
   connect(ApparentPower_Output.y, abs_active.u)
     annotation (Line(points={{-19,-12},{-10,-12},{-2,-12}}, color={0,0,127}));
+  connect(SOC_Batt, invCtrlBus.batt_soc) annotation (Line(points={{120,-100},{
+          60,-100},{60,-99.95},{0.05,-99.95}}, color={0,0,127}), Text(
+      string="%second",
+      index=1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end Inverter;

@@ -1117,8 +1117,8 @@ package SmartBuilding
           building_scale)
       annotation (Placement(transformation(extent={{0,-90},{20,-70}})));
     Modelica.Blocks.Interfaces.RealOutput P_pv
-      annotation (Placement(transformation(extent={{100,-40},{120,-20}}),
-          iconTransformation(extent={{100,-40},{120,-20}})));
+      annotation (Placement(transformation(extent={{100,-20},{120,0}}),
+          iconTransformation(extent={{100,-20},{120,0}})));
     Components.Conversion.Model.PowerOutput en_vvw(P=use_smartinverter)
       annotation (Placement(transformation(extent={{60,-100},{80,-80}})));
     Modelica.Blocks.Interfaces.RealOutput En_vvw annotation (Placement(
@@ -1135,6 +1135,9 @@ package SmartBuilding
     Components.Conversion.Model.PowerOutput charger(P=sum(P_charger)*
           charger_scale)
       annotation (Placement(transformation(extent={{0,-50},{20,-30}})));
+    Modelica.Blocks.Interfaces.RealOutput P_cha
+      annotation (Placement(transformation(extent={{100,-40},{120,-20}}),
+          iconTransformation(extent={{100,-40},{120,-20}})));
   equation
     connect(pv.weaBus, weaDat.weaBus) annotation (Line(
         points={{0,54},{-30,54},{-30,70},{-80,70}},
@@ -1161,14 +1164,17 @@ package SmartBuilding
                                                     color={0,0,127}));
     connect(P_kW.y, costcalc.u2) annotation (Line(points={{61,70},{72.5,70},{
             72.5,77.6},{85.2,77.6}}, color={0,0,127}));
-    connect(building.P, sum1.u[3]) annotation (Line(points={{21,-80},{60,-80},{60,
-            50.5},{68,50.5}},          color={0,0,127}));
-    connect(P_pv, pv_inv.y) annotation (Line(points={{110,-30},{80,-30},{80,32},{48,
-            32},{48,50},{40.4,50}},    color={0,0,127}));
+    connect(building.P, sum1.u[3]) annotation (Line(points={{21,-80},{64,-80},{
+            64,50.5},{68,50.5}},       color={0,0,127}));
+    connect(P_pv, pv_inv.y) annotation (Line(points={{110,-10},{80,-10},{80,32},
+            {48,32},{48,50},{40.4,50}},color={0,0,127}));
     connect(en_vvw.P, En_vvw)
       annotation (Line(points={{81,-90},{110,-90}}, color={0,0,127}));
-    connect(charger.P, sum1.u[4]) annotation (Line(points={{21,-40},{60,-40},{60,51.5},
-            {68,51.5}}, color={0,0,127}));
+    connect(charger.P, sum1.u[4]) annotation (Line(points={{21,-40},{56,-40},{
+            56,52},{62,52},{62,51.5},{68,51.5}},
+                        color={0,0,127}));
+    connect(charger.P, P_cha) annotation (Line(points={{21,-40},{66,-40},{66,
+            -30},{110,-30}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)),
       experiment(StopTime=86400, __Dymola_Algorithm="Dassl"));

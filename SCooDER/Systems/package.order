@@ -4,6 +4,7 @@ generic_direct_wye
 generic_wye_voltvarwatt_simple
 FleetEVs
 FLEXGRID
+FLEXLAB
 IEEE13
 Interfaces
 SmartBuilding

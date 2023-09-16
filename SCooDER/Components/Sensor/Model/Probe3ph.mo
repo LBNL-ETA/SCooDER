@@ -5,8 +5,8 @@ model Probe3ph
     "Electrical connector side N"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
   Modelica.Blocks.Interfaces.RealOutput Vy[3](each final quantity=
-        "ElectricPotential", each final unit="V")
-    "Voltage Line to Neutral" annotation (Placement(transformation(
+        "ElectricPotential", each final unit="V") "Voltage Line to Neutral"
+                              annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={10,-40}), iconTransformation(

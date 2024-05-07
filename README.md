@@ -2,7 +2,7 @@
 #### Smart Control of Distributed Energy Resources
 -------------------------------------------------------------------------
 
-This [Modelica](https://www.modelica.org/) model library is developed to facilitate the simulation and optimization of Distributed Energy Resources such as Photovoltaics, Battery Storage, Smart Inverters, Electric Vehicles, and electric Power Systems.
+This [Modelica](https://www.modelica.org/) model library is developed to facilitate the simulation and optimization of Distributed Energy Resources such as Photovoltaics, Battery Storage, Smart Inverters, Electric Vehicles, and Microgrids.
 
 ## General
 This package is developed to model various components of the electric power system in the context of future scenarios with high penetrations of Distributed Energy Resources (DER). The library is structured in four main categories:
@@ -23,12 +23,12 @@ The package depends on the [Modelica Standard Library](https://github.com/modeli
 The following model shows the Flexgrid model which can be found in the Systems library. It consists of a variety of Component models.
 
 
-![Flexgrid System](documentation/flexgrid_system.jpg)
+![Flexgrid System](doc/flexgrid_system.jpg)
 
 Most models are validated with equipment installed at [Lawrence Berkeley National Laboratory](https://lbl.gov). The example below shows the validation of an inverter response to a setpoint change in active power.
 
 
-![Model Validation](documentation/model_validation.jpg)
+![Model Validation](doc/model_validation.jpg)
 
 ## License
 Smart Control of Distributed Energy Resources (SCooDER) Copyright (c) 2019, The

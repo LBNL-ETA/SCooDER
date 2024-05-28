@@ -4,7 +4,7 @@ model VariableVoltage_1ph "Variable single phase AC voltage source"
     redeclare package PhaseSystem = Buildings.Electrical.PhaseSystems.OnePhase,
     redeclare replaceable
       Buildings.Electrical.AC.OnePhase.Interfaces.Terminal_p terminal);
-  parameter Modelica.SIunits.Frequency f(start=60) "Frequency of the source";
+  parameter Modelica.Units.SI.Frequency f(start=60) "Frequency of the source";
   //parameter Modelica.SIunits.Voltage V(start = 110) "RMS voltage of the source";
   Modelica.Blocks.Interfaces.RealInput Vext(start=110)
     "RMS voltage of the source" annotation (Placement(transformation(
@@ -14,8 +14,8 @@ model VariableVoltage_1ph "Variable single phase AC voltage source"
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={-110,30})));
-  parameter Modelica.SIunits.Angle phiSou = 0 "Phase shift of the source";
-  Modelica.SIunits.Angle thetaRel
+  parameter Modelica.Units.SI.Angle phiSou=0 "Phase shift of the source";
+  Modelica.Units.SI.Angle thetaRel
     "Absolute angle of rotating system as offset to thetaRef";
 equation
   if Connections.isRoot(terminal.theta) then

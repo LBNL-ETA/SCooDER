@@ -5,8 +5,9 @@ model LTC_ctrl
   parameter Real deadBand=2 "Deadband";
   parameter Real y_start=0 "Start value";
 
-  parameter Modelica.SIunits.Time samplePeriod=60 "Sample period";
-  parameter Modelica.SIunits.Time startTime=0 "Time instant of first sample trigger";
+  parameter Modelica.Units.SI.Time samplePeriod=60 "Sample period";
+  parameter Modelica.Units.SI.Time startTime=0
+    "Time instant of first sample trigger";
 
   Real y_int;
 

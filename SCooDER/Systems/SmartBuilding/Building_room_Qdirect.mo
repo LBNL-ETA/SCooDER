@@ -1,6 +1,6 @@
 within SCooDER.Systems.SmartBuilding;
 model Building_room_Qdirect
-  parameter Modelica.SIunits.Temperature T_init(start=293.15)=293.15
+  parameter Modelica.Units.SI.Temperature T_init(start=293.15) = 293.15
     "Temperature of element";
   parameter Boolean need_wea_inputs=true;
   parameter Real timestep(unit="s")=5*60
@@ -33,7 +33,6 @@ model Building_room_Qdirect
     intConMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
     extConMod=Buildings.HeatTransfer.Types.ExteriorConvection.TemperatureWind,
     conBou(opa(T(each start=T_init))),
-    lat=0.65484753534827,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
                                                "Room model"
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
@@ -230,7 +229,7 @@ equation
   connect(roo.uSha[1], uSha.y) annotation (Line(points={{-21.6,18},{-26,18},{-26,
           30},{-39,30}}, color={0,0,127}));
   connect(T_in, TRooAir.T)
-    annotation (Line(points={{110,0},{80,0}},          color={0,0,127}));
+    annotation (Line(points={{110,0},{81,0}},          color={0,0,127}));
   connect(roo.uWin[1], uWin) annotation (Line(points={{-21.6,13},{-80,13},{-80,30},
           {-110,30}}, color={0,0,127}));
   connect(weaBus, roo.weaBus) annotation (Line(

@@ -15,7 +15,6 @@ model PVandWeatherExt_simple
     n=n,
     A=A,
     eta=eta,
-    lat=lat,
     til=til,
     azi=azi) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDatInpCon(
@@ -44,8 +43,8 @@ equation
       thickness=0.5));
   connect(pVModule_simple.scale, scale) annotation (Line(points={{-12,46},{-40,46},
           {-40,0},{-120,0}}, color={0,0,127}));
-  connect(weaDatInpCon.HDifHor_in, DHI) annotation (Line(points={{-81,
-          62.4},{-90,62.4},{-90,80},{-120,80}}, color={0,0,127}));
+  connect(weaDatInpCon.HDifHor_in, DHI) annotation (Line(points={{-81,60.5},{
+          -90,60.5},{-90,80},{-120,80}},        color={0,0,127}));
   connect(weaDatInpCon.HGloHor_in, GHI) annotation (Line(points={{-81,
           57},{-90,57},{-90,50},{-120,50}}, color={0,0,127}));
   connect(WtokW.y,P_kW)

@@ -1,6 +1,6 @@
 within SCooDER.Systems.SmartBuilding;
 model Building_room_Qmean
-  parameter Modelica.SIunits.Temperature T_init(start=293.15)=293.15
+  parameter Modelica.Units.SI.Temperature T_init(start=293.15) = 293.15
     "Temperature of element";
   parameter Boolean need_wea_inputs=true;
   parameter Real timestep(unit="s")=5*60

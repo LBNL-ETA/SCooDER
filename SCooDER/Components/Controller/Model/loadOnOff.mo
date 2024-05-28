@@ -1,7 +1,7 @@
 within SCooDER.Components.Controller.Model;
 model loadOnOff
   // This model is based on Buildings.Electrical.Utilities.Controllers.StateMachineVoltCtrl but with low and high voltage disconnect.
-  parameter Modelica.SIunits.Time tDelay=60;
+  parameter Modelica.Units.SI.Time tDelay=60;
   parameter Real Vmax=1.05;
   parameter Real Vmin=0.95;
   Boolean connected;

@@ -4,7 +4,7 @@ model Test_Inverter
   extends Modelica.Icons.Example;
 
   Modelica.Blocks.Sources.Sine Powerfactor12(
-    freqHz=1,
+    f=1,
     phase=0,
     offset=0,
     amplitude=3000)
@@ -38,23 +38,17 @@ model Test_Inverter
   Modelica.Blocks.Sources.Sine Powerfactor3(
     phase=0,
     offset=0,
-    freqHz=0.5,
+    f=0.5,
     amplitude=3000)
     annotation (Placement(transformation(extent={{80,-80},{60,-60}})));
-  Model.Inverter inverter1(QIndmax=1000)
+  Inverter.Model.Inverter inverter1(QIndmax=1000)
     annotation (Placement(transformation(extent={{0,40},{20,60}})));
-  Model.Inverter inverter2
+  Inverter.Model.Inverter inverter2
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
-  Model.Inverter inverter3
+  Inverter.Model.Inverter inverter3
     annotation (Placement(transformation(extent={{0,-60},{20,-40}})));
-  Modelica.Blocks.Sources.Constant Battery13(k=0)
+  Modelica.Blocks.Sources.Constant Battery123(k=0)
     annotation (Placement(transformation(extent={{80,60},{60,80}})));
-  Modelica.Blocks.Sources.Sine Battery2(
-    phase=0,
-    offset=0,
-    freqHz=0.5,
-    amplitude=12000)
-    annotation (Placement(transformation(extent={{80,-14},{60,6}})));
   Modelica.Blocks.Sources.Constant Plim13(k=1)
     annotation (Placement(transformation(extent={{-40,-100},{-20,-80}})));
   Modelica.Blocks.Sources.Step Plim2(
@@ -62,22 +56,27 @@ model Test_Inverter
     offset=1,
     startTime=10.4)
     annotation (Placement(transformation(extent={{80,-44},{60,-24}})));
-  Interfaces.InvCtrlBus invCtrlBus1 annotation (Placement(transformation(extent=
-           {{0,20},{20,40}}), iconTransformation(extent={{-142,-2},{-122,18}})));
-  Interfaces.InvCtrlBus invCtrlBus2 annotation (Placement(transformation(extent=
-           {{0,-30},{20,-10}}), iconTransformation(extent={{-142,-2},{-122,18}})));
-  Interfaces.InvCtrlBus invCtrlBus3 annotation (Placement(transformation(extent=
-           {{0,-80},{20,-60}}), iconTransformation(extent={{-142,-2},{-122,18}})));
+  Inverter.Interfaces.InvCtrlBus invCtrlBus1 annotation (Placement(
+        transformation(extent={{0,20},{20,40}}), iconTransformation(extent={{-142,
+            -2},{-122,18}})));
+  Inverter.Interfaces.InvCtrlBus invCtrlBus2 annotation (Placement(
+        transformation(extent={{0,-30},{20,-10}}), iconTransformation(extent={{
+            -142,-2},{-122,18}})));
+  Inverter.Interfaces.InvCtrlBus invCtrlBus3 annotation (Placement(
+        transformation(extent={{0,-80},{20,-60}}), iconTransformation(extent={{
+            -142,-2},{-122,18}})));
+  Modelica.Blocks.Sources.Constant soc(k=0.25)
+    annotation (Placement(transformation(extent={{0,80},{20,100}})));
 equation
   connect(ada_1.terminal, sens_all.terminal_p)
     annotation (Line(points={{-60,0},{-60,0}}, color={0,120,120}));
-  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={
-          {-30,50},{-34,50},{-34,0.53333},{-40.2,0.53333}}, color={0,120,
+  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={{-30,50},
+          {-34,50},{-34,-0.266667},{-40.2,-0.266667}},      color={0,120,
           120}));
   connect(sens2.terminal_n, ada_1.terminals[2])
     annotation (Line(points={{-30,0},{-40.2,0}}, color={0,120,120}));
-  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={
-          {-30,-50},{-34,-50},{-34,-0.53333},{-40.2,-0.53333}}, color={0,
+  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={{-30,-50},
+          {-34,-50},{-34,0.266667},{-40.2,0.266667}},           color={0,
           120,120}));
   connect(sens_all.terminal_n, source.terminal) annotation (Line(points={
           {-80,0},{-80,-1.33227e-015}}, color={0,120,120}));
@@ -147,18 +146,12 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(Battery2.y, invCtrlBus2.batt_ctrl) annotation (Line(points={{59,-4},{
-          44,-4},{44,-20},{42,-20},{42,-19.95},{26,-19.95},{10.05,-19.95}},
-        color={0,0,127}), Text(
-      string="%second",
-      index=1,
-      extent={{6,3},{6,3}}));
-  connect(Battery13.y, invCtrlBus1.batt_ctrl) annotation (Line(points={{59,70},
+  connect(Battery123.y, invCtrlBus1.batt_ctrl) annotation (Line(points={{59,70},
           {36,70},{36,30.05},{10.05,30.05}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(Battery13.y, invCtrlBus3.batt_ctrl) annotation (Line(points={{59,70},
+  connect(Battery123.y, invCtrlBus3.batt_ctrl) annotation (Line(points={{59,70},
           {36,70},{36,-69.95},{10.05,-69.95}}, color={0,0,127}), Text(
       string="%second",
       index=1,
@@ -168,6 +161,19 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
+  connect(soc.y, inverter1.SOC_Batt) annotation (Line(points={{21,90},{28,90},{
+          28,51.6},{22,51.6}}, color={0,0,127}));
+  connect(soc.y, inverter2.SOC_Batt) annotation (Line(points={{21,90},{28,90},{
+          28,1.6},{22,1.6}}, color={0,0,127}));
+  connect(soc.y, inverter3.SOC_Batt) annotation (Line(points={{21,90},{28,90},{
+          28,-48.4},{22,-48.4}}, color={0,0,127}));
+  connect(Battery123.y, invCtrlBus2.batt_ctrl) annotation (Line(points={{59,70},
+          {36,70},{36,-20},{10,-20}}, color={0,0,127}), Text(
+      string="%second",
+      index=1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    experiment(StopTime=3600, __Dymola_Algorithm="Dassl"));
 end Test_Inverter;

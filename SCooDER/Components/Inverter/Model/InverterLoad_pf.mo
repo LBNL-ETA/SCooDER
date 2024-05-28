@@ -19,8 +19,7 @@ model InverterLoad_pf
 protected
   Modelica.Blocks.Interfaces.RealInput pf_internal
     "Hidden value of the input load for the conditional connector";
-  Modelica.SIunits.Power Q = P*tan(-acos(pf_internal))
-    "Reactive power";
+  Modelica.Units.SI.Power Q=P*tan(-acos(pf_internal)) "Reactive power";
 equation
   connect(PF, pf_internal);
 

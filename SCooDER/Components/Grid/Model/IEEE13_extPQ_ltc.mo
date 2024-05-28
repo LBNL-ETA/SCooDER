@@ -7,7 +7,7 @@ model IEEE13_extPQ_ltc
   parameter Real maxStepsUp=16 "Maximal steps regulation up";
   parameter Real maxStepsDn=16 "Maximal steps regulation dn";
   parameter Real deadBand=2 "Deadband";
-  parameter Modelica.SIunits.Time samplePeriod=15 "Sample period";
+  parameter Modelica.Units.SI.Time samplePeriod=15 "Sample period";
   parameter Real vtRatio=20 "Ratio of voltage transformer";
   parameter Real maxRange=0.1 "Maximal LTC range";
   parameter Integer sensLoc=2 "Location for sensing of LTC";
@@ -49,7 +49,7 @@ equation
   connect(replicator.y, grid.V_ext) annotation (Line(points={{11,-70},{40,-70},{
           40,53},{59,53}}, color={0,0,127}));
   connect(firstOrderHold.u, sens[sensLoc].Vy[1]) annotation (Line(points={{-12.8,
-          -50},{0,-50},{0,32},{-11,32},{-11,28.3333}},
+          -50},{0,-50},{0,32},{-11,32},{-11,29.3333}},
                                                    color={0,0,127}));
   connect(grid.terminal, ieee13.terminal[1])
     annotation (Line(points={{70,40},{70,20},{82,20}}, color={0,120,120}));

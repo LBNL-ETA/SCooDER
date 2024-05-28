@@ -1,5 +1,6 @@
 within SCooDER.Systems.Examples;
 model Test_FLEXGRID
+  extends Modelica.Icons.Example;
 
   FLEXGRID.FLEXGRID flexgrid
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
@@ -12,7 +13,7 @@ model Test_FLEXGRID
   Modelica.Blocks.Sources.Constant Temperature(k=22)
     annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
   Modelica.Blocks.Sources.Sine DHI(
-    freqHz=1/(60*60*12),
+    f=1/(60*60*12),
     offset=100,
     amplitude=1000,
     phase=-1.5707963267949)
@@ -20,7 +21,7 @@ model Test_FLEXGRID
   Modelica.Blocks.Sources.Sine DNI(
     amplitude=500,
     offset=500,
-    freqHz=1/(60*60*12),
+    f=1/(60*60*12),
     phase=-1.5707963267949)
     annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
   Modelica.Blocks.Sources.Constant One1(
@@ -60,8 +61,8 @@ equation
     annotation (Line(points={{-79,90},{-77.2,90}}, color={0,0,127}));
   connect(weaDatInpCon.TDryBul_in, from_degC.y) annotation (Line(points={{-51,
           59},{-51,74.5},{-63.4,74.5},{-63.4,90}}, color={0,0,127}));
-  connect(weaDatInpCon.HDifHor_in, DHI.y) annotation (Line(points={{-51,42.4},{
-          -59.5,42.4},{-59.5,60},{-79,60}}, color={0,0,127}));
+  connect(weaDatInpCon.HDifHor_in, DHI.y) annotation (Line(points={{-51,40.5},{-59.5,
+          40.5},{-59.5,60},{-79,60}},       color={0,0,127}));
   connect(weaDatInpCon.HDirNor_in, DNI.y) annotation (Line(points={{-51,39},{
           -56,39},{-56,40},{-60,40},{-60,30},{-79,30}}, color={0,0,127}));
   connect(weaDatInpCon1.weaBus, flexgrid.weaBus) annotation (Line(

@@ -6,7 +6,7 @@ model SpotLoad_D_PQ_extBus_firstorder
   parameter Modelica.SIunits.ReactivePower Q2(start=0) "Positive = capacitive; Negative = inductive";
   parameter Modelica.SIunits.ActivePower P3(start=0) "Positive = load; Negative = source";
   parameter Modelica.SIunits.ReactivePower Q3(start=0) "Positive = capacitive; Negative = inductive";*/
-  parameter Modelica.SIunits.Voltage V_start=120;
+  parameter Modelica.Units.SI.Voltage V_start=120;
   parameter Real T_const(unit="s")=0.01 "Time constant for firstorder";
 
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Terminal_n

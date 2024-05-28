@@ -1,5 +1,6 @@
 within SCooDER.Components.ElectricVehicle.Examples;
 model Test_EVtransport_extTable
+  extends Modelica.Icons.Example;
   parameter Integer n_evs=10 "number of evs in system";
   parameter Integer n_cha=24 "number of charging stations in system";
   parameter Integer n_site=13 "number of sites in system";
@@ -10,7 +11,7 @@ model Test_EVtransport_extTable
     annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
   Modelica.Blocks.Sources.Sine ChargerSine(
     amplitude=1000,
-    freqHz=1/86400,
+    f=1/86400,
     offset=2000)
     annotation (Placement(transformation(extent={{-90,60},{-70,80}})));
 

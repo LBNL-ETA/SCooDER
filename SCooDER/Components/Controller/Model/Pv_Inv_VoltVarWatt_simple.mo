@@ -22,7 +22,6 @@ model Pv_Inv_VoltVarWatt_simple
     n=n,
     A=A,
     eta=eta,
-    lat=lat,
     til=til,
     azi=azi)
     annotation (Placement(transformation(extent={{-10,40},{10,60}})));

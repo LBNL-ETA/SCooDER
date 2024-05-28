@@ -4,7 +4,7 @@ model Test_Inverter_Qpreference
   extends Modelica.Icons.Example;
 
   Modelica.Blocks.Sources.Sine Powerfactor12(
-    freqHz=1,
+    f=1,
     phase=0,
     offset=0,
     amplitude=10000)
@@ -19,7 +19,7 @@ model Test_Inverter_Qpreference
   Modelica.Blocks.Sources.Sine Powerfactor3(
     phase=0,
     offset=0,
-    freqHz=0.5,
+    f=0.5,
     amplitude=3000)
     annotation (Placement(transformation(extent={{80,-80},{60,-60}})));
   Model.Inverter inverter1
@@ -29,7 +29,7 @@ model Test_Inverter_Qpreference
   Modelica.Blocks.Sources.Sine Battery2(
     phase=0,
     offset=0,
-    freqHz=0.5,
+    f=0.5,
     amplitude=4500)
     annotation (Placement(transformation(extent={{80,-14},{60,6}})));
   Modelica.Blocks.Sources.Step Plim2(
@@ -41,6 +41,8 @@ model Test_Inverter_Qpreference
             {0,-20}}),        iconTransformation(extent={{-142,-2},{-122,18}})));
   Buildings.Electrical.AC.OnePhase.Sources.FixedVoltage fixVol(f=60, V=240)
     annotation (Placement(transformation(extent={{-102,-10},{-82,10}})));
+  Modelica.Blocks.Sources.Constant soc(k=0.25)
+    annotation (Placement(transformation(extent={{44,-74},{24,-54}})));
 equation
   connect(inverter1.term_p, sens1.terminal_p) annotation (Line(points={{-20,0},
           {-40,0}},              color={0,120,120}));
@@ -75,6 +77,8 @@ equation
       index=1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
+  connect(inverter1.SOC_Batt, soc.y) annotation (Line(points={{2,1.6},{16,1.6},
+          {16,-64},{23,-64}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end Test_Inverter_Qpreference;

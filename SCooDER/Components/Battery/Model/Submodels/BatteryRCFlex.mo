@@ -1,6 +1,7 @@
 within SCooDER.Components.Battery.Model.Submodels;
 model BatteryRCFlex
-  parameter Modelica.SIunits.HeatCapacity C_battery=7e6 "Heat capacity of battery";
+  parameter Modelica.Units.SI.HeatCapacity C_battery=7e6
+    "Heat capacity of battery";
   parameter Real TInit( min=0, unit = "K") = 293.15 "Temperature at beginning of simulation";
   Modelica.Blocks.Interfaces.RealInput TOut( min=0, start = 293.15, unit = "K") "Outside temperature"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));

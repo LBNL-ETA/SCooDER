@@ -56,10 +56,9 @@ model dynToPh
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor
     annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
 
-  parameter Modelica.SIunits.Frequency f_max = 1000
+  parameter Modelica.Units.SI.Frequency f_max=1000
     "Maximum frequency of interest";
-  parameter Modelica.SIunits.Frequency f_res = 60
-    "Frequency resolution";
+  parameter Modelica.Units.SI.Frequency f_res=60 "Frequency resolution";
   parameter Integer n_out = 2 "Frequency bracket output [f_res*(nout-1) : f_res*nout]";
 
 equation

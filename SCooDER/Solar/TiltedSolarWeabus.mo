@@ -1,18 +1,19 @@
 within SCooDER.Solar;
 model TiltedSolarWeabus
-  parameter Real lat=37.9 "Latitude [deg]";
   parameter Real til=0 "Surface tilt [deg]";
   parameter Real azi=0 "Surface azimuth [deg] 0-S, 90-W, 180-N, 270-E ";
 
-  Solar.DiffusePerez                               HDifTil(
-    azi=Modelica.SIunits.Conversions.from_deg(azi),
-    til=Modelica.SIunits.Conversions.from_deg(til),
-    lat=Modelica.SIunits.Conversions.from_deg(lat)) "Diffuse irradiation on tilted surface"
+  Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez
+                     HDifTil(
+    azi=Modelica.Units.Conversions.from_deg(azi),
+    til=Modelica.Units.Conversions.from_deg(til))
+    "Diffuse irradiation on tilted surface"
     annotation (Placement(transformation(extent={{-20,10},{0,30}})));
-  Solar.DirectTiltedSurface                               HDirTil(
-    azi=Modelica.SIunits.Conversions.from_deg(azi),
-    til=Modelica.SIunits.Conversions.from_deg(til),
-    lat=Modelica.SIunits.Conversions.from_deg(lat)) "Direct irradiation on tilted surface"
+  Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface
+                            HDirTil(
+    azi=Modelica.Units.Conversions.from_deg(azi),
+    til=Modelica.Units.Conversions.from_deg(til))
+    "Direct irradiation on tilted surface"
     annotation (Placement(transformation(extent={{-20,-30},{0,-10}})));
   Modelica.Blocks.Math.Add sum "Total irradiation on tilted surface"
     annotation (Placement(transformation(

@@ -9,8 +9,9 @@ model Network
       Buildings.Electrical.Transmission.Grids.TestGrid2Nodes grid,
     redeclare SCooDER.Components.Grid.Model.Line lines(commercialCable=
           grid.cables));
-  Modelica.SIunits.Voltage VAbs[3,grid.nNodes] "RMS voltage of the grid nodes";
-  Modelica.SIunits.Voltage Vpu[3,grid.nNodes] "Scaled voltage of the grid nodes";
+  Modelica.Units.SI.Voltage VAbs[3,grid.nNodes] "RMS voltage of the grid nodes";
+  Modelica.Units.SI.Voltage Vpu[3,grid.nNodes]
+    "Scaled voltage of the grid nodes";
   Real P[3,grid.nNodes](each unit="W") "Phase Active Power";
   Real Q[3,grid.nNodes](each unit="var") "Phase Reactive Power";
   Real S_temp[3,grid.nNodes,2](each unit="VA") "Simlified Power measurements";

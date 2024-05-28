@@ -76,7 +76,7 @@ model smartBuilding
         Building.Q_hvac/3.5 else -1*Building.Q_hvac/4.0)
     annotation (Placement(transformation(extent={{30,-60},{50,-40}})));
   Components.Photovoltaics.Model.PVModule_simple pv(n=0.012*building_ft2*
-        der_scale, lat=Modelica.SIunits.Conversions.to_deg(weaDat.lat))
+        der_scale)
     annotation (Placement(transformation(extent={{0,40},{20,60}})));
   Modelica.Blocks.Sources.Constant ctrl_PV(k=1)
     annotation (Placement(transformation(extent={{-20,40},{-12,48}})));
@@ -151,7 +151,7 @@ equation
   connect(P_set_battery, battery.PCtrl)
     annotation (Line(points={{-110,20},{-2,20}}, color={0,0,127}));
   connect(pv_inv.y, sum1.u[1]) annotation (Line(points={{40.4,50},{58,50},{58,
-          48.6667},{68,48.6667}},
+          49.3333},{68,49.3333}},
                          color={0,0,127}));
   connect(pv_inv.u,pv. P)
     annotation (Line(points={{31.2,50},{21,50}}, color={0,0,127}));
@@ -161,8 +161,8 @@ equation
     annotation (Line(points={{94.4,80},{110,80}}, color={0,0,127}));
   connect(P_kW.y, costcalc.u2) annotation (Line(points={{61,70},{72.5,70},{
           72.5,77.6},{85.2,77.6}}, color={0,0,127}));
-  connect(building.P, sum1.u[3]) annotation (Line(points={{51,-70},{60,-70},{
-          60,51.3333},{68,51.3333}}, color={0,0,127}));
+  connect(building.P, sum1.u[3]) annotation (Line(points={{51,-70},{60,-70},{60,
+          50.6667},{68,50.6667}},    color={0,0,127}));
   connect(P_pv, pv_inv.y) annotation (Line(points={{110,20},{80,20},{80,30},{
           50,30},{50,50},{40.4,50}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

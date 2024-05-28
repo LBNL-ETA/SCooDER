@@ -8,7 +8,7 @@ model Test_PVandWeatherExt_simple
     annotation (Placement(transformation(extent={{40,-8},{60,12}})));
   Modelica.Blocks.Sources.Constant curtail(k=1)
     annotation (Placement(transformation(extent={{-60,-20},{-40,0}})));
-  Modelica.Blocks.Sources.Sine ghi(amplitude=900, freqHz=1/(60*60*24))
+  Modelica.Blocks.Sources.Sine ghi(amplitude=900, f=1/(60*60*24))
     annotation (Placement(transformation(extent={{-60,20},{-40,40}})));
   Modelica.Blocks.Math.Gain dhi(k=0.2)
     annotation (Placement(transformation(extent={{-20,20},{0,40}})));

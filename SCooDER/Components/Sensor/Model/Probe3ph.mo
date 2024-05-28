@@ -1,6 +1,6 @@
 within SCooDER.Components.Sensor.Model;
 model Probe3ph
-  parameter Modelica.SIunits.Voltage V_nominal = 208;
+  parameter Modelica.Units.SI.Voltage V_nominal=208;
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Terminal_n terminal_n
     "Electrical connector side N"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));

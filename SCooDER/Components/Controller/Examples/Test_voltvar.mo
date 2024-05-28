@@ -1,5 +1,6 @@
 within SCooDER.Components.Controller.Examples;
 model Test_voltvar
+  extends Modelica.Icons.Example;
 
   Modelica.Blocks.Sources.Ramp ramp(
     duration=1,

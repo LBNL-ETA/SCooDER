@@ -1,5 +1,6 @@
 within SCooDER.Systems.SmartBuilding.Examples;
 model Test_smartBuilding
+  extends Modelica.Icons.Example;
   smartBuilding Building
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
   Modelica.Blocks.Sources.Trapezoid Pbatt(

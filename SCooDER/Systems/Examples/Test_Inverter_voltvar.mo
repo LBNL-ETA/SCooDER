@@ -8,7 +8,7 @@ model Test_Inverter_voltvar
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
   Modelica.Blocks.Sources.Sine Voltage(
     offset=1,
-    freqHz=1/5,
+    f=1/5,
     amplitude=0.06)
     annotation (Placement(transformation(extent={{-100,12},{-80,32}})));
   Modelica.Blocks.Sources.Constant PV1(k=1000) annotation (Placement(
@@ -61,7 +61,7 @@ model Test_Inverter_voltvar
   Buildings.Electrical.AC.OnePhase.Loads.Resistive load1(mode=Buildings.Electrical.Types.Load.VariableZ_P_input)
     annotation (Placement(transformation(extent={{80,-30},{60,-10}})));
   Modelica.Blocks.Sources.Sine Voltage1(
-    freqHz=1/5,
+    f=1/5,
     offset=-1500,
     amplitude=1500)
     annotation (Placement(transformation(extent={{20,-40},{40,-20}})));
@@ -152,6 +152,8 @@ equation
           -80},{28,-80},{28,-70},{30,-70}}, color={0,120,120}));
   connect(realExpression1.y, load3.Pow)
     annotation (Line(points={{-9,-80},{-4,-80},{2,-80}}, color={0,0,127}));
+  connect(inverter.SOC_Batt, Batt1.y) annotation (Line(points={{28,81.6},{16,
+          81.6},{16,60},{11,60}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
    experiment(StopTime=5), Diagram(
         coordinateSystem(preserveAspectRatio=false)));

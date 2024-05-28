@@ -1,5 +1,6 @@
 within SCooDER.Components.Controller.Examples;
 model Test_loadOnOff
+  extends Modelica.Icons.Example;
   Controller.Model.loadOnOff loadOnOff[3](tDelay={60,90,120})
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Sources.Constant const[3](k=100)

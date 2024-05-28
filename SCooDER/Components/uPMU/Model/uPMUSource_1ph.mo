@@ -4,9 +4,9 @@ model uPMUSource_1ph "Voltage reference from uPMU"
     redeclare package PhaseSystem =
       Buildings.Electrical.PhaseSystems.OnePhase,
     redeclare replaceable Buildings.Electrical.AC.OnePhase.Interfaces.Terminal_p terminal);
-  parameter Modelica.SIunits.Angle phiSou = 0 "Phase shift of the source";
+  parameter Modelica.Units.SI.Angle phiSou=0 "Phase shift of the source";
 protected
-  Modelica.SIunits.Angle thetaRel
+  Modelica.Units.SI.Angle thetaRel
     "Absolute angle of rotating system as offset to thetaRef";
 public
   Modelica.Blocks.Interfaces.RealInput V(unit="V", start=120)

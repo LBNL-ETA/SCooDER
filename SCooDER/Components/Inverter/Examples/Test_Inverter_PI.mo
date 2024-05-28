@@ -5,26 +5,23 @@ model Test_Inverter_PI
 
   Modelica.Blocks.Sources.Sine Powerfactor12(
     amplitude=1,
-    freqHz=1,
+    f=1,
     phase=0,
-    offset=0)
-    annotation (Placement(transformation(extent={{80,20},{60,40}})));
+    offset=0) annotation (Placement(transformation(extent={{80,20},{60,40}})));
   Modelica.Blocks.Sources.Constant PV123(k=4000)
     annotation (Placement(transformation(extent={{60,80},{40,100}})));
   Modelica.Blocks.Sources.Sine Powerfactor3(
     amplitude=1,
     phase=0,
     offset=0,
-    freqHz=0.5)
-    annotation (Placement(transformation(extent={{80,-80},{60,-60}})));
+    f=0.5) annotation (Placement(transformation(extent={{80,-80},{60,-60}})));
   Modelica.Blocks.Sources.Constant Battery13(k=0)
     annotation (Placement(transformation(extent={{80,60},{60,80}})));
   Modelica.Blocks.Sources.Sine Battery2(
     phase=0,
     offset=0,
     amplitude=12000,
-    freqHz=1/60)
-    annotation (Placement(transformation(extent={{80,-14},{60,6}})));
+    f=1/60) annotation (Placement(transformation(extent={{80,-14},{60,6}})));
   Modelica.Blocks.Sources.Constant Q1(k=0)
     annotation (Placement(transformation(extent={{-40,-100},{-20,-80}})));
   Modelica.Blocks.Sources.Step Plim2(
@@ -37,9 +34,8 @@ model Test_Inverter_PI
   Modelica.Blocks.Sources.Sine BattControl1(
     offset=0,
     amplitude=10000,
-    freqHz=1/30,
-    phase=0)
-    annotation (Placement(transformation(extent={{-78,50},{-58,70}})));
+    f=1/30,
+    phase=0) annotation (Placement(transformation(extent={{-78,50},{-58,70}})));
   Buildings.Electrical.AC.OnePhase.Sources.FixedVoltage fixVol(f=50, V=240)
     annotation (Placement(transformation(extent={{-56,26},{-36,46}})));
   Modelica.Blocks.Continuous.FirstOrder firstOrder_batt(
@@ -53,6 +49,8 @@ model Test_Inverter_PI
         origin={12,66})));
   Interfaces.InvCtrlBus invCtrlBus annotation (Placement(transformation(extent=
             {{-30,50},{-10,70}}), iconTransformation(extent={{-142,-2},{-122,18}})));
+  Modelica.Blocks.Sources.Constant soc(k=0.25)
+    annotation (Placement(transformation(extent={{30,80},{10,100}})));
 equation
   connect(fixVol.terminal, inverter_PI1.term_p) annotation (Line(points={{-36,36},
           {-32,36},{-32,86},{-26,86}}, color={0,120,120}));
@@ -84,6 +82,8 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
+  connect(soc.y, inverter_PI1.SOC_Batt)
+    annotation (Line(points={{9,90},{9,87.6},{-4,87.6}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
   experiment(StopTime=60),
   Diagram(

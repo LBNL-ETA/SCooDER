@@ -7,10 +7,9 @@ model Interface_MBL
   Modelica.Electrical.Analog.Interfaces.PositivePin p_v
     annotation (Placement(transformation(extent={{-10,90},{10,110}})));
 
-  parameter Modelica.SIunits.Frequency f_max = 1000
+  parameter Modelica.Units.SI.Frequency f_max=1000
     "Maximum frequency of interest";
-  parameter Modelica.SIunits.Frequency f_res = 60
-    "Frequency resolution";
+  parameter Modelica.Units.SI.Frequency f_res=60 "Frequency resolution";
   parameter Integer n_out = 2 "Frequency bracket output [f_res*(nout-1) : f_res*nout]";
 
   Sensor.Model.dynToPQ dynToPQ(

@@ -23,7 +23,6 @@ model Pv_Inv_VoltVarWatt_simple_Slim_weabus
     n=n,
     A=A,
     eta=eta,
-    lat=lat,
     til=til,
     azi=azi) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
   Modelica.Blocks.Interfaces.RealInput Vpu(start=1, unit="1") "Voltage [p.u]"

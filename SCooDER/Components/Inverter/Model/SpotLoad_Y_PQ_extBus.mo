@@ -6,7 +6,7 @@ model SpotLoad_Y_PQ_extBus
   parameter Modelica.SIunits.ReactivePower Q2(start=0) "Positive = capacitive; Negative = inductive";
   parameter Modelica.SIunits.ActivePower P3(start=0) "Positive = load; Negative = source";
   parameter Modelica.SIunits.ReactivePower Q3(start=0) "Positive = capacitive; Negative = inductive";*/
-  parameter Modelica.SIunits.Voltage V_start=120;
+  parameter Modelica.Units.SI.Voltage V_start=120;
 
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Terminal_n
     terminal_n

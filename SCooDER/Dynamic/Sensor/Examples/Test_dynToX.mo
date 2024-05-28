@@ -1,6 +1,7 @@
 within SCooDER.Dynamic.Sensor.Examples;
 model Test_dynToX
-  Modelica.Electrical.Analog.Sources.SineVoltage SineVoltage(V=120, freqHz=60)
+  extends Modelica.Icons.Example;
+  Modelica.Electrical.Analog.Sources.SineVoltage SineVoltage(V=120, f=60)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -41,7 +42,8 @@ equation
   connect(dynToPh.p_v, SineVoltage.p)
     annotation (Line(points={{10,10},{10,20},{90,20}}, color={0,0,255}));
   connect(SineVoltage.n, ground1.p)
-    annotation (Line(points={{90,0},{90,0}}, color={0,0,255}));
+    annotation (Line(points={{90,-3.55271e-15},{90,0}},
+                                             color={0,0,255}));
   connect(dynToPh.n_i, dynToPQ.p_i)
     annotation (Line(points={{20,0},{40,0}}, color={0,0,255}));
   connect(dynToPQ.n_i, SineVoltage.n)

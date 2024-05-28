@@ -65,24 +65,24 @@ model IEEE13_extPQ_base
     annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
   Sensor.Model.Probe3ph sens[nodes](each V_nominal=V_nominal/sqrt(3))
     annotation (Placement(transformation(extent={{-10,30},{-30,10}})));
-  Modelica.Blocks.Math.Gain Vpu[nodes](each k=1/(V_nominal/sqrt(3))) if
-                                                              smartinverter
+  Modelica.Blocks.Math.Gain Vpu[nodes](each k=1/(V_nominal/sqrt(3)))
+                                                           if smartinverter
     annotation (Placement(transformation(extent={{-4,-4},{4,4}},
         rotation=90,
         origin={-80,40})));
-  Modelica.Blocks.Math.Product mul[nodes] if
-                                            smartinverter
+  Modelica.Blocks.Math.Product mul[nodes]
+                                         if smartinverter
     annotation (Placement(transformation(extent={{-34,52},{-26,60}})));
   Inverter.Model.SpotLoad_Y_PQ_extBus            PV_Inverter[nodes](each
-      V_start=V_nominal/sqrt(3)) if
-                             smartinverter
+      V_start=V_nominal/sqrt(3))
+                          if smartinverter
     annotation (Placement(transformation(extent={{-60,10},{-40,30}})));
   Modelica.Blocks.Sources.RealExpression const[nodes](each y=1) if smartinverter
     annotation (Placement(transformation(extent={{-90,58},{-86,70}})));
-  Modelica.Blocks.Math.Gain Qctrl[nodes](each k=1) if  smartinverter
+  Modelica.Blocks.Math.Gain Qctrl[nodes](each k=1)  if smartinverter
     annotation (Placement(transformation(extent={{-34,40},{-26,48}})));
-  Modelica.Blocks.Math.Gain PV_curtail[nodes](each k=1) if
-                                                       smartinverter
+  Modelica.Blocks.Math.Gain PV_curtail[nodes](each k=1)
+                                                    if smartinverter
     annotation (Placement(transformation(extent={{-20,52},{-12,60}})));
   Modelica.Blocks.Interfaces.RealOutput P_pcc[nodes](each unit="W")
     annotation (Placement(transformation(extent={{100,60},{120,80}}),
@@ -93,7 +93,7 @@ model IEEE13_extPQ_base
   Modelica.Blocks.Interfaces.RealOutput P_head(unit="W") annotation (
       Placement(transformation(extent={{100,80},{120,100}}), iconTransformation(
           extent={{100,80},{120,100}})));
-  Modelica.Blocks.Math.Gain W_to_kW(k=1/1e3) if   smartinverter
+  Modelica.Blocks.Math.Gain W_to_kW(k=1/1e3)   if smartinverter
     annotation (Placement(transformation(
         extent={{-4,-4},{4,4}},
         rotation=-90,
@@ -103,7 +103,7 @@ model IEEE13_extPQ_base
   Modelica.Blocks.Logical.GreaterThreshold en_vvw[nodes](each threshold=0.5)
     annotation (Placement(transformation(extent={{-94,46},{-86,54}})));
   Modelica.Blocks.Interfaces.RealInput En_vvw[nodes](each start=1, each unit=
-        "1") if                                                                    smartinverter
+        "1")                                                                    if smartinverter
     annotation (Placement(transformation(
         extent={{20,-20},{-20,20}},
         rotation=180,
@@ -181,7 +181,7 @@ equation
   connect(sens.terminal_n, ieee13.terminal)
     annotation (Line(points={{-10,20},{82,20}},
                                               color={0,120,120}));
-  connect(sens.Vy[1], Vpu.u) annotation (Line(points={{-11,28.3333},{-11,32},{
+  connect(sens.Vy[1], Vpu.u) annotation (Line(points={{-11,29.3333},{-11,32},{
           -80,32},{-80,35.2}},                        color={0,0,127}));
   connect(gain_Ppv.y, mul.u1) annotation (Line(points={{-51.6,80},{-38,80},{-38,
           58.4},{-34.8,58.4}}, color={0,0,127}));

@@ -1,10 +1,10 @@
 within SCooDER.Components.Transformer.Model;
 model MPZ
-  parameter Modelica.SIunits.Voltage VHigh=208
+  parameter Modelica.Units.SI.Voltage VHigh=208
     "Rms voltage on side 1 of the transformer (primary side)";
-  parameter Modelica.SIunits.Voltage VLow=240
+  parameter Modelica.Units.SI.Voltage VLow=240
     "Rms voltage on side 2 of the transformer (secondary side)";
-  parameter Modelica.SIunits.ApparentPower VABase=10e3
+  parameter Modelica.Units.SI.ApparentPower VABase=10e3
     "Nominal power of the transformer";
   parameter Real XoverR=3.01
     "Ratio between the complex and real components of the impedance (XL/R)";

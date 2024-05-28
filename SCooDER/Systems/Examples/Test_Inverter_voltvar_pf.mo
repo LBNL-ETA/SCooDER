@@ -12,7 +12,7 @@ model Test_Inverter_voltvar_pf
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
   Modelica.Blocks.Sources.Sine Voltage(
     offset=1,
-    freqHz=1/5,
+    f=1/5,
     amplitude=0.06)
     annotation (Placement(transformation(extent={{-100,10},{-80,30}})));
   Modelica.Blocks.Sources.Constant PV1(k=1000) annotation (Placement(

@@ -1,5 +1,6 @@
 within SCooDER.Components.uPMU.Examples;
 model Test_uPMUSource
+  extends Modelica.Icons.Example;
 
   Model.uPMUSource_1ph
                    uPMUSource
@@ -12,46 +13,45 @@ model Test_uPMUSource
         rotation=180,
         origin={0,70})));
   Modelica.Blocks.Sources.Sine P(
-    freqHz=1,
+    f=1,
     phase=0,
     offset=0,
     amplitude=1000)
     annotation (Placement(transformation(extent={{100,80},{80,100}})));
   Modelica.Blocks.Sources.Sine Frequency1(
     amplitude=5,
-    freqHz=1/10,
+    f=1/10,
     offset=60)
     annotation (Placement(transformation(extent={{-100,40},{-80,60}})));
   Modelica.Blocks.Sources.Sine Voltage1(
     phase=0,
     amplitude=10,
     offset=120,
-    freqHz=1/5)
-    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
+    f=1/5) annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
   Modelica.Blocks.Sources.Constant Q(k=0)
     annotation (Placement(transformation(extent={{100,40},{80,60}})));
   Model.uPMUSource_3ph uPMUSource_3ph
     annotation (Placement(transformation(extent={{-38,-10},{-18,10}})));
   Modelica.Blocks.Sources.Sine Frequency2(
     amplitude=5,
-    freqHz=1/5,
+    f=1/5,
     offset=30)
     annotation (Placement(transformation(extent={{-100,-30},{-80,-10}})));
   Modelica.Blocks.Sources.Sine Voltage2(
     phase=0,
     offset=120,
-    freqHz=1/10,
+    f=1/10,
     amplitude=20)
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
   Modelica.Blocks.Sources.Sine Frequency3(
     amplitude=5,
-    freqHz=1/10,
+    f=1/10,
     offset=90)
     annotation (Placement(transformation(extent={{-100,-100},{-80,-80}})));
   Modelica.Blocks.Sources.Sine Voltage3(
     phase=0,
     offset=120,
-    freqHz=1/2.5,
+    f=1/2.5,
     amplitude=30)
     annotation (Placement(transformation(extent={{-100,-70},{-80,-50}})));
   Components.Sensor.Model.Probe3ph sens_3ph_wye

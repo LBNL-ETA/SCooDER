@@ -1,5 +1,6 @@
 within SCooDER.Dynamic.Interfacing.Examples;
 model Test_MBL
+  extends Modelica.Icons.Example;
   Buildings.Electrical.AC.OnePhase.Sources.FixedVoltage fixVol(f=60, V=120)
     annotation (Placement(transformation(extent={{-40,-50},{-20,-30}})));
   Buildings.Electrical.AC.OnePhase.Sources.PVSimple pv(A=1)

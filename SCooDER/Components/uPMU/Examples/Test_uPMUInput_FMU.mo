@@ -48,10 +48,10 @@ model Test_uPMUInput_FMU
         rotation=180,
         origin={-120,40})));
 equation
-  connect(sens1.terminal_p, ada_1.terminals[1]) annotation (Line(points={
-          {0,40},{10,40},{10,0.533333},{20.2,0.533333}}, color={0,120,120}));
-  connect(sens3.terminal_p, ada_1.terminals[3]) annotation (Line(points={
-          {0,-40},{10,-40},{10,-0.533333},{20.2,-0.533333}}, color={0,120,
+  connect(sens1.terminal_p, ada_1.terminals[1]) annotation (Line(points={{0,40},{
+          10,40},{10,-0.266667},{20.2,-0.266667}},       color={0,120,120}));
+  connect(sens3.terminal_p, ada_1.terminals[3]) annotation (Line(points={{0,-40},
+          {10,-40},{10,0.266667},{20.2,0.266667}},           color={0,120,
           120}));
   connect(sens1.terminal_n, loa.terminal)
     annotation (Line(points={{-20,40},{-20,40}}, color={0,120,120}));

@@ -1,8 +1,9 @@
 within SCooDER.Components.Inverter.Model;
 model Inverter_pf
   import Flexgrid = SCooDER;
-  parameter Modelica.SIunits.Voltage V_nominal(min=0, start=240) = 240
-    "Nominal voltage (V_nominal >= 0)";
+  parameter Modelica.Units.SI.Voltage V_nominal(
+    min=0,
+    start=240) = 240 "Nominal voltage (V_nominal >= 0)";
   parameter Real etaPV(min=0, max=1, unit="1") = 0.988*0.974
     "Inverter conversion efficiency";
   parameter Real etaBatt(min=0, max=1, unit="1") = 0.974

@@ -9,17 +9,19 @@ model Comparisons
     computeWetBulbTemperature=false)
     "Weather data reader with radiation data obtained from the inputs' connectors"
     annotation (Placement(transformation(extent={{-80,50},{-60,70}})));
-  Model.PVModule_simple pVModule_simple(til=45)
+  Model.PVModule_simple pVModule_simple(
+    n=1,
+    A=10,
+    til=45)
     annotation (Placement(transformation(extent={{-20,20},{0,40}})));
   Buildings.Electrical.AC.OnePhase.Sources.PVSimpleOriented pv180deg(
     fAct=1,
     pf=1,
     eta_DCAC=1,
     V_nominal=120,
-    eta=0.15,
-    A=23.1,
+    eta=0.158,
+    A=10,
     til=0.78539816339745,
-    lat=0.66147978650585,
     azi=3.1415926535898)
     annotation (Placement(transformation(extent={{-20,-20},{0,0}})));
   Buildings.Electrical.AC.OnePhase.Sources.FixedVoltage source(f=60, V=120)
@@ -32,20 +34,18 @@ model Comparisons
     eta_DCAC=1,
     V_nominal=120,
     azi=0,
-    A=23.1,
-    eta=0.15,
-    til=0.78539816339745,
-    lat=0.66147978650585)
+    A=10,
+    eta=0.158,
+    til=0.78539816339745)
     annotation (Placement(transformation(extent={{-20,-50},{0,-30}})));
   Buildings.Electrical.AC.OnePhase.Sources.PVSimpleOriented pv90deg(
     fAct=1,
     pf=1,
     eta_DCAC=1,
     V_nominal=120,
-    eta=0.15,
-    A=23.1,
+    eta=0.158,
+    A=10,
     til=0.78539816339745,
-    lat=0.66147978650585,
     azi=1.5707963267949)
     annotation (Placement(transformation(extent={{-20,-80},{0,-60}})));
 equation

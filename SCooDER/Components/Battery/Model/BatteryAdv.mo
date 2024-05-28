@@ -16,8 +16,8 @@ model BatteryAdv  "Advanced battery model with temperature modeling and degradat
     parameter Real TBattInit( min = 0, unit="K") = 293.15  "Temperature of battery at simulation start";
     parameter Real TOutInit( min = 0, unit="K") = 293.15  "Outside temperature at simulation start";
 
-  parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
-annotation (Dialog(group="RC parameters"));
+  parameter Modelica.Units.SI.HeatCapacity CBatt=7e6 "C parameter for battery"
+    annotation (Dialog(group="RC parameters"));
 
   parameter Real a=8.860644141827217e-06
   annotation (Dialog(group="Battery degradation parameters"));
@@ -46,7 +46,8 @@ annotation (Dialog(group="RC parameters"));
   parameter Real AhStart = 0 "Ah throughput of battery before simulation started"
  annotation (Dialog(group="Battery initialization parameters"));
 
-  parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
+  parameter Modelica.Units.SI.Time startTime(fixed=false)
+    "Start time of simulation";
 
   Submodels.BatterySOH batterySOH(
     EMaxNom=CapNom,

@@ -1,5 +1,6 @@
 within SCooDER.Components.Grid.Examples;
 model Test_IEEE13
+  extends Modelica.Icons.Example;
 
   Model.Network ieee13(                  redeclare Records.IEEE_13 grid,
       V_nominal=4.16e3/sqrt(3))

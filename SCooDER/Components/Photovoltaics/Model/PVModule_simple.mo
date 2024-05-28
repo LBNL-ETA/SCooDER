@@ -1,10 +1,10 @@
 within SCooDER.Components.Photovoltaics.Model;
 model PVModule_simple
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
-  parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
+  parameter Modelica.Units.SI.Area A(min=0) = 1.65
+    "Net surface area per module [m2]";
   parameter Real eta(min=0, max=1, unit="1") = 0.158
     "Module conversion efficiency";
-  parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";
   parameter Real til(unit="deg") = 10 "Surface tilt [deg]";
   parameter Real azi(unit="deg") = 0 "Surface azimuth [deg] 0-S, 90-W, 180-N, 270-E ";
   Modelica.Blocks.Interfaces.RealInput scale(
@@ -25,7 +25,6 @@ model PVModule_simple
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Solar.TiltedSolarWeabus tilted_Solar_TMY(
     til=til,
-    lat=lat,
     azi=azi)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   Model.PVsimple pV_simple(

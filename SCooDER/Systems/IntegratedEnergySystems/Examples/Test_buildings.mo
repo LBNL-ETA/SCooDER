@@ -1,5 +1,6 @@
 within SCooDER.Systems.IntegratedEnergySystems.Examples;
 model Test_buildings
+  extends Modelica.Icons.Example;
   parameter Integer nodes=13;
   //parameter Integer n_evs=200;
   //parameter Integer n_cha=512;
@@ -16,17 +17,17 @@ model Test_buildings
     annotation (Placement(transformation(extent={{-60,10},{-40,30}})));
   Modelica.Blocks.Sources.Sine Building1(
     amplitude=10000,
-    freqHz=1/86400,
+    f=1/86400,
     offset=2000)
     annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
   Modelica.Blocks.Sources.Sine Building2(
     amplitude=15000,
-    freqHz=1/86400,
+    f=1/86400,
     offset=2000)
     annotation (Placement(transformation(extent={{-90,-42},{-70,-22}})));
   Modelica.Blocks.Sources.Sine Building3(
     amplitude=20000,
-    freqHz=1/86400,
+    f=1/86400,
     offset=2000)
     annotation (Placement(transformation(extent={{-90,-74},{-70,-54}})));
   Modelica.Blocks.Sources.RealExpression BuildingX[nodes - 3](y=0*ones(nodes - 3))
@@ -37,13 +38,17 @@ equation
   connect(battery_Pset.y, iEEE13_smartBuilding.P_set_battery)
     annotation (Line(points={{-39,20},{-26,20},{-26,7},{19,7}},  color={0,0,127}));
   connect(Building1.y, iEEE13_smartBuilding.P_building[1])
-    annotation (Line(points={{-69,0},{-40,0},{-40,-1},{19,-1}},  color={0,0,127}));
+    annotation (Line(points={{-69,0},{-40,0},{-40,-1.46154},{19,-1.46154}},
+                                                                 color={0,0,127}));
   connect(Building2.y, iEEE13_smartBuilding.P_building[2]) annotation (Line(points={{-69,-32},
-          {-40,-32},{-40,-1},{19,-1}}, color={0,0,127}));
+          {-40,-32},{-40,-1.38462},{19,-1.38462}},
+                                       color={0,0,127}));
   connect(Building3.y, iEEE13_smartBuilding.P_building[3]) annotation (Line(points={{-69,-64},
-          {-40,-64},{-40,-1},{19,-1}}, color={0,0,127}));
+          {-40,-64},{-40,-1.30769},{19,-1.30769}},
+                                       color={0,0,127}));
   connect(BuildingX[1].y, iEEE13_smartBuilding.P_building[4]) annotation (Line(points={{1,-40},
-          {8,-40},{8,-1},{19,-1}},      color={0,0,127}));
+          {8,-40},{8,-1.23077},{19,-1.23077}},
+                                        color={0,0,127}));
   connect(BuildingX[2].y, iEEE13_smartBuilding.P_building[5]);
   connect(BuildingX[3].y, iEEE13_smartBuilding.P_building[6]);
   connect(BuildingX[4].y, iEEE13_smartBuilding.P_building[7]);

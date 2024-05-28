@@ -1,5 +1,6 @@
 within SCooDER.Components.Grid.Examples;
 model Test_IEEE13_extPQ_ltc
+  extends Modelica.Icons.Example;
   Model.IEEE13_extPQ_ltc
                      iEEE13_extPQ_ltc(samplePeriod=60)
                                                annotation (Placement(
@@ -11,102 +12,89 @@ model Test_IEEE13_extPQ_ltc
   parameter Real sampleTime=1/60/60/2;
   Modelica.Blocks.Sources.Sine node4(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3)                                            annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={-45,55})));
   Modelica.Blocks.Sources.Sine node3(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={-15,55})));
   Modelica.Blocks.Sources.Sine node5(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={15,55})));
   Modelica.Blocks.Sources.Sine node6(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={45,55})));
   Modelica.Blocks.Sources.Sine node2(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=0,
         origin={-5,41})));
   Modelica.Blocks.Sources.Sine node9(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={-45,15})));
   Modelica.Blocks.Sources.Sine node8(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={-15,15})));
   Modelica.Blocks.Sources.Sine node10(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={15,15})));
   Modelica.Blocks.Sources.Sine node11(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=90,
         origin={45,15})));
   Modelica.Blocks.Sources.Sine node7(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=0,
         origin={-5,1})));
   Modelica.Blocks.Sources.Sine node12(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=0,
         origin={-35,-19})));
   Modelica.Blocks.Sources.Sine node13(
     amplitude=200e3,
-    freqHz=sampleTime,
-    offset=50e3) annotation (
-      Placement(transformation(
+    f=sampleTime,
+    offset=50e3) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=0,
         origin={-5,-19})));
-  Modelica.Blocks.Sources.Sine node1(freqHz=0) annotation (Placement(
-        transformation(
+  Modelica.Blocks.Sources.Sine node1(f=0) annotation (Placement(transformation(
         extent={{-5,-5},{5,5}},
         rotation=0,
         origin={-15,81})));

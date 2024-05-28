@@ -9,7 +9,8 @@ model generic_wye_voltvar
   parameter Real q_maxcap( start=1000, unit="var")=2500 "Maximal Reactive Power (Capacitive) [var]";
   parameter String weaName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
-  parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
+  parameter Modelica.Units.SI.Area A(min=0) = 1.65
+    "Net surface area per module [m2]";
   parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";
   parameter Real til(unit="deg") = 10 "Surface tilt [deg]";
   parameter Real azi(unit="deg") = 0 "Surface azimuth [deg] 0-S, 90-W, 180-N, 270-E ";

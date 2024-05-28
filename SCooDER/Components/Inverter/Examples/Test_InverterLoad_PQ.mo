@@ -30,13 +30,13 @@ model Test_InverterLoad_PQ
   Modelica.Blocks.Sources.Sine Qsine1(
     phase=0,
     offset=0,
-    freqHz=1,
+    f=1,
     amplitude=250)
     annotation (Placement(transformation(extent={{60,-40},{40,-20}})));
   Modelica.Blocks.Sources.Sine Psine1(
     phase=0,
     offset=0,
-    freqHz=0.5,
+    f=0.5,
     amplitude=1000)
     annotation (Placement(transformation(extent={{80,-10},{60,10}})));
   Model.InverterLoad_PQ Load1(V_nominal=120)
@@ -67,13 +67,13 @@ model Test_InverterLoad_PQ
 equation
   connect(ada_1.terminal, sens_all.terminal_p)
     annotation (Line(points={{-60,0},{-60,0}}, color={0,120,120}));
-  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={
-          {-30,50},{-34,50},{-34,0.53333},{-40.2,0.53333}}, color={0,120,
+  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={{-30,50},
+          {-34,50},{-34,-0.266667},{-40.2,-0.266667}},      color={0,120,
           120}));
   connect(sens2.terminal_n, ada_1.terminals[2])
     annotation (Line(points={{-30,0},{-40.2,0}}, color={0,120,120}));
-  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={
-          {-30,-50},{-34,-50},{-34,-0.53333},{-40.2,-0.53333}}, color={0,
+  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={{-30,-50},
+          {-34,-50},{-34,0.266667},{-40.2,0.266667}},           color={0,
           120,120}));
   connect(Load1.terminal, sens1.terminal_p)
     annotation (Line(points={{0,50},{-10,50}}, color={0,120,120}));

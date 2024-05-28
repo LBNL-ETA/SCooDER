@@ -7,10 +7,14 @@ model voltVar_param_simple_firstorder
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   parameter Real thr = 0.05 "over/undervoltage threshold";
   parameter Real hys= 0.01 "Hysteresis";
-  final parameter Modelica.SIunits.PerUnit vMaxDea=1 + hys "Upper bound of deaband [p.u.]";
-  final parameter Modelica.SIunits.PerUnit vMax=1 + thr "Voltage maximum [p.u.]";
-  final parameter Modelica.SIunits.PerUnit vMinDea=1 - hys "Upper bound of deaband [p.u.]";
-  final parameter Modelica.SIunits.PerUnit vMin=1 - thr "Voltage minimum [p.u.]";
+  final parameter Modelica.Units.SI.PerUnit vMaxDea=1 + hys
+    "Upper bound of deaband [p.u.]";
+  final parameter Modelica.Units.SI.PerUnit vMax=1 + thr
+    "Voltage maximum [p.u.]";
+  final parameter Modelica.Units.SI.PerUnit vMinDea=1 - hys
+    "Upper bound of deaband [p.u.]";
+  final parameter Modelica.Units.SI.PerUnit vMin=1 - thr
+    "Voltage minimum [p.u.]";
   parameter Real QMaxInd(unit="var") = 1000 "Maximal Reactive Power (Inductive)";
   parameter Real QMaxCap(unit="var") = 1000 "Maximal Reactive Power (Capacitive)";
   parameter Real Tfirstorder(unit="s") = 1 "Time constant of first order";

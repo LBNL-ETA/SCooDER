@@ -1,12 +1,13 @@
 within SCooDER.Components.Battery.Examples;
 model Test_Battery
+  extends Modelica.Icons.Example;
 
   Model.Battery battery
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Sources.Sine BatteryPower(
     phase=0,
     offset=0,
-    freqHz=1/(60*60*12),
+    f=1/(60*60*12),
     amplitude=2500)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 equation

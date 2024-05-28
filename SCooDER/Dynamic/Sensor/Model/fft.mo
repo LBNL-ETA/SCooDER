@@ -28,10 +28,9 @@ model fft
         extent={{-10,-10},{10,10}},
         origin={110,-50})));
 
-  parameter Modelica.SIunits.Frequency f_max = 1000
+  parameter Modelica.Units.SI.Frequency f_max=1000
     "Maximum frequency of interest";
-  parameter Modelica.SIunits.Frequency f_res = 60
-    "Frequency resolution";
+  parameter Modelica.Units.SI.Frequency f_res=60 "Frequency resolution";
   parameter Integer n_out = 2 "Frequency bracket output [f_res*(nout-1) : f_res*nout]";
 
   //output Integer inf0(final start=0, final fixed=true)
@@ -46,10 +45,10 @@ protected
   Real y_buf[ns](each start=0, each fixed=true);
   parameter Integer ns = Modelica.Math.FastFourierTransform.realFFTsamplePoints(f_max, f_res, f_max_factor=5);
   //parameter Integer ns = integer(100);
-  parameter Modelica.SIunits.Frequency f_max_FFT = f_res*div(ns, 2)
+  parameter Modelica.Units.SI.Frequency f_max_FFT=f_res*div(ns, 2)
     "Maximum frequency used by FFT";
   parameter Integer nf = div(ns,2) + 1 "Number of frequency points";
-  parameter Modelica.SIunits.Time Ts = 1/(2*f_max_FFT) "Sample period";
+  parameter Modelica.Units.SI.Time Ts=1/(2*f_max_FFT) "Sample period";
   parameter Integer nfi = max(1,min(integer(ceil(f_max/f_res))+1,nf))
     "Number of frequency points of the interested frequency range (only up to f_max)";
 

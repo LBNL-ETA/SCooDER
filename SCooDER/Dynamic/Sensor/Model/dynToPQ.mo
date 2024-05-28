@@ -7,10 +7,9 @@ model dynToPQ
   Modelica.Electrical.Analog.Interfaces.PositivePin p_v
     annotation (Placement(transformation(extent={{-10,90},{10,110}})));
 
-  parameter Modelica.SIunits.Frequency f_max = 1000
+  parameter Modelica.Units.SI.Frequency f_max=1000
     "Maximum frequency of interest";
-  parameter Modelica.SIunits.Frequency f_res = 60
-    "Frequency resolution";
+  parameter Modelica.Units.SI.Frequency f_res=60 "Frequency resolution";
   parameter Integer n_out = 2 "Frequency bracket output [f_res*(nout-1) : f_res*nout]";
   Real vrms;
   Real irms;
@@ -32,8 +31,10 @@ model dynToPQ
 equation
   vrms = dynToPh1.v_amplitude / sqrt(2);
   irms = dynToPh1.i_amplitude / sqrt(2);
-  p = vrms*irms*cos(Modelica.SIunits.Conversions.from_deg(dynToPh1.v_phase-dynToPh1.i_phase));
-  q = vrms*irms*sin(Modelica.SIunits.Conversions.from_deg(dynToPh1.v_phase-dynToPh1.i_phase));
+  p =vrms*irms*cos(Modelica.Units.Conversions.from_deg(dynToPh1.v_phase -
+    dynToPh1.i_phase));
+  q =vrms*irms*sin(Modelica.Units.Conversions.from_deg(dynToPh1.v_phase -
+    dynToPh1.i_phase));
   connect(dynToPh1.p_i, p_i)
     annotation (Line(points={{-10,0},{-100,0}}, color={0,0,255}));
   connect(dynToPh1.n_i, n_i)

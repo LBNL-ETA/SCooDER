@@ -16,7 +16,8 @@ model BatterySOH
   parameter Real etaDis(min=0, max=1, unit="1") = 0.96
     "Discharging efficiency";
 
- Modelica.SIunits.Energy EMax "Remaining max battery capacity considering SOH";
+  Modelica.Units.SI.Energy EMax
+    "Remaining max battery capacity considering SOH";
  Modelica.Blocks.Interfaces.RealInput PCtrl(start=0, unit="W")
     "Power control to charge (positive) discharge (negativ) the battery"
     annotation (Placement(transformation(

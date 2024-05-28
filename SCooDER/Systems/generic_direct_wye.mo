@@ -2,7 +2,8 @@ within SCooDER.Systems;
 model generic_direct_wye
   import SmartInverter = SCooDER;
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
-  parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
+  parameter Modelica.Units.SI.Area A(min=0) = 1.65
+    "Net surface area per module [m2]";
   parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";
   parameter Real til(unit="deg") = 10 "Surface tilt [deg]";
   parameter Real azi(unit="deg") = 0 "Surface azimuth [deg] 0-S, 90-W, 180-N, 270-E ";

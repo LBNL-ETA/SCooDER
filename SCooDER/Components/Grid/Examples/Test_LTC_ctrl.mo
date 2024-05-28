@@ -1,12 +1,13 @@
 within SCooDER.Components.Grid.Examples;
 model Test_LTC_ctrl
+  extends Modelica.Icons.Example;
   Model.LTC_ctrl LTC_ctrl
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Sources.Constant const(k=120)
     annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
   Modelica.Blocks.Sources.Sine sine(
+    f(displayUnit="Hz") = 1/60/60,
     amplitude=30,
-    freqHz(displayUnit="Hz") = 1/60/60,
     offset=120)
     annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
 equation

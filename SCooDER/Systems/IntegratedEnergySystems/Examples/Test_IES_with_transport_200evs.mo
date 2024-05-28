@@ -1,5 +1,6 @@
 within SCooDER.Systems.IntegratedEnergySystems.Examples;
 model Test_IES_with_transport_200evs
+  extends Modelica.Icons.Example;
   parameter Integer nodes=13;
   parameter Integer n_evs=200;
   parameter Integer n_cha=512;
@@ -21,7 +22,7 @@ model Test_IES_with_transport_200evs
     annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
   Modelica.Blocks.Sources.Sine ChargerSine(
     amplitude=1000,
-    freqHz=1/86400,
+    f=1/86400,
     offset=2000)
     annotation (Placement(transformation(extent={{-100,-40},{-80,-20}})));
   Modelica.Blocks.Sources.RealExpression battery_Pset[nodes](y=0*ones(nodes))

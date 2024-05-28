@@ -1,5 +1,6 @@
 within SCooDER.Components.Sensor.Examples;
 model Test_Probe3ph
+  extends Modelica.Icons.Example;
 
   Model.Probe3ph sens_resistive
     annotation (Placement(transformation(extent={{-40,50},{-20,70}})));

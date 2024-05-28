@@ -1,5 +1,6 @@
 within SCooDER.Components.Battery.Examples;
 model TestAdvancedBattery_Wang
+  extends Modelica.Icons.Example;
   Modelica.Blocks.Sources.RealExpression temp1(y=10 + 273.15)
     annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
   Modelica.Blocks.Sources.RealExpression power1(y=0)

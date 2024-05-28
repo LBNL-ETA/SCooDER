@@ -2,7 +2,8 @@ within SCooDER.Components.uPMU.Model;
 model uPMUSource_3ph "Voltage reference from uPMU"
   extends
     Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.BaseClasses.PartialSource;
-  constant Modelica.SIunits.Angle angle120 = 2*Modelica.Constants.pi/3 "Phase shift between the phase voltages";
+  constant Modelica.Units.SI.Angle angle120=2*Modelica.Constants.pi/3
+    "Phase shift between the phase voltages";
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Adapter3to3 ada "Adapter between the different connectors" annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   uPMUSource_1ph phase1(phiSou=0) annotation (Placement(transformation(extent={{-60,50},{-40,70}})));
   uPMUSource_1ph phase2(phiSou=angle120) annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));

@@ -1,7 +1,8 @@
 within SCooDER.Components.Photovoltaics.Model;
 model PVModule_simple_ZeroOrder
   parameter Real n(min=0, unit="1") = 14 "Number of PV modules";
-  parameter Modelica.SIunits.Area A(min=0) = 1.65 "Net surface area per module [m2]";
+  parameter Modelica.Units.SI.Area A(min=0) = 1.65
+    "Net surface area per module [m2]";
   parameter Real eta(min=0, max=1, unit="1") = 0.158
     "Module conversion efficiency";
   parameter Real lat(unit="deg") = 37.9 "Latitude [deg]";

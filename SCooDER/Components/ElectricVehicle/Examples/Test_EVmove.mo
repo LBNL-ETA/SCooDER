@@ -1,5 +1,6 @@
 within SCooDER.Components.ElectricVehicle.Examples;
 model Test_EVmove
+  extends Modelica.Icons.Example;
 
   parameter Integer n_evs=4;
 

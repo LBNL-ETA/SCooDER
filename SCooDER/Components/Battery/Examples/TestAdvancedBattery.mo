@@ -1,5 +1,6 @@
 within SCooDER.Components.Battery.Examples;
 model TestAdvancedBattery
+  extends Modelica.Icons.Example;
   Model.BatteryAdv batteryAdv(
     CapNom=6400,
     PMax=3300,
@@ -17,13 +18,13 @@ model TestAdvancedBattery
     annotation (Placement(transformation(extent={{-40,22},{-20,42}})));
   Modelica.Blocks.Sources.Sine OutsideTemperature(
     amplitude=10,
-    freqHz=1/43200,
+    f=1/43200,
     phase=4.7123889803847,
     offset=293.15)
     annotation (Placement(transformation(extent={{-62,-8},{-42,12}})));
   Modelica.Blocks.Sources.Sine PCtrl(
     amplitude=2500,
-    freqHz=1/36000,
+    f=1/36000,
     offset=500)
     annotation (Placement(transformation(extent={{-64,-42},{-44,-22}})));
 equation

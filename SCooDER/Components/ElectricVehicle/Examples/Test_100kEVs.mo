@@ -1,9 +1,10 @@
 within SCooDER.Components.ElectricVehicle.Examples;
 model Test_100kEVs
+  extends Modelica.Icons.Example;
   parameter Integer n_evs=100;
   Modelica.Blocks.Sources.Sine TemperatureSine(
     amplitude=20,
-    freqHz=1/86400,
+    f=1/86400,
     offset=293.15)
     annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
   EV_simple EVs[n_evs]

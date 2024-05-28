@@ -1,8 +1,9 @@
 within SCooDER.Components.ElectricVehicle.Examples;
 model Test_EV_1_week
+  extends Modelica.Icons.Example;
   Modelica.Blocks.Sources.Sine TemperatureSine(
     amplitude=20,
-    freqHz=1/86400,
+    f=1/86400,
     offset=293.15)
     annotation (Placement(transformation(extent={{-74,-56},{-54,-36}})));
   SCooDER.Components.ElectricVehicle.EV eV(
@@ -24,6 +25,8 @@ model Test_EV_1_week
     annotation (Placement(transformation(extent={{38,62},{58,82}})));
   Modelica.Blocks.Sources.Constant ChargingPowerCtrl(k=5000)
     annotation (Placement(transformation(extent={{-74,46},{-54,66}})));
+  Modelica.Blocks.Sources.Constant RegulationCtrl(k=0)
+    annotation (Placement(transformation(extent={{-74,-90},{-54,-70}})));
 equation
   connect(TemperatureSine.y, eV.TOut) annotation (Line(points={{-53,-46},{-14,-46},
           {-14,14},{30,14}}, color={0,0,127}));
@@ -33,6 +36,8 @@ equation
           -20,56},{-20,26},{30,26}}, color={0,0,127}));
   connect(PluggedInPulse.y, eV.PluggedIn)
     annotation (Line(points={{-53,22},{30,22}}, color={0,0,127}));
+  connect(eV.PRegCtrl, RegulationCtrl.y) annotation (Line(points={{30,10},{-10,
+          10},{-10,-80},{-53,-80}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false)),
     Diagram(coordinateSystem(preserveAspectRatio=false)),

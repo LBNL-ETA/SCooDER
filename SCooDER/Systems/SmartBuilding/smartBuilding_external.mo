@@ -20,7 +20,7 @@ model smartBuilding_external
     annotation (Placement(transformation(extent={{-100,60},{-80,80}})));
 
   Components.Photovoltaics.Model.PVModule_simple pv(n=0.004*building_ft2*
-        der_scale, lat=Modelica.SIunits.Conversions.to_deg(weaDat.lat))
+        der_scale)
     annotation (Placement(transformation(extent={{0,40},{20,60}})));
   Modelica.Blocks.Sources.Constant ctrl_PV(k=1)
     annotation (Placement(transformation(extent={{-20,40},{-12,48}})));
@@ -106,13 +106,14 @@ equation
   connect(sum1.y, P)
     annotation (Line(points={{91,50},{100,50},{100,30},{110,30}},
                                                 color={0,0,127}));
-  connect(battery.P, sum1.u[2]) annotation (Line(points={{21,20},{60,20},{60,49.5},
-          {68,49.5}},
+  connect(battery.P, sum1.u[2]) annotation (Line(points={{21,20},{60,20},{60,
+          49.75},{68,49.75}},
                     color={0,0,127}));
   connect(P_set_battery, battery.PCtrl)
     annotation (Line(points={{-110,20},{-2,20}}, color={0,0,127}));
-  connect(pv_inv.y, sum1.u[1]) annotation (Line(points={{40.4,50},{58,50},{58,48.5},
-          {68,48.5}},    color={0,0,127}));
+  connect(pv_inv.y, sum1.u[1]) annotation (Line(points={{40.4,50},{58,50},{58,
+          49.25},{68,49.25}},
+                         color={0,0,127}));
   connect(pv_inv.u,pv. P)
     annotation (Line(points={{31.2,50},{21,50}}, color={0,0,127}));
   connect(costcalc.u1, tou.y[1]) annotation (Line(points={{85.2,82.4},{72.6,
@@ -122,14 +123,14 @@ equation
                                                   color={0,0,127}));
   connect(P_kW.y, costcalc.u2) annotation (Line(points={{61,70},{72.5,70},{
           72.5,77.6},{85.2,77.6}}, color={0,0,127}));
-  connect(building.P, sum1.u[3]) annotation (Line(points={{21,-80},{64,-80},{
-          64,50.5},{68,50.5}},       color={0,0,127}));
+  connect(building.P, sum1.u[3]) annotation (Line(points={{21,-80},{64,-80},{64,
+          50.25},{68,50.25}},        color={0,0,127}));
   connect(P_pv, pv_inv.y) annotation (Line(points={{110,-10},{80,-10},{80,32},
           {48,32},{48,50},{40.4,50}},color={0,0,127}));
   connect(en_vvw.P, En_vvw)
     annotation (Line(points={{81,-90},{110,-90}}, color={0,0,127}));
-  connect(charger.P, sum1.u[4]) annotation (Line(points={{21,-40},{56,-40},{
-          56,52},{62,52},{62,51.5},{68,51.5}},
+  connect(charger.P, sum1.u[4]) annotation (Line(points={{21,-40},{56,-40},{56,
+          52},{62,52},{62,50.75},{68,50.75}},
                       color={0,0,127}));
   connect(charger.P, P_cha) annotation (Line(points={{21,-40},{66,-40},{66,
           -30},{110,-30}}, color={0,0,127}));

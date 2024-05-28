@@ -1,7 +1,8 @@
 within SCooDER.Components.Battery.Model.Submodels;
 model BatteryRC
-  parameter Modelica.SIunits.HeatCapacity C_battery= 7e6  "Heat capacity of battery";
-  parameter Modelica.SIunits.ThermalResistance R_battery=0.004;
+  parameter Modelica.Units.SI.HeatCapacity C_battery=7e6
+    "Heat capacity of battery";
+  parameter Modelica.Units.SI.ThermalResistance R_battery=0.004;
   parameter Real TInit(min = 0, unit = "K") = 293.15 "Initial battery temperature ";
   Modelica.Blocks.Interfaces.RealInput TOut(min=0, unit="K") "Outside temperature"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));

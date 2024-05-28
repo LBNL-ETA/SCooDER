@@ -31,7 +31,6 @@ model Pv_Inv_VoltVarWatt_simple_Slim_uStoarge
     n=n,
     A=A,
     eta=eta,
-    lat=lat,
     til=til,
     azi=azi)
     annotation (Placement(transformation(extent={{-10,70},{10,90}})));

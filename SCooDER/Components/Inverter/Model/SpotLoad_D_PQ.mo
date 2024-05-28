@@ -1,12 +1,18 @@
 within SCooDER.Components.Inverter.Model;
 model SpotLoad_D_PQ
-  parameter Modelica.SIunits.ActivePower P1(start=0) "Positive = load; Negative = source";
-  parameter Modelica.SIunits.ReactivePower Q1(start=0) "Positive = capacitive; Negative = inductive";
-  parameter Modelica.SIunits.ActivePower P2(start=0) "Positive = load; Negative = source";
-  parameter Modelica.SIunits.ReactivePower Q2(start=0) "Positive = capacitive; Negative = inductive";
-  parameter Modelica.SIunits.ActivePower P3(start=0) "Positive = load; Negative = source";
-  parameter Modelica.SIunits.ReactivePower Q3(start=0) "Positive = capacitive; Negative = inductive";
-  parameter Modelica.SIunits.Voltage V_start=120;
+  parameter Modelica.Units.SI.ActivePower P1(start=0)
+    "Positive = load; Negative = source";
+  parameter Modelica.Units.SI.ReactivePower Q1(start=0)
+    "Positive = capacitive; Negative = inductive";
+  parameter Modelica.Units.SI.ActivePower P2(start=0)
+    "Positive = load; Negative = source";
+  parameter Modelica.Units.SI.ReactivePower Q2(start=0)
+    "Positive = capacitive; Negative = inductive";
+  parameter Modelica.Units.SI.ActivePower P3(start=0)
+    "Positive = load; Negative = source";
+  parameter Modelica.Units.SI.ReactivePower Q3(start=0)
+    "Positive = capacitive; Negative = inductive";
+  parameter Modelica.Units.SI.Voltage V_start=120;
 
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Terminal_n
     terminal_n

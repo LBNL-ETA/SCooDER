@@ -1,7 +1,6 @@
 within SCooDER.Components.Inverter.Examples;
 model Test_Inverter_FMU
   "This allows the export of the inverter as FMU for testing purposes."
-  extends Modelica.Icons.Example;
 
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Interfaces.Adapter3to3 ada_1
     annotation (Placement(transformation(extent={{-40,-10},{-60,10}})));
@@ -73,16 +72,18 @@ model Test_Inverter_FMU
            {{20,-30},{40,-10}}), iconTransformation(extent={{-142,-2},{-122,18}})));
   Interfaces.InvCtrlBus invCtrlBus3 annotation (Placement(transformation(extent=
            {{20,-80},{40,-60}}), iconTransformation(extent={{-142,-2},{-122,18}})));
+  Modelica.Blocks.Sources.Constant soc(k=0.25)
+    annotation (Placement(transformation(extent={{60,70},{40,90}})));
 equation
   connect(ada_1.terminal, sens_all.terminal_p)
     annotation (Line(points={{-60,0},{-60,0}}, color={0,120,120}));
-  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={
-          {-30,50},{-34,50},{-34,0.53333},{-40.2,0.53333}}, color={0,120,
+  connect(sens1.terminal_n, ada_1.terminals[1]) annotation (Line(points={{-30,50},
+          {-34,50},{-34,-0.266667},{-40.2,-0.266667}},      color={0,120,
           120}));
   connect(sens2.terminal_n, ada_1.terminals[2])
     annotation (Line(points={{-30,0},{-40.2,0}}, color={0,120,120}));
-  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={
-          {-30,-50},{-34,-50},{-34,-0.53333},{-40.2,-0.53333}}, color={0,
+  connect(sens3.terminal_n, ada_1.terminals[3]) annotation (Line(points={{-30,-50},
+          {-34,-50},{-34,0.266667},{-40.2,0.266667}},           color={0,
           120,120}));
   connect(sens_all.terminal_n, source.terminal) annotation (Line(points={
           {-80,0},{-80,-1.33227e-015}}, color={0,120,120}));
@@ -171,6 +172,12 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
+  connect(soc.y, inverter1.SOC_Batt) annotation (Line(points={{39,80},{32,80},{32,
+          51.6},{22,51.6}}, color={0,0,127}));
+  connect(soc.y, inverter2.SOC_Batt) annotation (Line(points={{39,80},{32,80},{32,
+          1.6},{22,1.6}}, color={0,0,127}));
+  connect(soc.y, inverter3.SOC_Batt) annotation (Line(points={{39,80},{32,80},{32,
+          -48.4},{22,-48.4}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end Test_Inverter_FMU;

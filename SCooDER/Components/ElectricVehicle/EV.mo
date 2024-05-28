@@ -15,13 +15,15 @@ model EV
   parameter Real TBattInit( min = 0, unit="K") = 293.15  "Temperature of battery at simulation start";
   parameter Real TOutInit( min = 0, unit="K") = 293.15  "Outside temperature at simulation start";
 
-  parameter Modelica.SIunits.HeatCapacity CBatt = 7e6 "C parameter for battery"
-annotation (Dialog(group="RC parameters"));
-  parameter Modelica.SIunits.ThermalResistance RPlug=0.004 "R parameter for battery while stationary"
-annotation (Dialog(group="RC parameters"));
+  parameter Modelica.Units.SI.HeatCapacity CBatt=7e6 "C parameter for battery"
+    annotation (Dialog(group="RC parameters"));
+  parameter Modelica.Units.SI.ThermalResistance RPlug=0.004
+    "R parameter for battery while stationary"
+    annotation (Dialog(group="RC parameters"));
 
-  parameter Modelica.SIunits.ThermalResistance RDrive=0.004 "R parameter for battery while driving"
-annotation (Dialog(group="RC parameters"));
+  parameter Modelica.Units.SI.ThermalResistance RDrive=0.004
+    "R parameter for battery while driving"
+    annotation (Dialog(group="RC parameters"));
 
   parameter Real V(unit="V") = 345 "Nominal battery Voltage";
   parameter Real TAvgInit(min=0, unit="K") = 293.15 "Average battery temperature before simulation started"
@@ -35,7 +37,8 @@ annotation (Dialog(group="RC parameters"));
 
   parameter Real FlagLowCycle(min=0, max=1) = 0 "Consider low cycling of calendar aging (0.5 C constantly) [1=true; 0=false]"
   annotation (Dialog(group="Battery initialization parameters"));
-  parameter Modelica.SIunits.Time startTime(fixed=false) "Start time of simulation";
+  parameter Modelica.Units.SI.Time startTime(fixed=false)
+    "Start time of simulation";
 
   SCooDER.Components.Battery.Model.Submodels.BatterySOH battery(
     PInt(start=0),

@@ -1,11 +1,12 @@
 within SCooDER.Systems.Examples;
 model Test_FLEXGRID_voltvar_FMU
+  extends Modelica.Icons.Example;
   FLEXGRID.FLEXGRID_voltvar_FMU fLEXGRID_voltvar_FMU
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
   Modelica.Blocks.Sources.Sine Voltage1(
     phase=0,
     offset=120,
-    freqHz=1/5,
+    f=1/5,
     amplitude=10)
     annotation (Placement(transformation(extent={{60,60},{40,80}})));
   Modelica.Blocks.Sources.Constant Scale(k=1) annotation (Placement(

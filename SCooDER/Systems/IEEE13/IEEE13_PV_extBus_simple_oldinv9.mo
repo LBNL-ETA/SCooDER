@@ -77,28 +77,25 @@ model IEEE13_PV_extBus_simple_oldinv9
   Components.Inverter.Interfaces.LoadCtrlBus ctrlNode13 annotation (Placement(
         transformation(extent={{-110,-90},{-90,-70}}), iconTransformation(
           extent={{-140,6},{-120,26}})));
-  generic_wye_voltvarwatt_simple inverter13(weaName=weaName)
-                                                            annotation (Placement(transformation(extent={{32,-90},{12,-70}})));
-  generic_wye_voltvarwatt_simple inverter11(weaName=weaName)
-                                                            annotation (Placement(transformation(
+  FLEXGRID.generic_wye_voltvarwatt_simple inverter13(weaName=weaName)
+    annotation (Placement(transformation(extent={{32,-90},{12,-70}})));
+  FLEXGRID.generic_wye_voltvarwatt_simple inverter11(weaName=weaName)
+    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={90,16})));
-  generic_wye_voltvarwatt_simple inverter9(weaName=weaName)
-                                                           annotation (Placement(
-        transformation(
+  FLEXGRID.generic_wye_voltvarwatt_simple inverter9(weaName=weaName)
+    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-74,18})));
-  generic_wye_voltvarwatt_simple
-                      inverter6(weaName=weaName)
-                                annotation (Placement(transformation(
+  FLEXGRID.generic_wye_voltvarwatt_simple inverter6(weaName=weaName)
+    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={90,78})));
-  generic_wye_voltvarwatt_simple
-                      inverter3(weaName=weaName)
-                                annotation (Placement(transformation(
+  FLEXGRID.generic_wye_voltvarwatt_simple inverter3(weaName=weaName)
+    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-50,78})));

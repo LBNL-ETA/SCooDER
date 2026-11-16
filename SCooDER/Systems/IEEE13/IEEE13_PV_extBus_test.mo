@@ -78,7 +78,7 @@ model IEEE13_PV_extBus_test
   Components.Inverter.Interfaces.LoadCtrlBus ctrlNode13 annotation (Placement(
         transformation(extent={{-110,-90},{-90,-70}}), iconTransformation(
           extent={{-140,6},{-120,26}})));
-  generic_wye_voltvar inverter13(weaName=weaName)
+  FLEXGRID.generic_wye_voltvar inverter13(weaName=weaName)
     annotation (Placement(transformation(extent={{20,-90},{0,-70}})));
   Components.Inverter.Interfaces.InvCtrlBus ctrlInv13 annotation (Placement(
         transformation(extent={{20,-110},{40,-90}}), iconTransformation(extent={

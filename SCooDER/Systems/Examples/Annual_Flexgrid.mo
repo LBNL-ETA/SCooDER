@@ -1,7 +1,7 @@
 within SCooDER.Systems.Examples;
 model Annual_Flexgrid
-  generic_wye_voltvarwatt_simple generic_wye_voltvarwatt_simple1(weaName=
-        Modelica.Utilities.Files.loadResource(
+  FLEXGRID.generic_wye_voltvarwatt_simple generic_wye_voltvarwatt_simple1(
+      weaName=Modelica.Utilities.Files.loadResource(
         "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Buildings.Electrical.AC.ThreePhasesUnbalanced.Sources.FixedVoltage grid(f=60, V=

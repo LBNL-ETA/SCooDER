@@ -15,7 +15,6 @@ model PVandWeather_simple
     n=n,
     A=A,
     eta=eta,
-    lat=weaDat.lat,
     til=til,
     azi=azi) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(

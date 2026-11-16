@@ -27,7 +27,6 @@ model PVModule_simple_ZeroOrder
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Solar.TiltedSolarWeabus tilted_Solar_TMY(
     til=til,
-    lat=lat,
     azi=azi)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   Model.PVsimple pV_simple(

@@ -1,4 +1,6 @@
 Inverter
+Inverter_singleInput
+Inverter_PV_singleInput
 Inverter_prefP
 Inverter_pf
 InverterLoad_pf

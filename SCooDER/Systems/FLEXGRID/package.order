@@ -7,3 +7,6 @@ FLEXGRID_pvinput_FMU
 FLEXGRID_direct_wye
 FLEXGRID_direct_wye_FMU
 FLEXGRID_direct_wye_voltvar_FMU
+generic_wye_voltvarwatt_simple
+generic_direct_wye
+generic_wye_voltvar

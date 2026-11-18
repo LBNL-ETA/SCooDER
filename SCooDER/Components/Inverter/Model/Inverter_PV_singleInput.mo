@@ -60,8 +60,8 @@ model Inverter_PV_singleInput
   Modelica.Blocks.Interfaces.RealOutput q( start=0, unit="var") "reactive power output [var]"
     annotation (Placement(transformation(extent={{-100,40},{-120,60}})));
   Interfaces.InvCtrlBus_single invCtrlBus annotation (Placement(transformation(
-          extent={{-20,-120},{20,-80}}), iconTransformation(extent={{-10,-110},
-            {10,-90}})));
+          extent={{-20,-120},{20,-80}}), iconTransformation(extent={{-10,-110},{
+            10,-90}})));
   Modelica.Blocks.Math.Gain effDC(k=etaDC) "Efficiency of DC system (DCDC)"
     annotation (Placement(transformation(extent={{78,26},{58,46}})));
   Modelica.Blocks.Interfaces.RealInput P_DC(unit="W")
@@ -81,13 +81,13 @@ model Inverter_PV_singleInput
     annotation (Placement(transformation(extent={{40,12},{20,32}})));
 equation
   if Ppref then
-    p_max = p_lim;
+    p_max = max(0, p_lim);
     S_margin = sqrt(Smax^2 - p^2);
     q_max = if (firstOrder_q.y > 0) then min(QCapmax, S_margin) else min(QIndmax, S_margin);
   else
     q_max = if (firstOrder_q.y > 0) then min(QCapmax, Smax) else min(QIndmax, Smax);
     S_margin = sqrt(Smax^2 - q^2);
-    p_max = min(S_margin,p_lim);
+    p_max = max(0, min(S_margin, p_lim));
   end if;
   p_lim = Smax+firstOrder_p.y;
   p_min = if ChargingCapability then -p_max else 0;

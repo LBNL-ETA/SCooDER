@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_Pos_Surplus
+  extends Modelica.Icons.Example;
   Microgrid microgrid
     annotation (Placement(transformation(extent={{20,0},{40,20}})));
   Buildings.Electrical.AC.OnePhase.Sources.Grid gri(f=60, V=240)
@@ -35,16 +36,16 @@ equation
   connect(add3_1.u1, ramp.y)
     annotation (Line(points={{-2,-22},{-12,-22},{-12,-20},{-19,-20}},
                                                   color={0,0,127}));
-  connect(add3_1.u2, step.y) annotation (Line(points={{-2,-30},{-14,-30},{-14,
-          -50},{-19,-50}}, color={0,0,127}));
-  connect(add3_1.u3, ramp1.y) annotation (Line(points={{-2,-38},{-10,-38},{-10,
-          -80},{-19,-80}}, color={0,0,127}));
+  connect(add3_1.u2, step.y) annotation (Line(points={{-2,-30},{-14,-30},{-14,-50},
+          {-19,-50}},      color={0,0,127}));
+  connect(add3_1.u3, ramp1.y) annotation (Line(points={{-2,-38},{-10,-38},{-10,-80},
+          {-19,-80}},      color={0,0,127}));
   connect(gridConnected.y, microgrid.gridConnected) annotation (Line(points={{1,52},{
           10,52},{10,14.8},{18.2,14.8}},        color={0,0,127}));
   connect(const.y, microgrid.Q_Load) annotation (Line(points={{41,-58},{44,-58},
           {44,-2},{38,-2}}, color={0,0,127}));
-  connect(PV.y, microgrid.P_PV) annotation (Line(points={{-19,10},{0,10},{0,4},
-          {18,4}}, color={0,0,127}));
+  connect(PV.y, microgrid.P_PV) annotation (Line(points={{-19,10},{0,10},{0,4},{
+          18,4}},  color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false)),
     Diagram(coordinateSystem(preserveAspectRatio=false)),

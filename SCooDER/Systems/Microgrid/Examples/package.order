@@ -8,3 +8,4 @@ Test_ADV_All_Surplus
 Test_no_gen
 Test_Grid_monitoring
 Test_Load_Shed
+Test_Microgrid_PI_adv

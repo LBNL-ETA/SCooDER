@@ -1,8 +1,9 @@
 within SCooDER.Components.DieselGenerator.Model;
 model DieselGen
-  parameter Real V_nominal(min=0, start=240) = 240
+  parameter Real V_nominal(min=0, start=240, unit="V") = 240
     "Nominal voltage";
   parameter Real etaDC(min=0, max=1, unit="1") = 0.974 "Conversion efficiency for DC Input";
+  parameter Real minP(min=0, unit="W") = 0 "Minimum loading for startup";
   parameter Real delayP(unit="s") = 0.03
     "Time constant for Active Power control";
   parameter Real delayQ(unit="s") = 0.03
@@ -15,6 +16,9 @@ model DieselGen
     "Maximal reactive power (Capacitive)";
   parameter Boolean Ppref = true
     "Active power preference in the control loop";
+  parameter Real Capacity(min=0, unit="l")=300 "Tank Capacity";
+  parameter Real SOC_start(min=0, max=1, unit="1")=1 "Initial SOC value";
+  parameter Real Conso=0.2 "Fuel Consumption [l/kWh]";
 
   Buildings.Electrical.AC.OnePhase.Interfaces.Terminal_n term_p
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
@@ -34,6 +38,7 @@ model DieselGen
   Real p_max;
   Real p_min;
   Real q_max;
+  Real p_run;
   Modelica.Blocks.Continuous.FirstOrder firstOrder_p(
     k=1,
     T=delayP,
@@ -61,15 +66,15 @@ model DieselGen
             -120},{20,-80}}), iconTransformation(extent={{-10,-110},{10,-90}})));
   Controller.Model.LimPID_variable PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
       withFeedForward=false)
-    annotation (Placement(transformation(extent={{10,-40},{30,-20}})));
+    annotation (Placement(transformation(extent={{20,-30},{40,-10}})));
   Modelica.Blocks.Sources.RealExpression P_max_cmd(y=p_max) "P cmd max"
-    annotation (Placement(transformation(extent={{-60,-22},{-40,-2}})));
+    annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
   Modelica.Blocks.Nonlinear.VariableLimiter variableLimiter1
-    annotation (Placement(transformation(extent={{-20,-40},{0,-20}})));
+    annotation (Placement(transformation(extent={{-10,-30},{10,-10}})));
   Modelica.Blocks.Sources.RealExpression P_min_cmd(y=p_min) "P cmd min"
-    annotation (Placement(transformation(extent={{-60,-50},{-40,-30}})));
+    annotation (Placement(transformation(extent={{-50,-50},{-30,-30}})));
   Modelica.Blocks.Math.Gain measGain(k=-1) "load convention to gen convention"
-    annotation (Placement(transformation(extent={{-62,-60},{-52,-50}})));
+    annotation (Placement(transformation(extent={{-70,-56},{-60,-46}})));
   Modelica.Blocks.Interfaces.RealOutput FuelLevel(start=0)
     "Level of remaining Fuel [-]"
     annotation (Placement(transformation(extent={{100,70},{120,90}})));
@@ -79,11 +84,11 @@ model DieselGen
     SOC_min=0,
     SOC_max=1,
     Conso=Conso)
-    annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
-  parameter Real Capacity=300 "Tank Capacity [l]";
-  parameter Real SOC_start=1 "Initial SOC value [-]";
-  parameter Real Conso=2 "Fuel Consumption [l/Wh]";
+    annotation (Placement(transformation(extent={{50,-30},{70,-10}})));
+  Modelica.Blocks.Sources.RealExpression P_cmd(y=p_run) "P cmd min"
+    annotation (Placement(transformation(extent={{-50,-30},{-30,-10}})));
 equation
+  p_run = if firstOrder_p.y > minP then firstOrder_p.y else 0;
   if Ppref then
     p_max = Smax;
     S_margin = sqrt(Smax^2 - p^2);
@@ -138,31 +143,30 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(PID.u_s, variableLimiter1.y)
-    annotation (Line(points={{8,-30},{1,-30}},   color={0,0,127}));
-  connect(P_min_cmd.y, variableLimiter1.limit2) annotation (Line(points={{-39,-40},
-          {-34,-40},{-34,-38},{-22,-38}},
+    annotation (Line(points={{18,-20},{11,-20}}, color={0,0,127}));
+  connect(P_min_cmd.y, variableLimiter1.limit2) annotation (Line(points={{-29,-40},
+          {-20,-40},{-20,-28},{-12,-28}},
                                        color={0,0,127}));
-  connect(firstOrder_p.y, variableLimiter1.u)
-    annotation (Line(points={{-30,-59},{-30,-30},{-22,-30}},color={0,0,127}));
-  connect(variableLimiter1.limit1, P_max_cmd.y) annotation (Line(points={{-22,-22},
-          {-34,-22},{-34,-12},{-39,-12}},
+  connect(variableLimiter1.limit1, P_max_cmd.y) annotation (Line(points={{-12,-12},
+          {-20,-12},{-20,0},{-29,0}},
                                     color={0,0,127}));
-  connect(PID.u_max, P_max_cmd.y) annotation (Line(points={{8,-22},{4,-22},{4,
-          -12},{-39,-12}},
-                       color={0,0,127}));
-  connect(PID.u_min, variableLimiter1.limit2) annotation (Line(points={{8,-38.6},
-          {4,-38.6},{4,-50},{-32,-50},{-32,-38},{-22,-38}},color={0,0,127}));
-  connect(measGain.y, PID.u_m) annotation (Line(points={{-51.5,-55},{10,-55},{
-          10,-54},{20,-54},{20,-42}}, color={0,0,127}));
-  connect(measGain.u, sens_Gen.S[1]) annotation (Line(points={{-63,-55},{-64,
-          -55},{-64,-54},{-77,-54},{-77,4}},
-                                       color={0,0,127}));
+  connect(PID.u_max, P_max_cmd.y) annotation (Line(points={{18,-12},{18,0},{-29,
+          0}},         color={0,0,127}));
+  connect(PID.u_min, variableLimiter1.limit2) annotation (Line(points={{18,-28.6},
+          {18,-40},{-20,-40},{-20,-28},{-12,-28}},         color={0,0,127}));
+  connect(measGain.y, PID.u_m) annotation (Line(points={{-59.5,-51},{-59.5,-52},
+          {-54,-52},{-54,-54},{30,-54},{30,-32}},
+                                      color={0,0,127}));
+  connect(measGain.u, sens_Gen.S[1]) annotation (Line(points={{-71,-51},{-80,-51},
+          {-80,4},{-77,4}},            color={0,0,127}));
   connect(PID.y, fuelTank.PCtrl)
-    annotation (Line(points={{31,-30},{38,-30}}, color={0,0,127}));
-  connect(fuelTank.PExt, Load.Pow) annotation (Line(points={{61,-30},{88,-30},{
-          88,36},{-24,36}}, color={0,0,127}));
-  connect(fuelTank.FuelLevel, FuelLevel) annotation (Line(points={{61,-22},{72,
-          -22},{72,80},{110,80}}, color={0,0,127}));
+    annotation (Line(points={{41,-20},{48,-20}}, color={0,0,127}));
+  connect(fuelTank.PExt, Load.Pow) annotation (Line(points={{71,-20},{76,-20},{76,
+          36},{-24,36}},    color={0,0,127}));
+  connect(fuelTank.FuelLevel, FuelLevel) annotation (Line(points={{71,-12},{96,-12},
+          {96,80},{110,80}},      color={0,0,127}));
+  connect(P_cmd.y, variableLimiter1.u)
+    annotation (Line(points={{-29,-20},{-12,-20}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)));
 end DieselGen;

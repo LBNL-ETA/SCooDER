@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_All_Surplus
+  extends Modelica.Icons.Example;
   Microgrid microgrid
     annotation (Placement(transformation(extent={{20,0},{40,20}})));
   Buildings.Electrical.AC.OnePhase.Sources.Grid gri(f=60, V=240)
@@ -34,10 +35,10 @@ equation
   connect(add3_1.u1, ramp.y)
     annotation (Line(points={{-2,-22},{-12,-22},{-12,-20},{-19,-20}},
                                                   color={0,0,127}));
-  connect(add3_1.u2, step.y) annotation (Line(points={{-2,-30},{-14,-30},{-14,
-          -50},{-19,-50}}, color={0,0,127}));
-  connect(add3_1.u3, ramp1.y) annotation (Line(points={{-2,-38},{-10,-38},{-10,
-          -80},{-19,-80}}, color={0,0,127}));
+  connect(add3_1.u2, step.y) annotation (Line(points={{-2,-30},{-14,-30},{-14,-50},
+          {-19,-50}},      color={0,0,127}));
+  connect(add3_1.u3, ramp1.y) annotation (Line(points={{-2,-38},{-10,-38},{-10,-80},
+          {-19,-80}},      color={0,0,127}));
   connect(const.y, microgrid.Q_Load) annotation (Line(points={{41,-58},{44,-58},
           {44,-2},{38,-2}}, color={0,0,127}));
   connect(PV.y, microgrid.P_PV)

@@ -1,8 +1,8 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_ADV_All_Surplus
+  extends Modelica.Icons.Example;
   Microgrid_PI_adv
             microgrid_PI_adv(
-    p_pv_max=6000,
     Batt_delayP=0.1,
     Batt_delayQ=0.1,
     Batt_Ppref=true,

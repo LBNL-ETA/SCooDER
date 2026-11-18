@@ -1,78 +1,80 @@
 within SCooDER.Systems.Microgrid;
 model Microgrid_PI_adv
-  parameter Real p_gen_min=0 "Min power of Generator [W]" annotation (Dialog(group="Controller"));
-  parameter Real p_gen_max=3000 "Max power of Generator [W]" annotation (Dialog(group="Controller"));
-  parameter Real p_batt_min=-5000 "Min power of Battery [W]" annotation (Dialog(group="Controller"));
-  parameter Real p_batt_max=5000 "Max power of Battery [W]" annotation (Dialog(group="Controller"));
-  parameter Real p_pv_max=4000 "Max power of PV [W]" annotation (Dialog(group="Controller"));
-  parameter Real p_load_max=4000 "Max power of Load shedding [W]" annotation (Dialog(group="Controller"));
-  parameter Real batt_g_gen = 1 "Prefer battery over generator? [-]" annotation (Dialog(group="Controller"));
+  parameter Real p_gen_min(min=0, unit="W")=0 "Min power of Generator" annotation (Dialog(group="Controller"));
+  parameter Real p_gen_max(min=0, unit="W")=3000 "Max power of Generator" annotation (Dialog(group="Controller"));
+  //parameter Real p_batt_min(min=0, unit="W")=-5000 "Min power of Battery" annotation (Dialog(group="Controller"));
+  //parameter Real p_batt_max(min=0, unit="W")=5000 "Max power of Battery" annotation (Dialog(group="Controller"));
+  //parameter Real p_pv_max(min=0, unit="W")=5000 "Max power of PV" annotation (Dialog(group="Controller"));
+  parameter Real p_loadshed_max(min=0, unit="W")=0 "Max power of Load shedding" annotation (Dialog(group="Controller"));
+  parameter Real batt_g_gen=1 "Prefer battery over generator?" annotation (Dialog(group="Controller"));
   parameter Real V_nominal=240 "Nominal voltage";
-  parameter Real PV_etaDC=0.974 "Conversion efficiency for DC Input"
-                                                                    annotation (Dialog(group="PV"));
-  parameter Real PV_delayP=0.5 "Time constant for Active Power control"
-                                                                       annotation (Dialog(group="PV"));
-  parameter Real PV_delayQ=0.5 "Time constant for Reactive Power control"
-                                                                         annotation (Dialog(group="PV"));
-  parameter Real PV_Smax=7600 "Maximal apparent power"
-                                                      annotation (Dialog(group="PV"));
-  parameter Real PV_QIndmax=3300 "Maximal reactive power (Inductive)"
-                                                                     annotation (Dialog(group="PV"));
-  parameter Real PV_QCapmax=3300 "Maximal reactive power (Capacitive)"
-                                                                      annotation (Dialog(group="PV"));
+  parameter Real PV_etaDC(min=0, max=1, unit="1")=0.974 "Conversion efficiency for DC Input"
+                                                                                            annotation (Dialog(group="PV"));
+  parameter Real PV_delayP(min=0, unit="s")=0.5 "Time constant for Active Power control"
+                                                                                        annotation (Dialog(group="PV"));
+  parameter Real PV_delayQ(min=0, unit="s")=0.5 "Time constant for Reactive Power control"
+                                                                                          annotation (Dialog(group="PV"));
+  parameter Real PV_Smax(min=0, unit="VA")=6000 "Maximal apparent power"
+                                                                        annotation (Dialog(group="PV"));
+  parameter Real PV_QIndmax(min=0, unit="var")=2000 "Maximal reactive power (Inductive)"
+                                                                                        annotation (Dialog(group="PV"));
+  parameter Real PV_QCapmax(min=0, unit="var")=2000 "Maximal reactive power (Capacitive)"
+                                                                                         annotation (Dialog(group="PV"));
   parameter Boolean PV_Ppref=true "Active power preference in the control loop"
                                                                                annotation (Dialog(group="PV"));
-  parameter Real Batt_etaDC=0.974 "Conversion efficiency for DC Input"
-                                                                      annotation (Dialog(group="Batt"));
-  parameter Real Batt_delayP=0.5 "Time constant for Active Power control"
-                                                                         annotation (Dialog(group="Batt"));
-  parameter Real Batt_delayQ=0.5 "Time constant for Reactive Power control"
-                                                                           annotation (Dialog(group="Batt"));
-  parameter Real Batt_Smax=7600 "Maximal apparent power"
-                                                        annotation (Dialog(group="Batt"));
-  parameter Real Batt_QIndmax=3300 "Maximal reactive power (Inductive)"
-                                                                       annotation (Dialog(group="Batt"));
-  parameter Real Batt_QCapmax=3300 "Maximal reactive power (Capacitive)"
-                                                                        annotation (Dialog(group="Batt"));
+  parameter Real Batt_etaDC(min=0, max=1, unit="1")=0.974 "Conversion efficiency for DC Input"
+                                                                                              annotation (Dialog(group="Battery"));
+  parameter Real Batt_delayP(min=0, unit="s")=0.5 "Time constant for Active Power control"
+                                                                                          annotation (Dialog(group="Battery"));
+  parameter Real Batt_delayQ(min=0, unit="s")=0.5 "Time constant for Reactive Power control"
+                                                                                            annotation (Dialog(group="Battery"));
+  parameter Real Batt_Smax(min=0, unit="VA")=10000 "Maximal apparent power"
+                                                                           annotation (Dialog(group="Battery"));
+  parameter Real Batt_QIndmax(min=0, unit="var")=4000 "Maximal reactive power (Inductive)"
+                                                                                          annotation (Dialog(group="Battery"));
+  parameter Real Batt_QCapmax(min=0, unit="var")=4000 "Maximal reactive power (Capacitive)"
+                                                                                           annotation (Dialog(group="Battery"));
   parameter Boolean Batt_Ppref=true "Active power preference in the control loop"
-                                                                                 annotation (Dialog(group="Batt"));
-  parameter Real Batt_EMax=6400 "Battery Capacity [Wh]"
-                                                       annotation (Dialog(group="Batt"));
-  parameter Real Batt_Pmax=3300 "Battery Power [W]"
-                                                   annotation (Dialog(group="Batt"));
-  parameter Real Batt_SOC_start=0.5 "Initial SOC value"
-                                                       annotation (Dialog(group="Batt"));
-  parameter Real Batt_SOC_min=0.1 "Minimum SOC value"
-                                                     annotation (Dialog(group="Batt"));
-  parameter Real Batt_SOC_max=1 "Maximum SOC value"
-                                                   annotation (Dialog(group="Batt"));
-  parameter Real Batt_etaCha=0.96 "Charging efficiency"
-                                                       annotation (Dialog(group="Batt"));
-  parameter Real Batt_etaDis=0.96 "Discharging efficiency"
-                                                          annotation (Dialog(group="Batt"));
-  parameter Real Gen_etaDC=0.974 "Conversion efficiency for DC Input"
-                                                                     annotation (Dialog(group="Gen"));
-  parameter Real Gen_delayP=0.5 "Time constant for Active Power control"
-                                                                        annotation (Dialog(group="Gen"));
-  parameter Real Gen_delayQ=0.5 "Time constant for Reactive Power control"
-                                                                          annotation (Dialog(group="Gen"));
-  parameter Real Gen_Smax=7600 "Maximal apparent power"
-                                                       annotation (Dialog(group="Gen"));
-  parameter Real Gen_QIndmax=3300 "Maximal reactive power (Inductive)"
-                                                                      annotation (Dialog(group="Gen"));
-  parameter Real Gen_QCapmax=3300 "Maximal reactive power (Capacitive)"
-                                                                       annotation (Dialog(group="Gen"));
+                                                                                 annotation (Dialog(group="Battery"));
+  parameter Real Batt_EMax(min=0, unit="W.h")=10000 "Battery Capacity"
+                                                                      annotation (Dialog(group="Battery"));
+  parameter Real Batt_Pmax(min=0, unit="W")=10000 "Battery Power"
+                                                                 annotation (Dialog(group="Battery"));
+  parameter Real Batt_SOC_start(min=0, max=1, unit="1")=0.5 "Initial SOC value"
+                                                                               annotation (Dialog(group="Battery"));
+  parameter Real Batt_SOC_min(min=0, max=1, unit="1")=0.1 "Minimum SOC value"
+                                                                             annotation (Dialog(group="Battery"));
+  parameter Real Batt_SOC_max(min=0, max=1, unit="1")=1 "Maximum SOC value"
+                                                                           annotation (Dialog(group="Battery"));
+  parameter Real Batt_etaCha(min=0, max=1, unit="1")=0.96 "Charging efficiency"
+                                                                               annotation (Dialog(group="Battery"));
+  parameter Real Batt_etaDis(min=0, max=1, unit="1")=0.96 "Discharging efficiency"
+                                                                                  annotation (Dialog(group="Battery"));
+  parameter Real Gen_minP(min=0, unit="W")=0 "Minimum loading for startup" annotation (Dialog(group="Gen"));
+  parameter Real Gen_delayP(min=0, unit="s")=0.5 "Time constant for Active Power control"
+                                                                                         annotation (Dialog(group="Gen"));
+  parameter Real Gen_delayQ(min=0, unit="s")=0.5 "Time constant for Reactive Power control"
+                                                                                           annotation (Dialog(group="Gen"));
+  parameter Real Gen_Smax(min=0, unit="VA")=5000 "Maximal apparent power"
+                                                                         annotation (Dialog(group="Gen"));
+  parameter Real Gen_QIndmax(min=0, unit="var")=2000 "Maximal reactive power (Inductive)"
+                                                                                         annotation (Dialog(group="Gen"));
+  parameter Real Gen_QCapmax(min=0, unit="var")=2000 "Maximal reactive power (Capacitive)"
+                                                                                          annotation (Dialog(group="Gen"));
   parameter Boolean Gen_Ppref=true "Active power preference in the control loop"
                                                                                 annotation (Dialog(group="Gen"));
-  parameter Real Gen_Capacity=300 "Tank Capacity [l]"
-                                                     annotation (Dialog(group="Gen"));
-  parameter Real Gen_SOC_start=0.5 "Initial SOC value [-]"
-                                                          annotation (Dialog(group="Gen"));
-  parameter Real Gen_Conso=2 "Fuel Consumption [l/Wh]"
-                                                      annotation (Dialog(group="Gen"));
+  parameter Real Gen_etaDC(min=0, max=1, unit="1")=0.974 "Conversion efficiency for DC Input"
+                                                                                             annotation (Dialog(group="Gen"));
+  parameter Real Gen_Capacity(min=0, unit="l")=300 "Tank Capacity"
+                                                                  annotation (Dialog(group="Gen"));
+  parameter Real Gen_SOC_start(min=0, max=1, unit="1")=0.5 "Initial SOC value"
+                                                                              annotation (Dialog(group="Gen"));
+  parameter Real Gen_Conso=0.2 "Fuel Consumption [l/kWh]"
+                                                         annotation (Dialog(group="Gen"));
   SCooDER.Components.DieselGenerator.Model.DieselGen Gen(
     V_nominal=V_nominal,
     etaDC=Gen_etaDC,
+    minP=Gen_minP,
     delayP=Gen_delayP,
     delayQ=Gen_delayQ,
     Smax=Gen_Smax,
@@ -113,10 +115,10 @@ model Microgrid_PI_adv
   SCooDER.Components.Controller.Model.PowerController_PI Controller(
     p_gen_min=p_gen_min,
     p_gen_max=p_gen_max,
-    p_batt_min=p_batt_min,
-    p_batt_max=p_batt_max,
-    p_pv_max=p_pv_max,
-    p_load_max=p_load_max,
+    p_batt_min=-Batt_Pmax,
+    p_batt_max=Batt_Pmax,
+    p_pv_max=PV_Smax,
+    p_load_max=p_loadshed_max,
     batt_g_gen=batt_g_gen) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -148,8 +150,12 @@ model Microgrid_PI_adv
         rotation=90,
         origin={90,-110})));
   Buildings.Electrical.AC.OnePhase.Interfaces.Terminal_n term_p
-    annotation (Placement(transformation(extent={{-10,90},{10,110}}),
-        iconTransformation(extent={{-10,90},{10,110}})));
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={0,100}),
+        iconTransformation(extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={0,100})));
   Modelica.Blocks.Interfaces.RealInput P_PV
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
 
@@ -165,8 +171,8 @@ model Microgrid_PI_adv
         rotation=90,
         origin={-22,-48})));
   SCooDER.Components.Sensor.Model.Monitoring monitoring annotation (Placement(
-        transformation(extent={{80,60},{120,100}}), iconTransformation(extent={
-            {90,-10},{110,10}})));
+        transformation(extent={{80,60},{120,100}}), iconTransformation(extent={{
+            90,-10},{110,10}})));
 
   Modelica.Blocks.Math.Gain gain(k=-1) annotation (Placement(transformation(
         extent={{-4,-4},{4,4}},

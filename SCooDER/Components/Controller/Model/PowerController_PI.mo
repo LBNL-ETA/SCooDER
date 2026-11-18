@@ -43,9 +43,9 @@ model PowerController_PI
 
   Modelica.Blocks.Math.Feedback feedback1
     annotation (Placement(transformation(extent={{10,-82},{30,-62}})));
-  SCooDER.Components.Controller.Model.LimPID_variable PID1(
+  SCooDER.Components.Controller.Model.LimPID_variable pidGen(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2,
+    k=10,
     y_start=0)
     annotation (Placement(transformation(extent={{38,-82},{58,-62}})));
   Modelica.Blocks.Math.Gain gain1(k=-1)
@@ -64,9 +64,9 @@ model PowerController_PI
     annotation (Placement(transformation(extent={{-98,74},{-90,82}})));
   Modelica.Blocks.Math.Feedback feedback2
     annotation (Placement(transformation(extent={{-20,-20},{0,0}})));
-  SCooDER.Components.Controller.Model.LimPID_variable PID2(
+  SCooDER.Components.Controller.Model.LimPID_variable pidBatt(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2,
+    k=10,
     y_start=0) annotation (Placement(transformation(extent={{8,-20},{28,0}})));
   Modelica.Blocks.Math.Gain gain2(k=-1)
     annotation (Placement(transformation(extent={{4,-4},{-4,4}},
@@ -78,9 +78,9 @@ model PowerController_PI
     annotation (Placement(transformation(extent={{-8,2},{0,10}})));
   Modelica.Blocks.Math.Feedback feedback3
     annotation (Placement(transformation(extent={{-50,60},{-30,80}})));
-  SCooDER.Components.Controller.Model.LimPID_variable PID3(
+  SCooDER.Components.Controller.Model.LimPID_variable pidInvLoad(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2,
+    k=10,
     y_start=0) annotation (Placement(transformation(extent={{-22,60},{-2,80}})));
   Modelica.Blocks.Math.Gain gain3(k=-1)
     annotation (Placement(transformation(extent={{4,-4},{-4,4}},
@@ -142,7 +142,7 @@ model PowerController_PI
     annotation (Placement(transformation(extent={{66,46},{74,54}})));
 equation
 
-  connect(feedback1.y,PID1. u_s)
+  connect(feedback1.y, pidGen.u_s)
     annotation (Line(points={{29,-72},{36,-72}}, color={0,0,127}));
   connect(Q0.y, genCtrlBus.qctrl) annotation (Line(points={{80.6,94},{96,94},{96,
           -59.9},{110.1,-59.9}}, color={0,0,127}), Text(
@@ -169,7 +169,7 @@ equation
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(gain1.y, PID1.u_m)
+  connect(gain1.y, pidGen.u_m)
     annotation (Line(points={{48,-87.6},{48,-84}}, color={0,0,127}));
   connect(feedback1.u2, gain1.u) annotation (Line(points={{20,-80},{20,-98},{48,
           -98},{48,-96.8}}, color={0,0,127}));
@@ -179,12 +179,10 @@ equation
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(Min1.y, PID1.u_min) annotation (Line(points={{30.4,-88},{32,-88},{32,
-          -80},{36,-80},{36,-80.6}},
-                       color={0,0,127}));
-  connect(PID1.u_max, Max1.y) annotation (Line(points={{36,-64},{32,-64},{32,
-          -56},{28.4,-56}},
-                       color={0,0,127}));
+  connect(Min1.y, pidGen.u_min) annotation (Line(points={{30.4,-88},{32,-88},{
+          32,-80},{36,-80},{36,-80.6}}, color={0,0,127}));
+  connect(pidGen.u_max, Max1.y) annotation (Line(points={{36,-64},{32,-64},{32,
+          -56},{28.4,-56}}, color={0,0,127}));
   connect(switch1.u2, GridConnected) annotation (Line(points={{-79.2,70},{-90,70},
           {-90,120}},           color={255,0,255}));
   connect(P0.y, switch1.u1)
@@ -192,36 +190,34 @@ equation
                                                    color={0,0,127}));
   connect(S[1], switch1.u3) annotation (Line(points={{-120,61},{-120,65.2},{-79.2,
           65.2}},    color={0,0,127}));
-  connect(feedback2.y,PID2. u_s)
-    annotation (Line(points={{-1,-10},{6,-10}},  color={0,0,127}));
-  connect(gain2.y, PID2.u_m)
+  connect(feedback2.y, pidBatt.u_s)
+    annotation (Line(points={{-1,-10},{6,-10}}, color={0,0,127}));
+  connect(gain2.y, pidBatt.u_m)
     annotation (Line(points={{18,-25.6},{18,-22}}, color={0,0,127}));
   connect(feedback2.u2, gain2.u) annotation (Line(points={{-10,-18},{-10,-36},{
           18,-36},{18,-34.8}},
                             color={0,0,127}));
-  connect(Min2.y, PID2.u_min) annotation (Line(points={{0.4,-26},{4,-26},{4,
-          -18.6},{6,-18.6}},
-                      color={0,0,127}));
-  connect(PID2.u_max, Max2.y) annotation (Line(points={{6,-2},{4,-2},{4,6},{0.4,
-          6}},  color={0,0,127}));
+  connect(Min2.y, pidBatt.u_min) annotation (Line(points={{0.4,-26},{4,-26},{4,
+          -18.6},{6,-18.6}}, color={0,0,127}));
+  connect(pidBatt.u_max, Max2.y)
+    annotation (Line(points={{6,-2},{4,-2},{4,6},{0.4,6}}, color={0,0,127}));
   connect(gain2.u, invBattCtrlBus.p) annotation (Line(points={{18,-34.8},{18,-36},
           {30,-36},{30,-19.9},{110.1,-19.9}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(feedback3.y,PID3. u_s)
+  connect(feedback3.y, pidInvLoad.u_s)
     annotation (Line(points={{-31,70},{-24,70}}, color={0,0,127}));
-  connect(gain3.y, PID3.u_m)
+  connect(gain3.y, pidInvLoad.u_m)
     annotation (Line(points={{-12,54.4},{-12,58}}, color={0,0,127}));
   connect(feedback3.u2, gain3.u) annotation (Line(points={{-40,62},{-40,40},{
           -12,40},{-12,45.2}},
                           color={0,0,127}));
-  connect(Min3.y, PID3.u_min) annotation (Line(points={{-29.6,50},{-26,50},{-26,
-          61.4},{-24,61.4}}, color={0,0,127}));
-  connect(PID3.u_max, Max3.y) annotation (Line(points={{-24,78},{-26,78},{-26,
-          86},{-29.6,86}},
-                       color={0,0,127}));
+  connect(Min3.y, pidInvLoad.u_min) annotation (Line(points={{-29.6,50},{-26,50},
+          {-26,61.4},{-24,61.4}}, color={0,0,127}));
+  connect(pidInvLoad.u_max, Max3.y) annotation (Line(points={{-24,78},{-26,78},
+          {-26,86},{-29.6,86}}, color={0,0,127}));
   connect(switch1.y, feedback3.u1) annotation (Line(points={{-65.4,70},{-48,70}},
                          color={0,0,127}));
   connect(switch2.y, invPVCtrlBus.pctrl) annotation (Line(points={{52.5,69},{96,
@@ -241,9 +237,8 @@ equation
           19,65}},  color={0,0,127}));
   connect(greater.u2, less1.u2) annotation (Line(points={{19,51},{14,51},{14,65},
           {19,65}}, color={0,0,127}));
-  connect(PID3.y, greater.u1)
-    annotation (Line(points={{-1,70},{16,70},{16,55},{19,55}},
-                                                             color={0,0,127}));
+  connect(pidInvLoad.y, greater.u1) annotation (Line(points={{-1,70},{16,70},{
+          16,55},{19,55}}, color={0,0,127}));
   connect(less1.u1, greater.u1)
     annotation (Line(points={{19,69},{16,69},{16,55},{19,55}},
                                                              color={0,0,127}));
@@ -267,7 +262,7 @@ equation
           35},{31,35}}, color={0,0,127}));
   connect(gain4.u, switch4.y) annotation (Line(points={{10.8,40},{20,40},{20,39},
           {19.5,39}}, color={0,0,127}));
-  connect(PID2.y, switch5.u3) annotation (Line(points={{29,-10},{64.8,-10},{
+  connect(pidBatt.y, switch5.u3) annotation (Line(points={{29,-10},{64.8,-10},{
           64.8,3.2}}, color={0,0,127}));
   connect(switch5.y, invBattCtrlBus.pctrl) annotation (Line(points={{78.6,8},{84,
           8},{84,-19.9},{110.1,-19.9}},    color={0,0,127}), Text(
@@ -281,7 +276,7 @@ equation
           -52},{58,26},{-90,26},{-90,120}}, color={255,0,255}));
   connect(PGenCtrl, switch6.u1) annotation (Line(points={{-120,-48},{66.8,-48},{
           66.8,-47.2}},  color={0,0,127}));
-  connect(PID1.y, switch6.u3) annotation (Line(points={{59,-72},{62,-72},{62,
+  connect(pidGen.y, switch6.u3) annotation (Line(points={{59,-72},{62,-72},{62,
           -56.8},{66.8,-56.8}}, color={0,0,127}));
   connect(switch6.y, genCtrlBus.pctrl) annotation (Line(points={{80.6,-52},{94,-52},
           {94,-59.9},{110.1,-59.9}},      color={0,0,127}), Text(
@@ -291,8 +286,8 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(feedback2.u1, switch7.y)
     annotation (Line(points={{-18,-10},{-27.4,-10}}, color={0,0,127}));
-  connect(PID3.u_s, switch7.u3) annotation (Line(points={{-24,70},{-28,70},{-28,
-          6},{-46,6},{-46,-14.8},{-41.2,-14.8}}, color={0,0,127}));
+  connect(pidInvLoad.u_s, switch7.u3) annotation (Line(points={{-24,70},{-28,70},
+          {-28,6},{-46,6},{-46,-14.8},{-41.2,-14.8}}, color={0,0,127}));
   connect(switch8.y, feedback1.u1)
     annotation (Line(points={{-27.4,-72},{12,-72}}, color={0,0,127}));
   connect(feedback2.y, switch8.u3) annotation (Line(points={{-1,-10},{0,-10},{0,

@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_PI_Neg_Surplus
+  extends Modelica.Icons.Example;
   Microgrid_PI
             microgrid_PI
     annotation (Placement(transformation(extent={{20,0},{40,20}})));

@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_Grid_monitoring
+  extends Modelica.Icons.Example;
   SCooDER.Components.Sensor.Model.Grid_monitoring grid_monitoring
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Buildings.Electrical.AC.OnePhase.Sources.Grid gri(f=60, V=240)

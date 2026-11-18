@@ -14,7 +14,7 @@ expandable connector Monitoring "Interface to Microgrid"
   Real P_Batt( start=0, unit="W") "Measured AC active power" annotation (HideResult=false);
   Real SOC_Batt( start=0, unit="1") "Measured AC active power" annotation (HideResult=false);
   Real SOC_Gen( start=0, unit="1") "Measured AC active power" annotation (HideResult=false);
-  Real SOE_Batt( start=0, unit="Wh") "Measured AC active power" annotation (HideResult=false);
+  Real SOE_Batt( start=0, unit="W.h") "Measured AC active power" annotation (HideResult=false);
    annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
             -100},{100,100}}), graphics={Rectangle(
                   extent={{-20,2},{22,-2}},

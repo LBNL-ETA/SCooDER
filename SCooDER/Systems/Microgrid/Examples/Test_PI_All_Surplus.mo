@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_PI_All_Surplus
+  extends Modelica.Icons.Example;
   Microgrid_PI
             microgrid_PI
     annotation (Placement(transformation(extent={{20,0},{40,20}})));
@@ -14,7 +15,7 @@ model Test_PI_All_Surplus
   Modelica.Blocks.Sources.Step step(height=-4000, startTime=30)
     annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
   Modelica.Blocks.Sources.Ramp ramp1(height=-3500,
-                                     startTime=50)
+    duration=30,                     startTime=50)
     annotation (Placement(transformation(extent={{-40,-92},{-20,-72}})));
   Modelica.Blocks.Math.Add3 add3_1
     annotation (Placement(transformation(extent={{-6,-34},{14,-14}})));

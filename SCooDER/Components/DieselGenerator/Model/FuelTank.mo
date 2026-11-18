@@ -9,8 +9,8 @@ model FuelTank
     "Minimum SOC value";
   parameter Real SOC_max(min=0, max=1, unit="1") = 1
     "Maximum SOC value";
-  parameter Real Conso(min=0) = 2
-    "Fuel Consumption [l/Wh]";
+  parameter Real Conso(min=0) = 0.2
+    "Fuel Consumption [l/kWh]";
  Modelica.Blocks.Interfaces.RealInput PCtrl(start=0, unit="W")
     "Power control Command"
     annotation (Placement(transformation(
@@ -34,7 +34,7 @@ equation
   else
     PExt = 0;
   end if;
-  der(FuelLevel) = - Conso / 3600 / Capacity * PExt;
+  der(FuelLevel) = - Conso / 1000 / 3600 / Capacity * PExt;
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),Documentation(
         info="<html> <p>Battery model with SOH input to simulate batteries with changing battery capacities. The control signal goes into the battery and depending on SOC and maximum charging capability, the battery gets charged or discharged and outputs the updated SOC and the actual power of the battery.</p> </html>"));

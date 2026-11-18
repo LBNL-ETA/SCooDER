@@ -1,9 +1,9 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_no_gen
+  extends Modelica.Icons.Example;
   Microgrid_PI_adv
             microgrid_PI_adv(
     p_gen_max=0,
-    p_pv_max=6000,
     Batt_delayP=0.1,
     Batt_delayQ=0.1,
     Batt_Ppref=true,
@@ -51,9 +51,8 @@ equation
           -90}},           color={0,0,127}));
   connect(const.y, microgrid_PI_adv.Q_Load_low) annotation (Line(points={{41,-58},
           {44,-58},{44,-1},{39,-1}}, color={0,0,127}));
-  connect(PV.y, microgrid_PI_adv.P_PV) annotation (Line(points={{-59,-10},{0,
-          -10},{0,6},{18,6}},
-                         color={0,0,127}));
+  connect(PV.y, microgrid_PI_adv.P_PV) annotation (Line(points={{-59,-10},{0,-10},
+          {0,6},{18,6}}, color={0,0,127}));
   connect(gridConnected.y, microgrid_PI_adv.gridConnected) annotation (Line(
         points={{-59,80},{10,80},{10,18},{18,18}},     color={0,0,127}));
   connect(PGenCtrl.y, microgrid_PI_adv.PGenCtrl) annotation (Line(points={{-59,

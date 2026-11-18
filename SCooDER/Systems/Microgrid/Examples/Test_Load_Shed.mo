@@ -1,5 +1,6 @@
 within SCooDER.Systems.Microgrid.Examples;
 model Test_Load_Shed
+  extends Modelica.Icons.Example;
   Microgrid_PI_adv
             microgrid_PI_adv(
     Batt_delayP=0.1,

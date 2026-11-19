@@ -8,7 +8,8 @@ model Microgrid_fmu
   Modelica.Blocks.Interfaces.RealInput gridConnected[n_microgrids](each start=1, unit="1")
     "Microgrid grid-connected (>0.5) or islanded (<0.5)"
     annotation (Placement(transformation(extent={{-120,80},{-100,100}})));
-  Modelica.Blocks.Interfaces.RealInput P_pv[n_microgrids](each start=0, unit="W") "PV active power"
+  Modelica.Blocks.Interfaces.RealInput P_pv[n_microgrids](each start=0, unit="W")
+    "PV active power"
     annotation (Placement(transformation(extent={{-120,20},{-100,40}})));
   Modelica.Blocks.Interfaces.RealInput P_load_high[n_microgrids](each start=0,
       unit="W") "Laod active power" annotation (Placement(transformation(

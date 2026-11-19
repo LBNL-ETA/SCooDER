@@ -230,11 +230,11 @@ equation
       color={255,204,51},
       thickness=0.5));
   connect(Controller.invPVCtrlBus, PV.invCtrlBus) annotation (Line(
-      points={{-38,40},{-38,26},{-72,26},{-72,-10},{-70,-10}},
+      points={{-38,40},{-38,28},{-72,28},{-72,-10},{-70,-10}},
       color={255,204,51},
       thickness=0.5));
   connect(islanded.y, Controller.GridConnected) annotation (Line(points={{-47.4,
-          80},{-38,80},{-38,61},{-37,61}}, color={255,0,255}));
+          80},{-38,80},{-38,61},{-38,61}}, color={255,0,255}));
   connect(islanded.u, gridConnected)
     annotation (Line(points={{-61.2,80},{-120,80}}, color={0,0,127}));
   connect(Load_low.Q_in, Q_Load_low) annotation (Line(points={{67.6,-22},{68,

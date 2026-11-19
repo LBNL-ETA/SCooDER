@@ -137,9 +137,7 @@ model MicrogridLarge_multiBatt
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={60,-10})));
-  Modelica.Blocks.Logical.GreaterThreshold
-                                        greaterThreshold(
-                                                      threshold=0.5)
+  Modelica.Blocks.Logical.GreaterThreshold islanded(threshold=0.5)
     annotation (Placement(transformation(extent={{-60,74},{-48,86}})));
   Modelica.Blocks.Interfaces.RealInput gridConnected
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
@@ -163,7 +161,7 @@ model MicrogridLarge_multiBatt
   Modelica.Blocks.Interfaces.RealInput P_PV
     annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
 
-  SCooDER.Components.Battery.Model.Battery Batt_model[n_batt](
+  SCooDER.Components.Battery.Model.Battery Batt_cell[n_batt](
     EMax=Batt_EMax,
     Pmax=Batt_Pmax,
     SOC_start=Batt_SOC_start,
@@ -173,7 +171,7 @@ model MicrogridLarge_multiBatt
     etaDis=Batt_etaDis) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={-22,-48})));
+        origin={-22,-50})));
   SCooDER.Components.Sensor.Model.Monitoring monitoring annotation (Placement(
         transformation(extent={{80,60},{120,100}}), iconTransformation(extent={{
             90,-10},{110,10}})));
@@ -189,7 +187,7 @@ model MicrogridLarge_multiBatt
         rotation=-90,
         origin={-24,-28})));
   Modelica.Blocks.Interfaces.RealInput PBattCtrl[n_batt]
-    annotation (Placement(transformation(extent={{-140,32},{-100,72}})));
+    annotation (Placement(transformation(extent={{-140,30},{-100,70}})));
   Modelica.Blocks.Interfaces.RealInput PGenCtrl
     annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
   SCooDER.Components.Load.Model.Load_PQ_metered Load_high(V_nominal=V_nominal)
@@ -235,32 +233,32 @@ equation
       points={{-38,40},{-38,26},{-72,26},{-72,-10},{-70,-10}},
       color={255,204,51},
       thickness=0.5));
-  connect(greaterThreshold.y, Controller.GridConnected) annotation (Line(points={{-47.4,
-          80},{-38,80},{-38,61},{-37,61}},          color={255,0,255}));
-  connect(greaterThreshold.u, gridConnected) annotation (Line(points={{-61.2,80},
-          {-120,80}},                    color={0,0,127}));
+  connect(islanded.y, Controller.GridConnected) annotation (Line(points={{-47.4,
+          80},{-38,80},{-38,61},{-37,61}}, color={255,0,255}));
+  connect(islanded.u, gridConnected)
+    annotation (Line(points={{-61.2,80},{-120,80}}, color={0,0,127}));
   connect(Load_low.Q_in, Q_Load_low) annotation (Line(points={{67.6,-22},{68,
           -22},{68,-80},{90,-80},{90,-110}}, color={0,0,127}));
   connect(grid_monitoring.terminal_n, term_p)
     annotation (Line(points={{0,80},{0,100}}, color={0,120,120}));
   connect(PV.P_DC, P_PV) annotation (Line(points={{-56.4,-22},{-56,-22},{-56,
           -40},{-120,-40}}, color={0,0,127}));
-  connect(PV.p, monitoring.P_PV) annotation (Line(points={{-52,1},{-52,4},{78,4},
-          {78,80.1},{100.1,80.1}},
+  connect(PV.p, monitoring.P_PV) annotation (Line(points={{-52,1},{-52,4},{80,4},
+          {80,80.1},{100.1,80.1}},
                              color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(Gen.p, monitoring.P_Gen) annotation (Line(points={{8,1},{8,4},{78,4},
-          {78,80.1},{100.1,80.1}},
+  connect(Gen.p, monitoring.P_Gen) annotation (Line(points={{8,1},{8,4},{80,4},
+          {80,80.1},{100.1,80.1}},
                              color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
   connect(Gen.FuelLevel, monitoring.SOC_Gen) annotation (Line(points={{8,-21},{
-          8,-24},{12,-24},{12,4},{78,4},{78,80.1},{100.1,80.1}},
+          8,-24},{14,-24},{14,4},{80,4},{80,80.1},{100.1,80.1}},
                                                             color={0,0,127}),
       Text(
       string="%second",
@@ -269,20 +267,19 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(Batt.P_DC_cmd, gain.u)
     annotation (Line(points={{-34,-21},{-34,-25.2}}, color={0,0,127}));
-  connect(gain.y, Batt_model.PCtrl) annotation (Line(points={{-34,-34.4},{-34,-60},
-          {-22,-60}},color={0,0,127}));
+  connect(gain.y, Batt_cell.PCtrl) annotation (Line(points={{-34,-34.4},{-34,
+          -62},{-22,-62}}, color={0,0,127}));
   connect(Batt.P_DC, gain1.y)
     annotation (Line(points={{-24,-22},{-24,-23.6}},
                                                    color={0,0,127}));
-  connect(gain1.u, Batt_model.P)
-    annotation (Line(points={{-24,-32.8},{-24,-37},{-22,-37}},
-                                                            color={0,0,127}));
-  connect(PGenCtrl, Controller.PGenCtrl) annotation (Line(points={{-120,20},{-80,
-          20},{-80,52},{-41,52}},     color={0,0,127}));
-  connect(grid_monitoring.GridConnected, greaterThreshold.y) annotation (Line(
-        points={{-11,76},{-38,76},{-38,80},{-47.4,80}}, color={255,0,255}));
+  connect(gain1.u, Batt_cell.P) annotation (Line(points={{-24,-32.8},{-24,-39},
+          {-22,-39}}, color={0,0,127}));
+  connect(PGenCtrl, Controller.PGenCtrl) annotation (Line(points={{-120,20},{
+          -76,20},{-76,52},{-41,52}}, color={0,0,127}));
+  connect(grid_monitoring.GridConnected, islanded.y) annotation (Line(points={{
+          -11,76},{-38,76},{-38,80},{-47.4,80}}, color={255,0,255}));
   connect(grid_monitoring.monitoring, monitoring) annotation (Line(
-      points={{10,76},{78,76},{78,80},{100,80}},
+      points={{10,76},{80,76},{80,80},{100,80}},
       color={255,204,51},
       thickness=0.5), Text(
       string="%second",
@@ -298,11 +295,11 @@ equation
   connect(Load_high.p, P_Load.u1)
     annotation (Line(points={{38,1},{38,38}}, color={0,0,127}));
   connect(Load_low.p, P_Load.u2)
-    annotation (Line(points={{68,1},{68,6},{50,6},{50,38}}, color={0,0,127}));
+    annotation (Line(points={{68,1},{68,8},{50,8},{50,38}}, color={0,0,127}));
   connect(P_Load_low, Load_low.P_in) annotation (Line(points={{70,-110},{70,-84},
           {64,-84},{64,-22},{64.2,-22}}, color={0,0,127}));
   connect(P_Load.y, monitoring.P_Load) annotation (Line(points={{44,61},{44,76},
-          {78,76},{78,80.1},{100.1,80.1}}, color={0,0,127}), Text(
+          {80,76},{80,80.1},{100.1,80.1}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{-3,6},{-3,6}},
@@ -315,8 +312,9 @@ equation
       points={{-22,40},{-22,28},{48,28},{48,-10},{50,-10}},
       color={255,204,51},
       thickness=0.5));
-  connect(PBattCtrl, Controller.PBattCtrl) annotation (Line(points={{-120,52},{-82,
-          52},{-82,56},{-41,56}}, color={0,0,127}));
+  connect(PBattCtrl, Controller.PBattCtrl) annotation (Line(points={{-120,50},{
+          -80,50},{-80,56},{-41,56}},
+                                  color={0,0,127}));
   connect(Controller.invBattCtrlBus, Batt.invCtrlBus) annotation (Line(
       points={{-34,40},{-34,2},{-44,2},{-44,-10},{-40,-10}},
       color={255,204,51},

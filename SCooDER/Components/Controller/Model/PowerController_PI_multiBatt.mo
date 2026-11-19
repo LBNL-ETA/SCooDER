@@ -34,10 +34,10 @@ model PowerController_PI_multiBatt
   Modelica.Blocks.Interfaces.BooleanInput GridConnected
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},
         rotation=-90,
-        origin={-80,120}), iconTransformation(
+        origin={-90,120}), iconTransformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={-70,110})));
+        origin={-80,110})));
   SCooDER.Components.Load.Model.LoadCtrlBus loadHighCtrlBus annotation (
       Placement(transformation(extent={{90,30},{130,70}}), iconTransformation(
           extent={{30,-110},{50,-90}})));
@@ -47,7 +47,7 @@ model PowerController_PI_multiBatt
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{-72,64},{-60,76}})));
   Modelica.Blocks.Sources.Constant P0(k=0)
-    annotation (Placement(transformation(extent={{-96,84},{-84,96}})));
+    annotation (Placement(transformation(extent={{-88,84},{-76,96}})));
   Modelica.Blocks.Logical.Switch switch2
     annotation (Placement(transformation(extent={{42,64},{52,74}})));
   Modelica.Blocks.Logical.Switch switch3
@@ -149,10 +149,10 @@ equation
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(switch1.u2, GridConnected) annotation (Line(points={{-73.2,70},{-80,
-          70},{-80,120}},       color={255,0,255}));
+  connect(switch1.u2, GridConnected) annotation (Line(points={{-73.2,70},{-90,
+          70},{-90,120}},       color={255,0,255}));
   connect(P0.y, switch1.u1)
-    annotation (Line(points={{-83.4,90},{-73.2,90},{-73.2,74.8}},
+    annotation (Line(points={{-75.4,90},{-73.2,90},{-73.2,74.8}},
                                                    color={0,0,127}));
   connect(S[1], switch1.u3) annotation (Line(points={{-120,61},{-120,65.2},{
           -73.2,65.2}},
@@ -202,7 +202,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(switch6.u2, GridConnected) annotation (Line(points={{78.8,-60},{34,
-          -60},{34,26},{-80,26},{-80,120}}, color={255,0,255}));
+          -60},{34,26},{-90,26},{-90,120}}, color={255,0,255}));
   connect(PGenCtrl, switch6.u1) annotation (Line(points={{-120,-48},{78.8,-48},
           {78.8,-55.2}}, color={0,0,127}));
   connect(switch6.y, genCtrlBus.pctrl) annotation (Line(points={{92.6,-60},{94,
@@ -267,9 +267,9 @@ equation
   connect(cur_high.ctrl, cur_low.ctrl) annotation (Line(points={{65.6,50},{62,
           50},{62,30},{67.6,30}}, color={0,0,127}));
   connect(cur_high.rst, GridConnected) annotation (Line(points={{65.6,47.2},{60,
-          47.2},{60,26},{-80,26},{-80,120}}, color={255,0,255}));
+          47.2},{60,26},{-90,26},{-90,120}}, color={255,0,255}));
   connect(cur_low.rst, GridConnected) annotation (Line(points={{67.6,27.2},{64,
-          27.2},{64,28},{62,28},{62,26},{-80,26},{-80,120}},
+          27.2},{64,28},{62,28},{62,26},{-90,26},{-90,120}},
                                                         color={255,0,255}));
   connect(replicator.y, switch5.u3) annotation (Line(points={{48.4,-10},{78.8,
           -10},{78.8,-4.8}},color={0,0,127}));
@@ -277,7 +277,7 @@ equation
     annotation (Line(points={{48.4,4},{64,4},{64,0},{78.8,0}},
                                                  color={255,0,255}));
   connect(booleanReplicator.u, GridConnected) annotation (Line(points={{39.2,4},
-          {34,4},{34,26},{-80,26},{-80,120}}, color={255,0,255}));
+          {34,4},{34,26},{-90,26},{-90,120}}, color={255,0,255}));
   connect(replicator1.y, invBattCtrlBus.qctrl) annotation (Line(points={{68.4,
           -20},{90,-20},{90,-19.9},{110.1,-19.9}},
                                                  color={0,0,127}), Text(

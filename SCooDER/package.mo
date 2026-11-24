@@ -15,12 +15,12 @@ annotation (
     CyDER(version="1"),
     SmartInverter(version="6"),
       DymolaCommands(version="1.7"),
-      Modelica(version="4.0.0"),
       Complex(version="4.0.0"),
-      Buildings(version="11.0.0")),
-  version="9",
+      Modelica(version="4.1.0"),
+      Buildings(version="14.0.0")),
+  version="10",
   conversion(from(version={"8","","1","2","3","4","5","7"}, script=
-            "modelica://SCooDER/ConvertFromSCooDER_8.mos")),
+            "modelica://SCooDER/ConvertFromSCooDER_8.mos"), noneFromVersion="9"),
 Documentation(info="<html>
 <p>
 The Smart Control of Distributed Energy Resources (<code>SCooDER</code>) library is

@@ -51,8 +51,8 @@ equation
     annotation (Line(points={{51,-60},{58,-60},{58,0}}, color={0,0,127}));
   connect(PV.y, microgridLarge_singleBatt.P_PV) annotation (Line(points={{-39,
           10},{0,10},{0,14},{16,14}}, color={0,0,127}));
-  connect(gridConnected.y, microgridLarge_singleBatt.gridConnected) annotation
-    (Line(points={{-39,80},{8,80},{8,38},{16,38}}, color={0,0,127}));
+  connect(gridConnected.y, microgridLarge_singleBatt.gridConnected) annotation (
+     Line(points={{-39,80},{8,80},{8,38},{16,38}}, color={0,0,127}));
   connect(microgridLarge_singleBatt.Q_Load_high, microgridLarge_singleBatt.Q_Load_low)
     annotation (Line(points={{46,0},{46,-12},{58,-12},{58,0}}, color={0,0,127}));
   connect(microgridLarge_singleBatt.P_Load_high, microgridLarge_singleBatt.Q_Load_low)

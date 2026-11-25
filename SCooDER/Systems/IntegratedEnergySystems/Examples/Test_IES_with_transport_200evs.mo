@@ -5,7 +5,7 @@ model Test_IES_with_transport_200evs
   parameter Integer n_evs=200;
   parameter Integer n_cha=512;
   parameter Integer n_trans=1;
-  parameter String fileName="C:/Users/Christoph/Documents/PrivateRepos/ies/resources/transportation/test_200-512-13-2.txt";
+  parameter String fileName=Modelica.Utilities.Files.loadResource("modelica://SCooDER/Systems/IntegratedEnergySystems/Examples/test_200-512-13-2.txt");
   parameter String weather_file=Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos") "Path to weather file";
   IEEE13_smartBuilding_ev_external IEEE13_smartBuilding(
     nodes=nodes,

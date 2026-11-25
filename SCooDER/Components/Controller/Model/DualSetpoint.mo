@@ -1,4 +1,4 @@
-within SCooDER.Systems.SmartBuilding;
+within SCooDER.Components.Controller.Model;
 model DualSetpoint
   Modelica.Blocks.Interfaces.RealInput Tzone
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},

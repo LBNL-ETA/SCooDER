@@ -16,3 +16,4 @@ PowerController_PI
 LimPID_variable
 PowerController_PI_multiBatt
 piCtrl
+DualSetpoint

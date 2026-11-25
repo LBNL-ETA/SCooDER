@@ -213,7 +213,7 @@ model Building_room_Qfirstorder
     annotation (Placement(transformation(extent={{-94,-44},{-86,-36}})));
   Modelica.Blocks.Interfaces.RealOutput Q_hvac(unit="W")
     annotation (Placement(transformation(extent={{100,-60},{120,-40}})));
-  DualSetpoint                       dualSetpoint
+  Components.Controller.Model.DualSetpoint dualSetpoint
     annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
   Modelica.Blocks.Interfaces.RealInput T_set_cool(unit="K", start=273.15 + 24.0)
     annotation (Placement(transformation(

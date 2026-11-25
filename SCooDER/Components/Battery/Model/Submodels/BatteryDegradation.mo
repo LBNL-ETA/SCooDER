@@ -1,4 +1,4 @@
-﻿within SCooDER.Components.Battery.Model.Submodels;
+within SCooDER.Components.Battery.Model.Submodels;
 model BatteryDegradation
   //parameter Real a=8.61e-6 "Default Wang fitted";
   //parameter Real b=-5.13e-3 "Default Wang fitted";

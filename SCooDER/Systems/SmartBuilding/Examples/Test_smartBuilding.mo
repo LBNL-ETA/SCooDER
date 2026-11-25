@@ -1,7 +1,8 @@
 within SCooDER.Systems.SmartBuilding.Examples;
 model Test_smartBuilding
   extends Modelica.Icons.Example;
-  smartBuilding Building
+  smartBuilding Building(weather_file=Modelica.Utilities.Files.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
   Modelica.Blocks.Sources.Trapezoid Pbatt(
     amplitude=1e6,

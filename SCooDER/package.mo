@@ -1,4 +1,4 @@
-﻿within ;
+within ;
 package SCooDER
 
 

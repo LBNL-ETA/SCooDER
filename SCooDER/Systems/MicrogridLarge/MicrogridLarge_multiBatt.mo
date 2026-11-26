@@ -10,19 +10,31 @@ model MicrogridLarge_multiBatt
   parameter Real batt_g_gen=1 "Prefer battery over generator?" annotation (Dialog(group="Controller"));
   parameter Real V_nominal=240 "Nominal voltage";
   parameter Real PV_etaDC(min=0, max=1, unit="1")=0.974 "Conversion efficiency for DC Input"
-                                                                                            annotation (Dialog(group="PV"));
+                                                                                            annotation (Dialog(group="PV Inverter"));
   parameter Real PV_delayP(min=0, unit="s")=0.5 "Time constant for Active Power control"
-                                                                                        annotation (Dialog(group="PV"));
+                                                                                        annotation (Dialog(group="PV Inverter"));
   parameter Real PV_delayQ(min=0, unit="s")=0.5 "Time constant for Reactive Power control"
-                                                                                          annotation (Dialog(group="PV"));
+                                                                                          annotation (Dialog(group="PV Inverter"));
   parameter Real PV_Smax(min=0, unit="VA")=6000 "Maximal apparent power"
-                                                                        annotation (Dialog(group="PV"));
+                                                                        annotation (Dialog(group="PV Inverter"));
   parameter Real PV_QIndmax(min=0, unit="var")=2000 "Maximal reactive power (Inductive)"
-                                                                                        annotation (Dialog(group="PV"));
+                                                                                        annotation (Dialog(group="PV Inverter"));
   parameter Real PV_QCapmax(min=0, unit="var")=2000 "Maximal reactive power (Capacitive)"
-                                                                                         annotation (Dialog(group="PV"));
+                                                                                         annotation (Dialog(group="PV Inverter"));
   parameter Boolean PV_Ppref=true "Active power preference in the control loop"
-                                                                               annotation (Dialog(group="PV"));
+                                                                               annotation (Dialog(group="PV Inverter"));
+  parameter Boolean ext_pv=false "Use external PV"
+                                                  annotation (Dialog(group="PV Generator"));
+  parameter Real PV_modules(min=0, unit="1") = 14 "Number of PV modules"
+                                                                        annotation (Dialog(group="PV Generator"));
+  parameter Real PV_A(min=0, unit="m2") = 1.65 "Net surface area per module [m2]"
+                                                                                 annotation (Dialog(group="PV Generator"));
+  parameter Real PV_etaModule(min=0, max=1, unit="1") = 0.158 "Module conversion efficiency"
+                                                                                            annotation (Dialog(group="PV Generator"));
+  parameter Real PV_til(unit="deg") = 10 "Surface tilt [deg]"
+                                                             annotation (Dialog(group="PV Generator"));
+  parameter Real PV_azi(unit="deg") = 0 "Surface azimuth [deg] 0-S, 90-W, 180-N, 270-E "
+                                                                                        annotation (Dialog(group="PV Generator"));
   parameter Real Batt_etaDC[n_batt](min=0, max=1, unit="1")=fill(0.974, n_batt) "Conversion efficiency for DC Input"
                                                                                                                     annotation (Dialog(group="Battery"));
   parameter Real Batt_delayP[n_batt](min=0, unit="s")=fill(0.5, n_batt) "Time constant for Active Power control"
@@ -88,7 +100,7 @@ model MicrogridLarge_multiBatt
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,-10})));
-  SCooDER.Components.Inverter.Model.Inverter_PV_singleInput PV(
+  SCooDER.Components.Inverter.Model.Inverter_PV_singleInput Inverter(
     V_nominal=V_nominal,
     etaDC=PV_etaDC,
     delayP=PV_delayP,
@@ -158,9 +170,8 @@ model MicrogridLarge_multiBatt
         iconTransformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={0,100})));
-  Modelica.Blocks.Interfaces.RealInput P_PV
-    annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-
+  Modelica.Blocks.Interfaces.RealInput P_PV if ext_pv
+    annotation (Placement(transformation(extent={{-140,-50},{-100,-10}})));
   SCooDER.Components.Battery.Model.Battery Batt_cell[n_batt](
     EMax=Batt_EMax,
     Pmax=Batt_Pmax,
@@ -209,6 +220,24 @@ model MicrogridLarge_multiBatt
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={44,50})));
+  Components.Photovoltaics.Model.PVModule_simple PV(
+    n=PV_modules,
+    A=PV_A,
+    eta=PV_etaModule,
+    til=PV_til,
+    azi=PV_azi)                                          if not ext_pv annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-56,-50})));
+  Buildings.BoundaryConditions.WeatherData.Bus
+    weaBus if not ext_pv "Bus with weather data"
+    annotation (Placement(transformation(extent={{-110,-60},{-90,-40}})));
+  Modelica.Blocks.Sources.Constant shading(k=1) if not ext_pv annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-52,-80})));
 equation
 
   for i in 1:n_batt loop
@@ -216,20 +245,19 @@ equation
     //connect(Batt[i].p, );
   end for;
 
-  connect(Gen.term_p, PV.term_p) annotation (Line(points={{1.77636e-15,0},{
-          1.77636e-15,20},{-60,20},{-60,0}},
-                    color={0,120,120}));
-  connect(grid_monitoring.terminal_p, PV.term_p) annotation (Line(points={{0,60},{
-          0,20},{-60,20},{-60,0}},  color={0,120,120}));
-  connect(Load_low.term_p, PV.term_p) annotation (Line(points={{60,0},{60,20},{
-          -60,20},{-60,0}}, color={0,120,120}));
+  connect(Gen.term_p, Inverter.term_p) annotation (Line(points={{1.77636e-15,0},
+          {1.77636e-15,20},{-60,20},{-60,0}}, color={0,120,120}));
+  connect(grid_monitoring.terminal_p, Inverter.term_p) annotation (Line(points={
+          {0,60},{0,20},{-60,20},{-60,0}}, color={0,120,120}));
+  connect(Load_low.term_p, Inverter.term_p) annotation (Line(points={{60,0},{60,
+          20},{-60,20},{-60,0}}, color={0,120,120}));
   connect(grid_monitoring.S, Controller.S)
     annotation (Line(points={{-11,64},{-26,64},{-26,61}}, color={0,0,127}));
   connect(Controller.genCtrlBus, Gen.genCtrlBus) annotation (Line(
       points={{-30,40},{-30,24},{-12,24},{-12,-10},{-10,-10}},
       color={255,204,51},
       thickness=0.5));
-  connect(Controller.invPVCtrlBus, PV.invCtrlBus) annotation (Line(
+  connect(Controller.invPVCtrlBus, Inverter.invCtrlBus) annotation (Line(
       points={{-38,40},{-38,28},{-72,28},{-72,-10},{-70,-10}},
       color={255,204,51},
       thickness=0.5));
@@ -241,11 +269,8 @@ equation
           -22},{68,-80},{90,-80},{90,-110}}, color={0,0,127}));
   connect(grid_monitoring.terminal_n, term_p)
     annotation (Line(points={{0,80},{0,100}}, color={0,120,120}));
-  connect(PV.P_DC, P_PV) annotation (Line(points={{-56.4,-22},{-56,-22},{-56,
-          -40},{-120,-40}}, color={0,0,127}));
-  connect(PV.p, monitoring.P_PV) annotation (Line(points={{-52,1},{-52,4},{80,4},
-          {80,80.1},{100.1,80.1}},
-                             color={0,0,127}), Text(
+  connect(Inverter.p, monitoring.P_PV) annotation (Line(points={{-52,1},{-52,4},
+          {80,4},{80,80.1},{100.1,80.1}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{6,3},{6,3}},
@@ -286,8 +311,8 @@ equation
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(Load_high.term_p, PV.term_p) annotation (Line(points={{30,0},{30,20},
-          {-60,20},{-60,0}}, color={0,120,120}));
+  connect(Load_high.term_p, Inverter.term_p) annotation (Line(points={{30,0},{30,
+          20},{-60,20},{-60,0}}, color={0,120,120}));
   connect(Load_high.P_in, P_Load_high) annotation (Line(points={{34.2,-22},{34,
           -22},{34,-80},{10,-80},{10,-110}}, color={0,0,127}));
   connect(Load_high.Q_in, Q_Load_high) annotation (Line(points={{37.6,-22},{38,
@@ -320,6 +345,20 @@ equation
       color={255,204,51},
       thickness=0.5));
 
+  connect(Inverter.P_DC, PV.P) annotation (Line(points={{-56.4,-22},{-56,-22},{-56,
+          -39}}, color={0,0,127}));
+  connect(P_PV, Inverter.P_DC) annotation (Line(points={{-120,-30},{-56.4,-30},{
+          -56.4,-22}}, color={0,0,127}));
+  connect(weaBus, PV.weaBus) annotation (Line(
+      points={{-100,-50},{-72,-50},{-72,-64},{-60,-64},{-60,-60}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(PV.scale, shading.y)
+    annotation (Line(points={{-52,-62},{-52,-69}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=30));

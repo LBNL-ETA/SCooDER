@@ -4,6 +4,7 @@ model Test_MicrogridLarge_multiBatt
   parameter Integer n_batt = 1;
   MicrogridLarge_multiBatt microgridLarge_multiBat(
     n_batt=n_batt,
+    ext_pv=true,
     Batt_delayP=fill(0.1, n_batt),
     Batt_EMax=fill(50, n_batt),
     Batt_Pmax=fill(3500, n_batt),

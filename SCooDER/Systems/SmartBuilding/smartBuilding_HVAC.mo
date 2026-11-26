@@ -3,30 +3,29 @@ model smartBuilding_HVAC
   "Variable air volume flow system with terminal reheat and five thermal zones based on Buildings.Examples.VAVReheat.ASHRAE2006"
   //extends Modelica.Icons.Example;
   extends SCooDER.Components.Building.BaseClasses.HVACBuildingWaterCooledMerkel(
-    heaPum(TSetSup=318.15, QCon_flow_max=((hvac.cor.terHea.Q_flow_nominal + hvac.sou.terHea.Q_flow_nominal
-           + hvac.eas.terHea.Q_flow_nominal + hvac.nor.terHea.Q_flow_nominal + hvac.wes.terHea.Q_flow_nominal)
-           + hvac.heaCoi.Q_flow_nominal)*0.85),
+    heaPum(TSetSup=318.15, QCon_flow_max=((hvac.cor.terHea.Q_flow_nominal +
+          hvac.sou.terHea.Q_flow_nominal + hvac.eas.terHea.Q_flow_nominal +
+          hvac.nor.terHea.Q_flow_nominal + hvac.wes.terHea.Q_flow_nominal) +
+          hvac.heaCoi.Q_flow_nominal)*0.85),
     MediumA(extraPropertiesNames={"CO2"}),
     mCor_flow_nominal=ACHCor*VRooCor*conv,
     mSou_flow_nominal=ACHSou*VRooSou*conv,
     mEas_flow_nominal=ACHEas*VRooEas*conv,
     mNor_flow_nominal=ACHNor*VRooNor*conv,
     mWes_flow_nominal=ACHWes*VRooWes*conv,
-    redeclare SCooDER.Components.Building.BaseClasses.ASHRAE2006 hvac(amb(C=fill(
-            400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
-            Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, MediumA.nC))),
+    redeclare SCooDER.Components.Building.BaseClasses.ASHRAE2006 hvac(amb(C=
+            fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM
+            /Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, MediumA.nC))),
     redeclare Buildings.Examples.VAVReheat.Validation.BaseClasses.Floor flo,
-    chi(TSetSup=279.15, QEva_flow_nominal=-160000, QEva_flow_min=-hvac.mCooWat_flow_nominal*4200*10),
-    weaDat(filNam=ModelicaServices.ExternalReferences.loadResource(
-          "modelica://SCooDER/Systems/SmartBuilding/El_Cajon-Gillespie_Field_AP.mos"),
-           computeWetBulbTemperature=true),
+    chi(
+      TSetSup=279.15,
+      QEva_flow_nominal=-160000,
+      QEva_flow_min=-hvac.mCooWat_flow_nominal*4200*10),
     jun(
       tau=60,
-        m_flow_nominal={hvac.mHeaWat_flow_nominal,hvac.mHeaWat_flow_nominal,
-          hvac.mHeaWat_flow_nominal},
+      m_flow_nominal={hvac.mHeaWat_flow_nominal,hvac.mHeaWat_flow_nominal,hvac.mHeaWat_flow_nominal},
       dp_nominal={0,0,-35000}),
-    jun1(tau=60,
-         m_flow_nominal={hvac.mHeaWat_flow_nominal,hvac.mHeaWat_flow_nominal,
+    jun1(tau=60, m_flow_nominal={hvac.mHeaWat_flow_nominal,hvac.mHeaWat_flow_nominal,
           hvac.mHeaWat_flow_nominal}));
 
   parameter Real ACHCor(final unit="1/h")=6
@@ -59,14 +58,12 @@ model smartBuilding_HVAC
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
   Buildings.Utilities.IO.SignalExchange.WeatherStation weaSta
     "BOPTEST weather station"
-    annotation (Placement(transformation(extent={{-70,-30},{-90,-10}})));
+    annotation (Placement(transformation(extent={{-76,-30},{-96,-10}})));
   Modelica.Blocks.Sources.RealExpression BuildingPower(y=hvac.reaAhu.PFanSup.y
          + hvac.reaAhu.PPumCoo.y + hvac.reaAhu.PPumHea.y + chi.PChi + chi.PCooTow)
     annotation (Placement(transformation(extent={{60,-30},{80,-10}})));
   Modelica.Blocks.Interfaces.RealOutput PBui
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
-    annotation (Placement(transformation(extent={{-10,90},{10,110}})));
 equation
   connect(CO2Cor.y, multiplex5_1.u5[1]) annotation (Line(points={{-79,38},{-76,38},
           {-76,40},{-42,40}}, color={0,0,127}));
@@ -81,19 +78,11 @@ equation
   connect(multiplex5_1.y, hvac.CO2Roo) annotation (Line(points={{-19,50},{-10,50},
           {-10,34},{-56,34},{-56,22},{-48.75,22}}, color={0,0,127}));
   connect(weaSta.weaBus, chi.weaBus) annotation (Line(
-      points={{-70.1,-20.1},{-66,-20.1},{-66,-68},{-10,-68},{-10,-80}},
+      points={{-76.1,-20.1},{-70,-20.1},{-70,-68},{-10,-68},{-10,-80}},
       color={255,204,51},
       thickness=0.5));
   connect(BuildingPower.y, PBui) annotation (Line(points={{81,-20},{92,-20},{92,
           0},{110,0}},     color={0,0,127}));
-  connect(weaBus, flo.weaBus) annotation (Line(
-      points={{0,100},{0,86.1538},{64.1304,86.1538}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   annotation (
     Documentation(info="<html>
 <p>

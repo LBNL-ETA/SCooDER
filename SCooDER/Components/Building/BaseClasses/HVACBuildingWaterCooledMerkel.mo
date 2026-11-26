@@ -73,11 +73,6 @@ partial model HVACBuildingWaterCooledMerkel
     "Building"
     annotation (Placement(transformation(extent={{20,40},{90,80}})));
 
-  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
-   filNam=Modelica.Utilities.Files.loadResource(
-        "modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"),
-      computeWetBulbTemperature=true) "Weather data reader"
-    annotation (Placement(transformation(extent={{-90,0},{-70,20}})));
   SCooDER.Components.Building.BaseClasses.WaterCooledChillerMerkel chi(
       redeclare package MediumW = MediumW)
     "Water cooled chiller with Merkel cooling tower"
@@ -90,14 +85,12 @@ partial model HVACBuildingWaterCooledMerkel
   Buildings.Fluid.FixedResistances.Junction jun1(redeclare package Medium =
         MediumW, dp_nominal={0,0,0})
     annotation (Placement(transformation(extent={{32,-36},{22,-46}})));
+  Buildings.BoundaryConditions.WeatherData.Bus
+                                     weaBus "Weather bus"
+    annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
 equation
-  connect(weaDat.weaBus, hvac.weaBus) annotation (Line(
-      points={{-70,10},{-56,10},{-56,11.4444},{-40.225,11.4444}},
-      color={255,204,51},
-      thickness=0.5));
-  connect(flo.TRooAir, hvac.TRoo) annotation (Line(points={{91.5217,61.6667},{
-          96,61.6667},{96,92},{-60,92},{-60,16.4444},{-48.75,16.4444}},
-                                                            color={0,0,127}));
+  connect(flo.TRooAir, hvac.TRoo) annotation (Line(points={{91.5217,60},{96,60},
+          {96,92},{-60,92},{-60,16.4444},{-48.75,16.4444}}, color={0,0,127}));
   connect(hvac.port_supAir[1], flo.portsSou[1]) annotation (Line(points={{42.275,
           19.2222},{46.3261,19.2222},{46.3261,49.3333}}, color={0,127,255}));
   connect(hvac.port_supAir[2], flo.portsEas[1]) annotation (Line(points={{42.275,
@@ -122,18 +115,10 @@ equation
   connect(hvac.port_retAir[5], flo.portsCor[2]) annotation (Line(points={{42.275,
           -4.38889},{60,-4.38889},{60,58},{47.8478,58},{47.8478,62.6667}},
         color={0,127,255}));
-  connect(weaDat.weaBus, flo.weaBus) annotation (Line(
-      points={{-70,10},{-66,10},{-66,90},{64.1304,90}},
-      color={255,204,51},
-      thickness=0.5));
   connect(chi.sup, hvac.portCooCoiSup) annotation (Line(points={{-10,-90},{-20,
           -90},{-20,-60},{-2,-60},{-2,-28}}, color={0,127,255}));
   connect(chi.ret, hvac.portCooCoiRet) annotation (Line(points={{10,-90},{20,
           -90},{20,-60},{6.25,-60},{6.25,-28}}, color={0,127,255}));
-  connect(weaDat.weaBus, chi.weaBus) annotation (Line(
-      points={{-70,10},{-66,10},{-66,-68},{-10,-68},{-10,-80}},
-      color={255,204,51},
-      thickness=0.5));
   connect(heaPum.weaBus, chi.weaBus) annotation (Line(
       points={{40,-80},{40,-68},{-10,-68},{-10,-80}},
       color={255,204,51},
@@ -150,6 +135,30 @@ equation
           42,-40},{72,-40},{72,-90},{60,-90}}, color={0,127,255}));
   connect(jun1.port_2, hvac.portHeaCoiRet) annotation (Line(points={{22,-41},{6,
           -41},{6,-40},{-13,-40},{-13,-28}}, color={0,127,255}));
+  connect(weaBus, hvac.weaBus) annotation (Line(
+      points={{-100,0},{-40.225,0},{-40.225,11.4444}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(weaBus, chi.weaBus) annotation (Line(
+      points={{-100,0},{-70,0},{-70,-68},{-10,-68},{-10,-80}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(flo.weaBus, weaBus) annotation (Line(
+      points={{64.1304,90},{-70,90},{-70,0},{-100,0}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%second",
+      index=1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
   annotation (
     Documentation(info="<html><p>Partial model with an HVAC system connected to a building with five conditioned thermal zones, served by a water cooled chiller with a Merkel cooling tower.</p></html>"),
     Icon(coordinateSystem(extent={{-100,-100},{100,100}})));
